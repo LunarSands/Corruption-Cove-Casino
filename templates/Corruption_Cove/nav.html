@@ -1,0 +1,19 @@
+<div class="nav">
+<img class="logo" src="/static/images/corruption_cove_logic.png">
+<ul class ="nav">
+    <li class="nav"><a class="nav" href="/corruption-cove-casino">Home</a></li>
+    {% if user.is_authenticated %}
+    <li class="nav"><a class="nav" href="/corruption-cove-casino/account/{{ user.username }}">Account</a></li>
+    <li class="nav"><a class="nav" href="/corruption-cove-casino/games">Games</a></li>
+    {% else %}
+    <li class="nav"><a class="nav" href="/corruption-cove-casino/register">Register</a></li>
+    <li class="nav"><a class="nav" href="/corruption-cove-casino/sign-in">Sign-in</a></li>
+    {% endif %}
+</ul>
+
+{% if user.is_authenticated %}
+<img class="account" src="image/png;base64,{{ user.pfp }}">
+<a class="account" href="/corruption-cove-casino/account/{{ user.username }}">{{ user.username }}</a>
+{% endif %}
+
+</div>
