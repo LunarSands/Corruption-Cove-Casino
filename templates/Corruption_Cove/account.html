@@ -1,0 +1,50 @@
+{% extends 'Corruption_Cove/base.html' %}
+{% load static %}
+
+{% block title_block %}
+Account
+{% endblock %}
+{% if request.user.profile.banner.url %}
+    <style> html{background-image: url("{{ request.user.profile.banner.url }}");}</style>
+{% endif %}
+
+{% block body_block %}
+<link rel="stylesheet" type="text/css" href= "{% static 'account.css' %}">
+
+<div class="profile">
+    <img class="pfp" src="{{ request.user.profile.pfp.url }}">
+    <p class="welcome">{{ request.user.profile.name }}<br>
+    Top Bets:<br>
+    {% if topbets %}
+    {% for bet in topbets %}
+    {{bet.game}}: {{bet.amount}}<br>
+    {% endfor %}
+    {% endif %}
+
+    Recent Bets:<br>
+    {% if recentbets %}
+    {% for bet in recentbets %}
+    {{bet.game}}: {{bet.amount}}<br>
+    {% endfor %}
+    {% endif %}
+    </p><br>
+    <a class="logout" href="{% url 'corruption-cove-casino:logout' %}">Logout</a><br>
+</div>
+
+<div class="bank">
+    <h1 class="welcome">Current Balance:</h1><br>
+    <p class="welcome">{{ balance }}<br>
+    {% if balance < 0 %}
+    You are in debt, you can keep playing, but your debt will grow.
+    We reccommend requesting money from a friend, or depositing more.
+    {% endif %}
+    
+    </p>
+</div>
+
+<div class="requests">
+</div>
+
+<div class="friends">
+</div>
+{% endblock %}

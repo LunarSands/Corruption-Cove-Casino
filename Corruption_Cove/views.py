@@ -3,7 +3,7 @@ from django.shortcuts import redirect
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from Corruption_Cove.models import UserProfile
+from Corruption_Cove.models import UserProfile, Bet
 from Corruption_Cove.forms import UserForm, UserProfileForm
 from django.http import HttpResponse
 
@@ -61,6 +61,24 @@ def signin(request):
 @login_required
 def games(request):
     return
+
+@login_required
+def account(request, user_slug):
+    try:
+        user = UserProfile.objects.get(slug=user_slug)
+    except UserProfile.DoesNotExist:
+        user = None
+    if user is None:
+        return redirect('/corruption-cove-casino/')
+    
+    bets = len(Bet.objects.filter(username=user))
+    context = {'topbets' : 0, 'recentbets' : 0}
+    if (bets > 0):
+        topbets = Bet.objects.get(username=user).order_by('-amount')[:max(3,bets)]
+        recentbets = Bet.objects.get(username=user).order_by('-date')[:max(3,bets)]
+        context = {'topbets' :  topbets, 'recentbets' : recentbets}
+
+    return render(request, 'Corruption_Cove/account.html',context)
 
 @login_required
 def user_logout(request):

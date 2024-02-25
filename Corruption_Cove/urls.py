@@ -11,4 +11,6 @@ path('register/', views.register, name='register'),
 path('sign-in/', views.signin, name='sign-in'),
 path('logout/', views.user_logout, name='logout'),
 path('games/', views.games, name='games'),
+path('account/<slug:user_slug>/',
+         views.account, name='account'),
 ]

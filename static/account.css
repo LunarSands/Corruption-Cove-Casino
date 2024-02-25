@@ -1,0 +1,46 @@
+div.profile {
+    display: inline-block;
+    background-color:green;
+    width: 15%;
+    text-align: center;
+    margin-right: 10%;
+    border-style: solid;
+    border-color: rgb(11, 88, 11);
+    border-width: 3px;
+    vertical-align: top;
+  }
+
+div.bank {
+    display: inline-block;
+    vertical-align: top;
+    width: 20%;
+    text-align: center;
+    border-style: solid;
+    border-color: rgb(11, 88, 11);
+    border-width: 3px;
+
+}
+
+a.logout {
+    color: gold;
+    font-size: 19px;
+    text-decoration: none;
+    display: block;
+    margin-left: 30%;
+    margin-right: 30%;
+}
+  
+a.logout:hover{
+    color: rgb(174, 13, 13);
+}
+
+img.pfp {
+    height: 75px;
+    display: block;
+    border-style: solid;
+    margin: auto;
+    margin-top: 15px;
+    margin-bottom: 0px;
+    border-color: rgb(11, 88, 11);
+    border-width: 3px;
+}
