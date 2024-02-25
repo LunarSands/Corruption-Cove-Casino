@@ -1,0 +1,26 @@
+{% extends 'Corruption_Cove/base.html' %}
+{% load static %}
+
+{% block title_block %}
+Registration
+{% endblock %}
+    
+{% block body_block %}
+<h1 class="welcome">Register Corruption Cove Account</h1>
+{% if registered %}
+<p class="welcome"><strong>Thank you for registering!</strong></p>
+<a href="{% url 'corruption-cove-casino:index' %}">Return to the homepage.</a><br />
+{% else %}
+
+<p class="welcome"><strong>Register here:</strong></p><br />
+<form id="user_form" method="post" action="{% url 'corruption-cove-casino:register' %}"
+enctype="multipart/form-data">
+
+{% csrf_token %}
+{{ user_form.as_p }}
+{{ profile_form.as_p }}
+
+<input type="submit" name="submit" value="Register" />
+</form>
+{% endif %}
+{% endblock %}

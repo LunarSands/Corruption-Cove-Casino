@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<link rel="stylesheet" type="text/css" href= '/static/styles.css'>
+{% load static %}
+<link rel="stylesheet" type="text/css" href= "{% static 'styles.css' %}">
+
 <html>
     <head>
         <title>
@@ -8,9 +10,10 @@
             {% endblock %}
         </title>
     </head>
-
     <body>
         {% include 'Corruption_Cove/nav.html' %}
+        <div class="block">
+        </div>
         {% block body_block %}
         {% endblock %}
     </body>

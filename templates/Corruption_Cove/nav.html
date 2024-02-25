@@ -1,19 +1,27 @@
+{% load static %}
+
+
 <div class="nav">
-<img class="logo" src="/static/images/corruption_cove_logic.png">
+<img class="logo" src="{% static '/images/corruption_cove_logic.png' %}">
 <ul class ="nav">
-    <li class="nav"><a class="nav" href="/corruption-cove-casino">Home</a></li>
+    <li class="nav"><a class="nav" href="{% url 'corruption-cove-casino:index' %}">Home</a></li>
     {% if user.is_authenticated %}
     <li class="nav"><a class="nav" href="/corruption-cove-casino/account/{{ user.username }}">Account</a></li>
-    <li class="nav"><a class="nav" href="/corruption-cove-casino/games">Games</a></li>
+    <li class="nav"><a class="nav" href="{% url 'corruption-cove-casino:games' %}">Games</a></li>
     {% else %}
-    <li class="nav"><a class="nav" href="/corruption-cove-casino/register">Register</a></li>
-    <li class="nav"><a class="nav" href="/corruption-cove-casino/sign-in">Sign-in</a></li>
+    <li class="nav"><a class="nav" href="{% url 'corruption-cove-casino:register' %}">Register</a></li>
+    <li class="nav"><a class="nav" href="{% url 'corruption-cove-casino:sign-in' %}">Sign-in</a></li>
     {% endif %}
 </ul>
 
 {% if user.is_authenticated %}
-<img class="account" src="image/png;base64,{{ user.pfp }}">
-<a class="account" href="/corruption-cove-casino/account/{{ user.username }}">{{ user.username }}</a>
+<div class="pfphelper">
+<img class="account" src="{{ request.user.profile.pfp.url }}">
+</div>
+<ul class ="account">
+    <li class="account"><a class="account" href="/corruption-cove-casino/account/{{ user.username }}">{{ request.user.profile.name }}</a></li>
+    <li class="account"><a class="account" href="{% url 'corruption-cove-casino:logout' %}">Logout</a></li>
+</ul>
 {% endif %}
 
 </div>

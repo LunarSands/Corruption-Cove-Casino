@@ -1,0 +1,18 @@
+{% extends 'Corruption_Cove/base.html' %}
+{% load static %}
+
+{% block title_block %}
+Sign-In
+{% endblock %}
+    
+{% block body_block %}
+<h1 class="welcome">Login to Corruption Cove</h1>
+<form id="login_form" method="post" action="{% url 'corruption-cove-casino:sign-in' %}">
+    {% csrf_token %}
+    Username: <input type="text" name="username" value="" size="50" />
+    <br />
+    Password: <input type="password" name="password" value="" size="50" />
+    <br />
+    <input type="submit" value="Submit" />
+</form>
+{% endblock %}
