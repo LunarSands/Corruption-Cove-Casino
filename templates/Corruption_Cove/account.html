@@ -5,12 +5,13 @@
 Account
 {% endblock %}
 {% if request.user.profile.banner.url %}
-    <style> html{background-image: url("{{ request.user.profile.banner.url }}");}</style>
+    <img class="banner" src ="{{ request.user.profile.banner.url }}" >
 {% endif %}
 
 {% block body_block %}
 <link rel="stylesheet" type="text/css" href= "{% static 'account.css' %}">
 
+<img class="banner" src ="{{ request.user.profile.banner.url }}" >
 <div class="profile">
     <img class="pfp" src="{{ request.user.profile.pfp.url }}">
     <p class="welcome">{{ request.user.profile.name }}<br>
@@ -43,8 +44,24 @@ Account
 </div>
 
 <div class="requests">
+    <h1 class="welcome">Requests:</h1><br><br>
+    <p class="welcome">
+        {% if requests %}
+        {% for x in requests %}
+        {{ x.name }}:<br>
+        {{ x.amount }} {{ request.user.profile.currency }}<br>
+        accept/decline buttons. both delete request, accept transfers money.
+        {% endfor %}
+        {% endif %}
+    </p>
 </div>
 
 <div class="friends">
+    <h1 class="welcome">Friends:</h1><br><br>
+    {% if friends %}
+    {% for friend in friends %}
+    <a class="logout" href="{% url 'corruption-cove-casino:account' user_slug=friend.slug %}">{{ friend.name }}</a>
+    {% endfor %}
+    {% endif %}
 </div>
 {% endblock %}
