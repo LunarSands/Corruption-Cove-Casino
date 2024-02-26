@@ -7,8 +7,53 @@
     padding: 2px;
 }
 
+.roulette_images{
+  position: relative;
+  top: 0;
+  left: 0;
+}
+
+.base_roulette{
+  position: absolute;
+  top: 0;
+  left: 30;
+  width: 384px;
+  height: 384px;
+}
+
+.wheel_roulette {
+  position: absolute;
+  top: 0px;
+  left: 32px;
+  width: 384px;
+  height: 384px;
+  animation:spin 6s linear infinite;
+}
+
+.ball_roulette {
+  position: absolute;
+  top: 0px;
+  left: 32px;
+  width: 384px;
+  height: 384px;
+  animation:spin_ball 2s linear infinite;
+  animation-play-state: paused;
+}
+
+@keyframes spin { 
+  100% {
+      transform:rotate(360deg); 
+  } 
+}
+
+@keyframes spin_ball { 
+  100% {
+      transform:rotate(-360deg); 
+  } 
+}
+
 .controls {
-  float: right;
+    float: right;
 }
 
 .bets {
@@ -16,7 +61,7 @@
 }
 
 .grid-container > div {
-    background-color: rgb(64, 202, 0);
+    background-color: rgb(0, 170, 0);
     text-align: center;
     vertical-align: middle;
     padding: 10px 10px;

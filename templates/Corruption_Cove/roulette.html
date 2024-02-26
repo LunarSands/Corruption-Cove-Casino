@@ -12,6 +12,12 @@ Roulette
         TBA
     </div>
 
+    <div class="roulette_images">
+        <img class="base_roulette" src="{% static '/images/base_roulette.png' %}" alt="" width="384" height="384">
+        <img class="wheel_roulette" src="{% static '/images/wheel_roulette.png' %}" alt="" width="384" height="384">
+        <img class="ball_roulette" src="{% static '/images/ball_roulette.png' %}" alt="" width="384" height="384">
+    </div>
+
     <div class="grid-container">
         <div onclick="addBetValue('bet-zero')" class="bet-zero">0</div>
         <div onclick="addBetValue('bet-1')" class="bet-1">1</div>
@@ -65,7 +71,10 @@ Roulette
     </div>
 
     <div class="controls">
-        <button  onclick="checkBet()">Check Bets</button>
+        <button onclick="checkBet()">Check Bets</button>
+        <button onclick="clearBet()">Clear Bets</button>
+        <button onclick="startBall()">Start Ball</button>
+        <button onclick="stopBall()">Stop Ball</button>
     </div>
 
     <script>
@@ -88,9 +97,23 @@ Roulette
         function checkBet() {
             let outputText = "";
             for (let i = 0; i < betTypes.length; i++) {
-                outputText = outputText.concat(betTypes[i], " has ", currentBets.get(betTypes[i]), "\n");
+                if (currentBets.get(betTypes[i]) != 0){
+                    outputText = outputText.concat("You bet ", currentBets.get(betTypes[i]), " on ", betTypes[i], "\n");
+                }
             }
             alert(outputText);
+        }
+        function clearBet() {
+            for (let i = 0; i < betTypes.length; i++) {
+                currentBets.set(betTypes[i], 0)
+            }
+            alert('Bets Cleared');
+        }
+        function stopBall(){
+            document.getElementsByClassName("ball_roulette")[0].style["animation-play-state"] = "paused";
+        }
+        function startBall(){
+            document.getElementsByClassName("ball_roulette")[0].style["animation-play-state"] = "running";
         }
     </script>
 {% endblock %}
