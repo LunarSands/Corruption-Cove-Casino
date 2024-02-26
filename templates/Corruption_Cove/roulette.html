@@ -13,54 +13,84 @@ Roulette
     </div>
 
     <div class="grid-container">
-        <div class="bet-zero">0</div>
-        <div class="bet-1">1</div>
-        <div class="bet-2">2</div>  
-        <div class="bet-3">3</div>
-        <div class="bet-4">4</div>
-        <div class="bet-5">5</div>
-        <div class="bet-6">6</div>
-        <div class="bet-7">7</div>  
-        <div class="bet-8">8</div>
-        <div class="bet-9">9</div>
-        <div class="bet-10">10</div>
-        <div class="bet-11">11</div>
-        <div class="bet-12">12</div>
-        <div class="bet-13">13</div>
-        <div class="bet-14">14</div>
-        <div class="bet-15">15</div>
-        <div class="bet-16">16</div>
-        <div class="bet-17">17</div>
-        <div class="bet-18">18</div>  
-        <div class="bet-19">19</div>
-        <div class="bet-20">20</div>
-        <div class="bet-21">21</div>
-        <div class="bet-22">22</div>
-        <div class="bet-23">23</div>  
-        <div class="bet-24">24</div>
-        <div class="bet-25">25</div>
-        <div class="bet-26">26</div>
-        <div class="bet-27">27</div>
-        <div class="bet-28">28</div>
-        <div class="bet-29">29</div>
-        <div class="bet-30">30</div>
-        <div class="bet-31">31</div>
-        <div class="bet-32">32</div>
-        <div class="bet-33">33</div>
-        <div class="bet-34">34</div>
-        <div class="bet-35">35</div>
-        <div class="bet-36">36</div>
-        <div class="bet-row1">2:1</div>
-        <div class="bet-row2">2:1</div>  
-        <div class="bet-row3">2:1</div>
-        <div class="bet-1st">1st 12</div>
-        <div class="bet-2nd">2nd 12</div>
-        <div class="bet-3rd">3rd 12</div>
-        <div class="bet-low">1-18</div>  
-        <div class="bet-even">Even</div>
-        <div class="bet-red">Red</div>
-        <div class="bet-black">Black</div>
-        <div class="bet-odd">Odd</div>
-        <div class="bet-high">19-36</div>        
+        <div onclick="addBetValue('bet-zero')" class="bet-zero">0</div>
+        <div onclick="addBetValue('bet-1')" class="bet-1">1</div>
+        <div onclick="addBetValue('bet-2')" class="bet-2">2</div>  
+        <div onclick="addBetValue('bet-3')" class="bet-3">3</div>
+        <div onclick="addBetValue('bet-4')" class="bet-4">4</div>
+        <div onclick="addBetValue('bet-5')" class="bet-5">5</div>
+        <div onclick="addBetValue('bet-6')" class="bet-6">6</div>
+        <div onclick="addBetValue('bet-7')" class="bet-7">7</div>  
+        <div onclick="addBetValue('bet-8')" class="bet-8">8</div>
+        <div onclick="addBetValue('bet-9')" class="bet-9">9</div>
+        <div onclick="addBetValue('bet-10')" class="bet-10">10</div>
+        <div onclick="addBetValue('bet-11')" class="bet-11">11</div>
+        <div onclick="addBetValue('bet-12')" class="bet-12">12</div>
+        <div onclick="addBetValue('bet-13')" class="bet-13">13</div>
+        <div onclick="addBetValue('bet-14')" class="bet-14">14</div>
+        <div onclick="addBetValue('bet-15')" class="bet-15">15</div>
+        <div onclick="addBetValue('bet-16')" class="bet-16">16</div>
+        <div onclick="addBetValue('bet-17')" class="bet-17">17</div>
+        <div onclick="addBetValue('bet-18')" class="bet-18">18</div>  
+        <div onclick="addBetValue('bet-19')" class="bet-19">19</div>
+        <div onclick="addBetValue('bet-20')" class="bet-20">20</div>
+        <div onclick="addBetValue('bet-21')" class="bet-21">21</div>
+        <div onclick="addBetValue('bet-22')" class="bet-22">22</div>
+        <div onclick="addBetValue('bet-23')" class="bet-23">23</div>  
+        <div onclick="addBetValue('bet-24')" class="bet-24">24</div>
+        <div onclick="addBetValue('bet-25')" class="bet-25">25</div>
+        <div onclick="addBetValue('bet-26')" class="bet-26">26</div>
+        <div onclick="addBetValue('bet-27')" class="bet-27">27</div>
+        <div onclick="addBetValue('bet-28')" class="bet-28">28</div>
+        <div onclick="addBetValue('bet-29')" class="bet-29">29</div>
+        <div onclick="addBetValue('bet-30')" class="bet-30">30</div>
+        <div onclick="addBetValue('bet-31')" class="bet-31">31</div>
+        <div onclick="addBetValue('bet-32')" class="bet-32">32</div>
+        <div onclick="addBetValue('bet-33')" class="bet-33">33</div>
+        <div onclick="addBetValue('bet-34')" class="bet-34">34</div>
+        <div onclick="addBetValue('bet-35')" class="bet-35">35</div>
+        <div onclick="addBetValue('bet-36')" class="bet-36">36</div>
+        <div onclick="addBetValue('bet-row1')" class="bet-row1">2:1</div>
+        <div onclick="addBetValue('bet-row2')" class="bet-row2">2:1</div>  
+        <div onclick="addBetValue('bet-row3')" class="bet-row3">2:1</div>
+        <div onclick="addBetValue('bet-1st')" class="bet-1st">1st 12</div>
+        <div onclick="addBetValue('bet-2nd')" class="bet-2nd">2nd 12</div>
+        <div onclick="addBetValue('bet-3rd')" class="bet-3rd">3rd 12</div>
+        <div onclick="addBetValue('bet-low')" class="bet-low">1-18</div>  
+        <div onclick="addBetValue('bet-even')" class="bet-even">Even</div>
+        <div onclick="addBetValue('bet-red')" class="bet-red">Red</div>
+        <div onclick="addBetValue('bet-black')" class="bet-black">Black</div>
+        <div onclick="addBetValue('bet-odd')" class="bet-odd">Odd</div>
+        <div onclick="addBetValue('bet-high')" class="bet-high">19-36</div>        
     </div>
+
+    <div class="controls">
+        <button  onclick="checkBet()">Check Bets</button>
+    </div>
+
+    <script>
+        const currentBets = new Map();
+        const betTypes = [
+            "bet-zero", "bet-1", "bet-2", "bet-3", "bet-4", "bet-5", "bet-6", "bet-7", "bet-8", "bet-9", 
+            "bet-10", "bet-11", "bet-12", "bet-13", "bet-14", "bet-15", "bet-16", "bet-17", "bet-18", "bet-19", 
+            "bet-20", "bet-21", "bet-22", "bet-23", "bet-24", "bet-25", "bet-26", "bet-27", "bet-28", "bet-29", 
+            "bet-30", "bet-31", "bet-32", "bet-33", "bet-34", "bet-35", "bet-36", "bet-row1", "bet-row2", "bet-row3", 
+            "bet-1st", "bet-2nd", "bet-3rd", "bet-low", "bet-even", "bet-red", "bet-black", "bet-odd", "bet-high"
+        ];
+        for (let i = 0; i < betTypes.length; i++) {
+            currentBets.set(betTypes[i], 0);
+        }
+
+        function addBetValue(bet) {
+            currentBets.set(bet, currentBets.get(bet)+100)
+        }
+
+        function checkBet() {
+            let outputText = "";
+            for (let i = 0; i < betTypes.length; i++) {
+                outputText = outputText.concat(betTypes[i], " has ", currentBets.get(betTypes[i]), "\n");
+            }
+            alert(outputText);
+        }
+    </script>
 {% endblock %}
