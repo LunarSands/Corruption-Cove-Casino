@@ -84,3 +84,8 @@ def account(request, user_slug):
 def user_logout(request):
     logout(request)
     return redirect(reverse('corruption-cove-casino:index'))
+
+#@login_required
+def roulette(request):
+    context = {}
+    return render(request, "Corruption_Cove/roulette.html", context)
