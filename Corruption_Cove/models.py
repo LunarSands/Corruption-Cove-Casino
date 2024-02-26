@@ -24,3 +24,23 @@ class Bet(models.Model):
     game = models.CharField(max_length=20)
     amount = models.FloatField()
     date = models.DateField()
+
+class Request(models.Model):
+    sender = models.ForeignKey(UserProfile, related_name="sender_r", on_delete = models.CASCADE)
+    receiver = models.ForeignKey(UserProfile, related_name="receiver_r",  on_delete = models.CASCADE)
+    amount = models.FloatField()
+
+    class Meta:
+        unique_together = (('sender', 'receiver'),)
+
+    def save(self,user,signed_in, *args, **kwargs):
+        self.sender=signed_in
+        self.receiver=user
+        super(Request, self).save(*args, **kwargs)
+
+class Friendship(models.Model):
+    sender = models.ForeignKey(UserProfile, related_name="sender_f", on_delete = models.CASCADE)
+    receiver = models.ForeignKey(UserProfile, related_name="receiver_f", on_delete = models.CASCADE)
+
+    class Meta:
+        unique_together = (('sender', 'receiver'),)

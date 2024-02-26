@@ -6,7 +6,9 @@
 <ul class ="nav">
     <li class="nav"><a class="nav" href="{% url 'corruption-cove-casino:index' %}">Home</a></li>
     {% if user.is_authenticated %}
-    <li class="nav"><a class="nav" href="/corruption-cove-casino/account/{{ request.user.profile.slug }}">Account</a></li>
+    {% if request.user.profile.slug %}
+    <li class="nav"><a class="nav" href="{% url 'corruption-cove-casino:account' user_slug=request.user.profile.slug %}">Account</a></li>
+    {% endif %}
     <li class="nav"><a class="nav" href="{% url 'corruption-cove-casino:games' %}">Games</a></li>
     {% else %}
     <li class="nav"><a class="nav" href="{% url 'corruption-cove-casino:register' %}">Register</a></li>
@@ -19,7 +21,9 @@
     <img class="account" src="{{ request.user.profile.pfp.url }}">
 </div>
 <ul class ="account">
-    <li class="account"><a class="account" href="/corruption-cove-casino/account/{{ request.user.profile.slug }}">{{ request.user.profile.name }}</a></li>
+    {% if request.user.profile.slug %}
+    <li class="account"><a class="account" href="{% url 'corruption-cove-casino:account' user_slug=request.user.profile.slug %}">{{ request.user.profile.name }}</a></li>
+    {% endif %}
     <li class="account"><a class="account" href="{% url 'corruption-cove-casino:logout' %}">Logout</a></li>
 </ul>
 {% endif %}

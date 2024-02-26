@@ -84,3 +84,9 @@ img.banner {
     border-width: 3px;
     border-color: rgb(11, 88, 11);
 }
+
+form {
+    width: 10%;
+    text-align: center;
+    align-content: center;
+}
