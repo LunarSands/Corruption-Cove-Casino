@@ -14,8 +14,10 @@ Roulette
 
     <div class="roulette_images">
         <img class="base_roulette" src="{% static '/images/base_roulette.png' %}" alt="" width="384" height="384">
-        <img class="wheel_roulette" src="{% static '/images/wheel_roulette.png' %}" alt="" width="384" height="384">
-        <img class="ball_roulette" src="{% static '/images/ball_roulette.png' %}" alt="" width="384" height="384">
+        <div class="wheel_roulette">
+            <img src="{% static '/images/wheel_roulette.png' %}" alt="" width="384" height="384">
+            <img class="ball_roulette" src="{% static '/images/ball_roulette.png' %}" alt="" width="384" height="384">
+        </div>
     </div>
 
     <div class="grid-container">
@@ -86,6 +88,12 @@ Roulette
             "bet-30", "bet-31", "bet-32", "bet-33", "bet-34", "bet-35", "bet-36", "bet-row1", "bet-row2", "bet-row3", 
             "bet-1st", "bet-2nd", "bet-3rd", "bet-low", "bet-even", "bet-red", "bet-black", "bet-odd", "bet-high"
         ];
+        const resultMap = new Map();
+        const order = [0, 26, 3, 35, 12, 28, 7, 29, 18, 22, 9, 31, 14, 20, 1, 33, 16, 24, 5, 10, 23, 28, 30, 11, 36, 13, 27, 6, 34, 17, 25, 2, 21, 4, 19, 15, 32]
+        for (let i = 0; i < order.length; i++) {
+            resultMap.set(i, order[i]);
+        }
+
         for (let i = 0; i < betTypes.length; i++) {
             currentBets.set(betTypes[i], 0);
         }
@@ -113,6 +121,11 @@ Roulette
             document.getElementsByClassName("ball_roulette")[0].style["animation-play-state"] = "paused";
         }
         function startBall(){
+            let generated = Math.floor(Math.random() * 37);
+            let message = "Expected result: ";
+            message = message.concat(resultMap.get(generated));
+            alert(message);
+            document.getElementsByClassName("ball_roulette")[0].style["animation-iteration-count"] = generated/37 + 3;
             document.getElementsByClassName("ball_roulette")[0].style["animation-play-state"] = "running";
         }
     </script>

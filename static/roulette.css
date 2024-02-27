@@ -33,10 +33,12 @@
 .ball_roulette {
   position: absolute;
   top: 0px;
-  left: 32px;
+  left: 0px;
   width: 384px;
   height: 384px;
-  animation:spin_ball 2s linear infinite;
+  animation:spin_ball 2s linear;
+  animation-iteration-count: infinite;
+  animation-fill-mode: forwards;
   animation-play-state: paused;
 }
 
