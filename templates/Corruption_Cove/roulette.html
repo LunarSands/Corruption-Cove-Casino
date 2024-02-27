@@ -21,7 +21,7 @@ Roulette
     </div>
 
     <div class="grid-container">
-        <div onclick="addBetValue('bet-zero')" class="bet-zero">0</div>
+        <div onclick="addBetValue('bet-0')" class="bet-0">0</div>
         <div onclick="addBetValue('bet-1')" class="bet-1">1</div>
         <div onclick="addBetValue('bet-2')" class="bet-2">2</div>  
         <div onclick="addBetValue('bet-3')" class="bet-3">3</div>
@@ -76,20 +76,23 @@ Roulette
         <button onclick="checkBet()">Check Bets</button>
         <button onclick="clearBet()">Clear Bets</button>
         <button onclick="startBall()">Start Ball</button>
-        <button onclick="stopBall()">Stop Ball</button>
     </div>
 
     <script>
+        let moneyBet = 0;
+        let winnings = 0;
         const currentBets = new Map();
+        const resultMap = new Map();
+        const oddsBet = new Map();
         const betTypes = [
-            "bet-zero", "bet-1", "bet-2", "bet-3", "bet-4", "bet-5", "bet-6", "bet-7", "bet-8", "bet-9", 
+            "bet-0", "bet-1", "bet-2", "bet-3", "bet-4", "bet-5", "bet-6", "bet-7", "bet-8", "bet-9", 
             "bet-10", "bet-11", "bet-12", "bet-13", "bet-14", "bet-15", "bet-16", "bet-17", "bet-18", "bet-19", 
             "bet-20", "bet-21", "bet-22", "bet-23", "bet-24", "bet-25", "bet-26", "bet-27", "bet-28", "bet-29", 
             "bet-30", "bet-31", "bet-32", "bet-33", "bet-34", "bet-35", "bet-36", "bet-row1", "bet-row2", "bet-row3", 
             "bet-1st", "bet-2nd", "bet-3rd", "bet-low", "bet-even", "bet-red", "bet-black", "bet-odd", "bet-high"
         ];
-        const resultMap = new Map();
-        const order = [0, 26, 3, 35, 12, 28, 7, 29, 18, 22, 9, 31, 14, 20, 1, 33, 16, 24, 5, 10, 23, 28, 30, 11, 36, 13, 27, 6, 34, 17, 25, 2, 21, 4, 19, 15, 32]
+        const red = [1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36];
+        const order = [0, 26, 3, 35, 12, 28, 7, 29, 18, 22, 9, 31, 14, 20, 1, 33, 16, 24, 5, 10, 23, 8, 30, 11, 36, 13, 27, 6, 34, 17, 25, 2, 21, 4, 19, 15, 32]
         for (let i = 0; i < order.length; i++) {
             resultMap.set(i, order[i]);
         }
@@ -100,6 +103,7 @@ Roulette
 
         function addBetValue(bet) {
             currentBets.set(bet, currentBets.get(bet)+100)
+            moneyBet += 100;
         }
 
         function checkBet() {
@@ -115,18 +119,64 @@ Roulette
             for (let i = 0; i < betTypes.length; i++) {
                 currentBets.set(betTypes[i], 0)
             }
+            moneyBet = 0;
             alert('Bets Cleared');
         }
-        function stopBall(){
-            document.getElementsByClassName("ball_roulette")[0].style["animation-play-state"] = "paused";
+        function scoreBets(result) {
+            if (result != 0){
+                if (result % 3 == 0){
+                    winnings += 3 * currentBets.get("bet-row1");
+                }
+                else if ((result + 1) % 3 == 0){
+                    winnings += 3 * currentBets.get("bet-row2");
+                }
+                else if ((result + 2) % 3 == 0){
+                    winnings += 3 * currentBets.get("bet-row3");
+                }
+                if (result < 13 && result > 0) {
+                winnings += 3 * currentBets.get("bet-1st");
+                }
+                else if (result < 25 && result > 12) {
+                    winnings += 3 * currentBets.get("bet-2nd");
+                }
+                else if (result < 37 && result > 24) {
+                    winnings += 3 * currentBets.get("bet-3rd");
+                }
+                if (result % 2 == 0){
+                    winnings += 2 * currentBets.get("bet-even");
+                }
+                else {
+                    winnings += 2 * currentBets.get("bet-odd");
+                }
+                if (result > 0 && result < 19){
+                    winnings += 2 * currentBets.get("bet-low");
+                }
+                else {
+                    winnings += 2 * currentBets.get("bet-high");
+                }
+                if (red.includes(result)){
+                    winnings += 2 * currentBets.get("bet-red");
+                }
+                else {
+                    winnings += 2 * currentBets.get("bet-black");
+                }
+            }
+            winnings += 36 * currentBets.get("bet-" + result);
         }
         function startBall(){
             let generated = Math.floor(Math.random() * 37);
-            let message = "Expected result: ";
-            message = message.concat(resultMap.get(generated));
-            alert(message);
+            let message = "Your winnings: ";
+            scoreBets(resultMap.get(generated))
+            message = message.concat(winnings);
+            document.getElementsByClassName("ball_roulette")[0].style["display"] = "inline";
             document.getElementsByClassName("ball_roulette")[0].style["animation-iteration-count"] = generated/37 + 3;
             document.getElementsByClassName("ball_roulette")[0].style["animation-play-state"] = "running";
+            setTimeout(function(){
+                document.getElementsByClassName("ball_roulette")[0].src = "{% static '/images/ball_roulette_alt.png' %}";
+                setTimeout(function() {
+                    alert(message);
+                }, 1000)
+            }, (generated/37 + 3) * 2000)
         }
     </script>
 {% endblock %}

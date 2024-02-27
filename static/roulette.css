@@ -31,6 +31,7 @@
 }
 
 .ball_roulette {
+  display: none;
   position: absolute;
   top: 0px;
   left: 0px;
@@ -71,7 +72,7 @@
     cursor: pointer;
   }
 
-  .bet-zero {
+  .bet-0 {
     grid-area: 1 / 1 / 4 / 2;
   }
   .bet-1 {
