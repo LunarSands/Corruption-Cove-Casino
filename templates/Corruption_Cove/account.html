@@ -4,17 +4,14 @@
 {% block title_block %}
 Account
 {% endblock %}
-{% if request.user.profile.banner.url %}
-    <img class="banner" src ="{{ request.user.profile.banner.url }}" >
-{% endif %}
 
 {% block body_block %}
 <link rel="stylesheet" type="text/css" href= "{% static 'account.css' %}">
 
-<img class="banner" src ="{{ request.user.profile.banner.url }}" >
+<img class="banner" src ="{{ account.banner.url }}" >
 <div class="profile">
-    <img class="pfp" src="{{ request.user.profile.pfp.url }}">
-    <p class="welcome">{{ request.user.profile.name }}<br>
+    <img class="pfp" src="{{ account.pfp.url }}">
+    <p class="welcome">{{ account.profile.name }}<br>
     Top Bets:<br>
     {% if topbets %}
     {% for bet in topbets %}
@@ -29,23 +26,37 @@ Account
     {% endfor %}
     {% endif %}
     </p><br>
+    {% if account == request.user.profile %}
     <a class="logout" href="{% url 'corruption-cove-casino:logout' %}">Logout</a><br>
+    {% endif %}
 </div>
 
 <div class="bank">
+    {% if banking %}
     <h1 class="welcome">Current Balance:</h1><br>
-    <p class="welcome">{{ balance }}<br>
-    {% if balance < 0 %}
+    <p class="welcome">{{ banking.balance }}<br>
+    {% if account.banking.balance < 0 %}
     You are in debt, you can keep playing, but your debt will grow.
     We reccommend requesting money from a friend, or depositing more.
+    {% endif %}
+    {% else %}
+    <form id="bank_form" method="post" action="{% url 'corruption-cove-casino:account' user_slug=user.profile.slug %}"
+        enctype="multipart/form-data">
+
+        {% csrf_token %}
+        {{ bank_form.as_p }}
+        
+        <input type="submit" name="submit" value="Add Card" />
+        </form>
     {% endif %}
     
     </p>
 </div>
 
 <div class="requests">
-    <h1 class="welcome">Requests:</h1><br><br>
+    <h1 class="welcome">Requests:</h1>
     <p class="welcome">
+        {% if request.user.profile == account %}
         {% if requests %}
         {% for x in requests %}
         {{ x.name }}:<br>
@@ -53,15 +64,46 @@ Account
         accept/decline buttons. both delete request, accept transfers money.
         {% endfor %}
         {% endif %}
-    </p>
+
+        {% else %}
+        <p class="welcome">Ask for Money:</p>
+        <form id="request_form" method="post" action="{% url 'corruption-cove-casino:account' user_slug=user.profile.slug %}"
+        enctype="multipart/form-data">
+
+        {% csrf_token %}
+        {{ request_form.as_p }}
+        
+        <input type="submit" name="submit" value="Send Request" />
+        </form>
+        </p>
+        {% endif %}
 </div>
 
 <div class="friends">
-    <h1 class="welcome">Friends:</h1><br><br>
+    {% with friend_exists=False %}
+    {% endwith %}
+    <h1 class="welcome">Friends:</h1>
     {% if friends %}
     {% for friend in friends %}
     <a class="logout" href="{% url 'corruption-cove-casino:account' user_slug=friend.slug %}">{{ friend.name }}</a>
+    {% if friend.slug == request.user.profile.slug %}
+    {% with friend_exists=True %}
+    {% endwith %}
+    {% endif %}
     {% endfor %}
+    {% endif %}
+    
+    {{ friend_exists }}
+    {% if request.user.profile != account and friend_exists == False %}
+    <form id="friend_form" method="post" action="{% url 'corruption-cove-casino:account' user_slug=account.slug %}"
+    enctype="multipart/form-data">
+
+    {% csrf_token %}
+    {{ friend_form.as_p }}
+
+    <input type="submit" name="submit" value="Add Friend" />
+    </form>
+    </p>
     {% endif %}
 </div>
 {% endblock %}
