@@ -1,0 +1,218 @@
+.grid-container {
+    display: grid;
+    float: right;
+    grid-template-columns: auto auto auto auto auto auto auto auto auto auto auto auto auto auto;
+    background-color: rgb(0, 0, 0);
+    gap: 2px;
+    padding: 2px;
+}
+
+.roulette_images{
+  position: relative;
+  top: 0;
+  left: 0;
+}
+
+.base_roulette{
+  position: absolute;
+  top: 0;
+  left: 30;
+  width: 384px;
+  height: 384px;
+}
+
+.wheel_roulette {
+  position: absolute;
+  top: 0px;
+  left: 32px;
+  width: 384px;
+  height: 384px;
+  animation:spin 6s linear infinite;
+}
+
+.ball_roulette {
+  position: absolute;
+  top: 0px;
+  left: 32px;
+  width: 384px;
+  height: 384px;
+  animation:spin_ball 2s linear infinite;
+  animation-play-state: paused;
+}
+
+@keyframes spin { 
+  100% {
+      transform:rotate(360deg); 
+  } 
+}
+
+@keyframes spin_ball { 
+  100% {
+      transform:rotate(-360deg); 
+  } 
+}
+
+.controls {
+    float: right;
+}
+
+.bets {
+    float: left;
+}
+
+.grid-container > div {
+    background-color: rgb(0, 170, 0);
+    text-align: center;
+    vertical-align: middle;
+    padding: 10px 10px;
+    font-size: 30px;
+    cursor: pointer;
+  }
+
+  .bet-zero {
+    grid-area: 1 / 1 / 4 / 2;
+  }
+  .bet-1 {
+    grid-area: 3 / 2 / 4 / 3;
+  }
+  .bet-2 {
+    grid-area: 2 / 2 / 3 / 3;
+  }
+  .bet-3 {
+    grid-area: 1 / 2 / 2 / 3;
+  }
+  .bet-4 {
+    grid-area: 3 / 3 / 4 / 4;
+  }
+  .bet-5 {
+    grid-area: 2 / 3 / 3 / 4;
+  }
+  .bet-6 {
+    grid-area: 1 / 3 / 2 / 4;
+  }
+  .bet-7 {
+    grid-area: 3 / 4 / 4 / 5;
+  }
+  .bet-8 {
+    grid-area: 2 / 4 / 3 / 5;
+  }
+  .bet-9 {
+    grid-area: 1 / 4 / 2 / 5;
+  }
+  .bet-10 {
+    grid-area: 3 / 5 / 4 / 6;
+  }
+  .bet-11 {
+    grid-area: 2 / 5 / 3 / 6;
+  }
+  .bet-12 {
+    grid-area: 1 / 5 / 2 / 6;
+  }
+  .bet-13 {
+    grid-area: 3 / 6 / 4 / 7;
+  }
+  .bet-14 {
+    grid-area: 2 / 6 / 3 / 7;
+  }
+  .bet-15 {
+    grid-area: 1 / 6 / 2 / 7;
+  }
+  .bet-16 {
+    grid-area: 3 / 7 / 4 / 8;
+  }
+  .bet-17 {
+    grid-area: 2 / 7 / 3 / 8;
+  }
+  .bet-18 {
+    grid-area: 1 / 7 / 2 / 8;
+  }
+  .bet-19 {
+    grid-area: 3 / 8 / 4 / 9;
+  }
+  .bet-20 {
+    grid-area: 2 / 8 / 3 / 9;
+  }
+  .bet-21 {
+    grid-area: 1 / 8 / 2 / 9;
+  }
+  .bet-22 {
+    grid-area: 3 / 9 / 4 / 10;
+  }
+  .bet-23 {
+    grid-area: 2 / 9 / 3 / 10;
+  }
+  .bet-24 {
+    grid-area: 1 / 9 / 2 / 10;
+  }
+  .bet-25 {
+    grid-area: 3 / 10 / 4 / 11;
+  }
+  .bet-26 {
+    grid-area: 2 / 10 / 3 / 11;
+  }
+  .bet-27 {
+    grid-area: 1 / 10 / 2 / 11;
+  }
+  .bet-28 {
+    grid-area: 3 / 11 / 4 / 12;
+  }
+  .bet-29 {
+    grid-area: 2 / 11 / 3 / 12;
+  }
+  .bet-30 {
+    grid-area: 1 / 11 / 2 / 12;
+  }
+  .bet-31 {
+    grid-area: 3 / 12 / 4 / 13;
+  }
+  .bet-32 {
+    grid-area: 2 / 12 / 3 / 13;
+  }
+  .bet-33 {
+    grid-area: 1 / 12 / 2 / 13;
+  }
+  .bet-34 {
+    grid-area: 3 / 13 / 4 / 14;
+  }
+  .bet-35 {
+    grid-area: 2 / 13 / 3 / 14;
+  }
+  .bet-36 {
+    grid-area: 1 / 13 / 2 / 14;
+  }
+  .bet-row1 {
+    grid-area: 1 / 14 / 2 / 15;
+  }
+  .bet-row2 {
+    grid-area: 2 / 14 / 3 / 15;
+  }
+  .bet-row3 {
+    grid-area: 3 / 14 / 4 / 15;
+  }
+  .bet-1st {
+    grid-area: 4 / 2 / 5 / 6;
+  }
+  .bet-2nd {
+    grid-area: 4 / 6 / 5 / 10;
+  }
+  .bet-3rd {
+    grid-area: 4 / 10 / 5 / 14;
+  }
+  .bet-low {
+    grid-area: 5 / 2 / 6 / 4;
+  }
+  .bet-even {
+    grid-area: 5 / 4 / 6 / 6;
+  }
+  .bet-red {
+    grid-area: 5 / 6 / 6 / 8;
+  }
+  .bet-black {
+    grid-area: 5 / 8 / 6 / 10;
+  }
+  .bet-odd {
+    grid-area: 5 / 10 / 6 / 12;
+  }
+  .bet-high {
+    grid-area: 5 / 12 / 6 / 14;
+  }

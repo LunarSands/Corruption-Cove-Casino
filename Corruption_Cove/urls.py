@@ -13,4 +13,5 @@ path('logout/', views.user_logout, name='logout'),
 path('games/', views.games, name='games'),
 path('account/<slug:user_slug>/',
          views.account, name='account'),
+path('games/roulette/', views.roulette, name='roulette'),
 ]
