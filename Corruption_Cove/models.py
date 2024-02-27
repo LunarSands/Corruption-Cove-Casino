@@ -33,14 +33,17 @@ class Request(models.Model):
     class Meta:
         unique_together = (('sender', 'receiver'),)
 
-    def save(self,user,signed_in, *args, **kwargs):
-        self.sender=signed_in
-        self.receiver=user
-        super(Request, self).save(*args, **kwargs)
-
 class Friendship(models.Model):
     sender = models.ForeignKey(UserProfile, related_name="sender_f", on_delete = models.CASCADE)
     receiver = models.ForeignKey(UserProfile, related_name="receiver_f", on_delete = models.CASCADE)
 
     class Meta:
         unique_together = (('sender', 'receiver'),)
+
+class Bank(models.Model):
+    username = models.OneToOneField(UserProfile, related_name="banking", on_delete = models.CASCADE)
+    balance = models.FloatField()
+    name = models.CharField(max_length=40)
+    cardNo = models.CharField(max_length=16)
+    expiry = models.DateField()
+    cvv = models.CharField(max_length=3)

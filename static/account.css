@@ -56,8 +56,7 @@ a.logout {
     font-size: 19px;
     text-decoration: none;
     display: block;
-    margin-left: 30%;
-    margin-right: 30%;
+    
 }
   
 a.logout:hover{

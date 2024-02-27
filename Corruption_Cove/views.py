@@ -4,8 +4,8 @@ from django.urls import reverse
 from django.db.models import Q
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from Corruption_Cove.models import UserProfile, Bet, Friendship, Request
-from Corruption_Cove.forms import UserForm, UserProfileForm, FriendshipForm, RequestForm
+from Corruption_Cove.models import UserProfile, Bet, Friendship, Request, Bank
+from Corruption_Cove.forms import UserForm, UserProfileForm, FriendshipForm, RequestForm, BankForm
 from django.http import HttpResponse
 
 def index(request):
@@ -72,6 +72,11 @@ def account(request, user_slug):
     if user is None:
         return redirect('/corruption-cove-casino/')
     
+    try:
+        banking = Bank.objects.get(username=user_slug)
+    except Bank.DoesNotExist:
+        banking = None
+
     bets = len(Bet.objects.filter(username=user))
     context = {'topbets' : 0, 'recentbets' : 0}
     if (bets > 0):
@@ -96,25 +101,30 @@ def account(request, user_slug):
     context['requests'] = requests
     context['friends'] = friends
     context['account'] = user
+    context['banking'] = banking
 
     if request.method == 'POST':
         friend_form = FriendshipForm(request.POST)
         request_form = RequestForm(request.POST)
+        bank_form = RequestForm(request.POST)
 
         if friend_form.is_valid():
             friend_form.save(user=user, signed_in=request.user.profile)
         if request_form.is_valid():
             request_form.save(user=user,signed_in=request.user.profile)
+        if bank_form.is_valid():
+            bank_form.save(user=user,signed_in=request.user.profile)
         else:
             print(friend_form.errors, request_form.errors)
     else:
         friend_form = FriendshipForm()
         request_form = RequestForm()
-    
+        bank_form = RequestForm(request.POST)
     
     context['friend_form'] = friend_form
     context['request_form'] = request_form
-    
+    context['bank_form'] = bank_form
+
     return render(request, 'Corruption_Cove/account.html',context)
 
 @login_required

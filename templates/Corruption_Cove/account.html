@@ -32,18 +32,29 @@ Account
 </div>
 
 <div class="bank">
+    {% if banking %}
     <h1 class="welcome">Current Balance:</h1><br>
-    <p class="welcome">{{ account.bank.balance }}<br>
-    {% if account.bank.balance < 0 %}
+    <p class="welcome">{{ banking.balance }}<br>
+    {% if account.banking.balance < 0 %}
     You are in debt, you can keep playing, but your debt will grow.
     We reccommend requesting money from a friend, or depositing more.
+    {% endif %}
+    {% else %}
+    <form id="bank_form" method="post" action="{% url 'corruption-cove-casino:account' user_slug=user.profile.slug %}"
+        enctype="multipart/form-data">
+
+        {% csrf_token %}
+        {{ bank_form.as_p }}
+        
+        <input type="submit" name="submit" value="Add Card" />
+        </form>
     {% endif %}
     
     </p>
 </div>
 
 <div class="requests">
-    <h1 class="welcome">Requests:</h1><br><br>
+    <h1 class="welcome">Requests:</h1>
     <p class="welcome">
         {% if request.user.profile == account %}
         {% if requests %}
@@ -55,7 +66,7 @@ Account
         {% endif %}
 
         {% else %}
-        <p class="welcome">Ask for Money:</p><br />
+        <p class="welcome">Ask for Money:</p>
         <form id="request_form" method="post" action="{% url 'corruption-cove-casino:account' user_slug=user.profile.slug %}"
         enctype="multipart/form-data">
 
@@ -71,7 +82,7 @@ Account
 <div class="friends">
     {% with friend_exists=False %}
     {% endwith %}
-    <h1 class="welcome">Friends:</h1><br>
+    <h1 class="welcome">Friends:</h1>
     {% if friends %}
     {% for friend in friends %}
     <a class="logout" href="{% url 'corruption-cove-casino:account' user_slug=friend.slug %}">{{ friend.name }}</a>
