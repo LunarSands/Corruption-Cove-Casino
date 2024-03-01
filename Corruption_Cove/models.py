@@ -24,6 +24,11 @@ class Bet(models.Model):
     game = models.CharField(max_length=20)
     amount = models.FloatField()
     date = models.DateField()
+    slug = models.SlugField(unique=True, default="slug")
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.user.username)
+        super(Bet, self).save(*args, **kwargs)
 
 class Request(models.Model):
     sender = models.ForeignKey(UserProfile, related_name="sender_r", on_delete = models.CASCADE)
@@ -41,9 +46,14 @@ class Friendship(models.Model):
         unique_together = (('sender', 'receiver'),)
 
 class Bank(models.Model):
-    username = models.OneToOneField(UserProfile, related_name="banking", on_delete = models.CASCADE)
+    username = models.ForeignKey(UserProfile, related_name="banking", on_delete = models.CASCADE, unique = True)
     balance = models.FloatField()
     name = models.CharField(max_length=40)
     cardNo = models.CharField(max_length=16)
     expiry = models.DateField()
     cvv = models.CharField(max_length=3)
+    slug = models.SlugField(unique=True, default="slug")
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.user.username)
+        super(Bank, self).save(*args, **kwargs)

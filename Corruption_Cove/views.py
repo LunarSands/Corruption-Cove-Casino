@@ -73,11 +73,11 @@ def account(request, user_slug):
         return redirect('/corruption-cove-casino/')
     
     try:
-        banking = Bank.objects.get(username=user_slug)
+        banking = Bank.objects.get(slug=user_slug)
     except Bank.DoesNotExist:
         banking = None
 
-    bets = len(Bet.objects.filter(username=user))
+    bets = len(Bet.objects.filter(slug=user_slug))
     context = {'topbets' : 0, 'recentbets' : 0}
     if (bets > 0):
         topbets = Bet.objects.get(username=user).order_by('-amount')[:max(3,bets)]
