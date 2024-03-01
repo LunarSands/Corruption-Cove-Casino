@@ -8,9 +8,7 @@ Roulette
 {% block body_block %}
 <link rel="stylesheet" type="text/css" href= "{% static 'roulette.css' %}">
 
-    <div class="bets">
-        TBA
-    </div>
+    {% include 'Corruption_Cove/bets.html' %}
 
     <div class="roulette_images">
         <img class="base_roulette" src="{% static '/images/base_roulette.png' %}" alt="" width="384" height="384">
@@ -20,76 +18,79 @@ Roulette
         </div>
     </div>
 
-    <div class="grid-container">
-        <div onclick="addBetValue('bet-zero')" class="bet-zero">0</div>
-        <div onclick="addBetValue('bet-1')" class="bet-1">1</div>
-        <div onclick="addBetValue('bet-2')" class="bet-2">2</div>  
-        <div onclick="addBetValue('bet-3')" class="bet-3">3</div>
-        <div onclick="addBetValue('bet-4')" class="bet-4">4</div>
-        <div onclick="addBetValue('bet-5')" class="bet-5">5</div>
-        <div onclick="addBetValue('bet-6')" class="bet-6">6</div>
-        <div onclick="addBetValue('bet-7')" class="bet-7">7</div>  
-        <div onclick="addBetValue('bet-8')" class="bet-8">8</div>
-        <div onclick="addBetValue('bet-9')" class="bet-9">9</div>
-        <div onclick="addBetValue('bet-10')" class="bet-10">10</div>
-        <div onclick="addBetValue('bet-11')" class="bet-11">11</div>
-        <div onclick="addBetValue('bet-12')" class="bet-12">12</div>
-        <div onclick="addBetValue('bet-13')" class="bet-13">13</div>
-        <div onclick="addBetValue('bet-14')" class="bet-14">14</div>
-        <div onclick="addBetValue('bet-15')" class="bet-15">15</div>
-        <div onclick="addBetValue('bet-16')" class="bet-16">16</div>
-        <div onclick="addBetValue('bet-17')" class="bet-17">17</div>
-        <div onclick="addBetValue('bet-18')" class="bet-18">18</div>  
-        <div onclick="addBetValue('bet-19')" class="bet-19">19</div>
-        <div onclick="addBetValue('bet-20')" class="bet-20">20</div>
-        <div onclick="addBetValue('bet-21')" class="bet-21">21</div>
-        <div onclick="addBetValue('bet-22')" class="bet-22">22</div>
-        <div onclick="addBetValue('bet-23')" class="bet-23">23</div>  
-        <div onclick="addBetValue('bet-24')" class="bet-24">24</div>
-        <div onclick="addBetValue('bet-25')" class="bet-25">25</div>
-        <div onclick="addBetValue('bet-26')" class="bet-26">26</div>
-        <div onclick="addBetValue('bet-27')" class="bet-27">27</div>
-        <div onclick="addBetValue('bet-28')" class="bet-28">28</div>
-        <div onclick="addBetValue('bet-29')" class="bet-29">29</div>
-        <div onclick="addBetValue('bet-30')" class="bet-30">30</div>
-        <div onclick="addBetValue('bet-31')" class="bet-31">31</div>
-        <div onclick="addBetValue('bet-32')" class="bet-32">32</div>
-        <div onclick="addBetValue('bet-33')" class="bet-33">33</div>
-        <div onclick="addBetValue('bet-34')" class="bet-34">34</div>
-        <div onclick="addBetValue('bet-35')" class="bet-35">35</div>
-        <div onclick="addBetValue('bet-36')" class="bet-36">36</div>
-        <div onclick="addBetValue('bet-row1')" class="bet-row1">2:1</div>
-        <div onclick="addBetValue('bet-row2')" class="bet-row2">2:1</div>  
-        <div onclick="addBetValue('bet-row3')" class="bet-row3">2:1</div>
-        <div onclick="addBetValue('bet-1st')" class="bet-1st">1st 12</div>
-        <div onclick="addBetValue('bet-2nd')" class="bet-2nd">2nd 12</div>
-        <div onclick="addBetValue('bet-3rd')" class="bet-3rd">3rd 12</div>
-        <div onclick="addBetValue('bet-low')" class="bet-low">1-18</div>  
-        <div onclick="addBetValue('bet-even')" class="bet-even">Even</div>
-        <div onclick="addBetValue('bet-red')" class="bet-red">Red</div>
-        <div onclick="addBetValue('bet-black')" class="bet-black">Black</div>
-        <div onclick="addBetValue('bet-odd')" class="bet-odd">Odd</div>
-        <div onclick="addBetValue('bet-high')" class="bet-high">19-36</div>        
-    </div>
-
     <div class="controls">
+        <div class="grid-container">
+            <div onclick="addBetValue('bet-0')" class="bet-0">0</div>
+            <div onclick="addBetValue('bet-1')" class="bet-1">1</div>
+            <div onclick="addBetValue('bet-2')" class="bet-2">2</div>  
+            <div onclick="addBetValue('bet-3')" class="bet-3">3</div>
+            <div onclick="addBetValue('bet-4')" class="bet-4">4</div>
+            <div onclick="addBetValue('bet-5')" class="bet-5">5</div>
+            <div onclick="addBetValue('bet-6')" class="bet-6">6</div>
+            <div onclick="addBetValue('bet-7')" class="bet-7">7</div>  
+            <div onclick="addBetValue('bet-8')" class="bet-8">8</div>
+            <div onclick="addBetValue('bet-9')" class="bet-9">9</div>
+            <div onclick="addBetValue('bet-10')" class="bet-10">10</div>
+            <div onclick="addBetValue('bet-11')" class="bet-11">11</div>
+            <div onclick="addBetValue('bet-12')" class="bet-12">12</div>
+            <div onclick="addBetValue('bet-13')" class="bet-13">13</div>
+            <div onclick="addBetValue('bet-14')" class="bet-14">14</div>
+            <div onclick="addBetValue('bet-15')" class="bet-15">15</div>
+            <div onclick="addBetValue('bet-16')" class="bet-16">16</div>
+            <div onclick="addBetValue('bet-17')" class="bet-17">17</div>
+            <div onclick="addBetValue('bet-18')" class="bet-18">18</div>  
+            <div onclick="addBetValue('bet-19')" class="bet-19">19</div>
+            <div onclick="addBetValue('bet-20')" class="bet-20">20</div>
+            <div onclick="addBetValue('bet-21')" class="bet-21">21</div>
+            <div onclick="addBetValue('bet-22')" class="bet-22">22</div>
+            <div onclick="addBetValue('bet-23')" class="bet-23">23</div>  
+            <div onclick="addBetValue('bet-24')" class="bet-24">24</div>
+            <div onclick="addBetValue('bet-25')" class="bet-25">25</div>
+            <div onclick="addBetValue('bet-26')" class="bet-26">26</div>
+            <div onclick="addBetValue('bet-27')" class="bet-27">27</div>
+            <div onclick="addBetValue('bet-28')" class="bet-28">28</div>
+            <div onclick="addBetValue('bet-29')" class="bet-29">29</div>
+            <div onclick="addBetValue('bet-30')" class="bet-30">30</div>
+            <div onclick="addBetValue('bet-31')" class="bet-31">31</div>
+            <div onclick="addBetValue('bet-32')" class="bet-32">32</div>
+            <div onclick="addBetValue('bet-33')" class="bet-33">33</div>
+            <div onclick="addBetValue('bet-34')" class="bet-34">34</div>
+            <div onclick="addBetValue('bet-35')" class="bet-35">35</div>
+            <div onclick="addBetValue('bet-36')" class="bet-36">36</div>
+            <div onclick="addBetValue('bet-row1')" class="bet-row1">2:1</div>
+            <div onclick="addBetValue('bet-row2')" class="bet-row2">2:1</div>  
+            <div onclick="addBetValue('bet-row3')" class="bet-row3">2:1</div>
+            <div onclick="addBetValue('bet-1st')" class="bet-1st">1st 12</div>
+            <div onclick="addBetValue('bet-2nd')" class="bet-2nd">2nd 12</div>
+            <div onclick="addBetValue('bet-3rd')" class="bet-3rd">3rd 12</div>
+            <div onclick="addBetValue('bet-low')" class="bet-low">1-18</div>  
+            <div onclick="addBetValue('bet-even')" class="bet-even">Even</div>
+            <div onclick="addBetValue('bet-red')" class="bet-red">Red</div>
+            <div onclick="addBetValue('bet-black')" class="bet-black">Black</div>
+            <div onclick="addBetValue('bet-odd')" class="bet-odd">Odd</div>
+            <div onclick="addBetValue('bet-high')" class="bet-high">19-36</div>        
+        </div>
+
         <button onclick="checkBet()">Check Bets</button>
         <button onclick="clearBet()">Clear Bets</button>
         <button onclick="startBall()">Start Ball</button>
-        <button onclick="stopBall()">Stop Ball</button>
     </div>
 
     <script>
+        let moneyBet = 0;
+        let winnings = 0;
         const currentBets = new Map();
+        const resultMap = new Map();
+        const oddsBet = new Map();
         const betTypes = [
-            "bet-zero", "bet-1", "bet-2", "bet-3", "bet-4", "bet-5", "bet-6", "bet-7", "bet-8", "bet-9", 
+            "bet-0", "bet-1", "bet-2", "bet-3", "bet-4", "bet-5", "bet-6", "bet-7", "bet-8", "bet-9", 
             "bet-10", "bet-11", "bet-12", "bet-13", "bet-14", "bet-15", "bet-16", "bet-17", "bet-18", "bet-19", 
             "bet-20", "bet-21", "bet-22", "bet-23", "bet-24", "bet-25", "bet-26", "bet-27", "bet-28", "bet-29", 
             "bet-30", "bet-31", "bet-32", "bet-33", "bet-34", "bet-35", "bet-36", "bet-row1", "bet-row2", "bet-row3", 
             "bet-1st", "bet-2nd", "bet-3rd", "bet-low", "bet-even", "bet-red", "bet-black", "bet-odd", "bet-high"
         ];
-        const resultMap = new Map();
-        const order = [0, 26, 3, 35, 12, 28, 7, 29, 18, 22, 9, 31, 14, 20, 1, 33, 16, 24, 5, 10, 23, 28, 30, 11, 36, 13, 27, 6, 34, 17, 25, 2, 21, 4, 19, 15, 32]
+        const red = [1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36];
+        const order = [0, 26, 3, 35, 12, 28, 7, 29, 18, 22, 9, 31, 14, 20, 1, 33, 16, 24, 5, 10, 23, 8, 30, 11, 36, 13, 27, 6, 34, 17, 25, 2, 21, 4, 19, 15, 32]
         for (let i = 0; i < order.length; i++) {
             resultMap.set(i, order[i]);
         }
@@ -98,8 +99,20 @@ Roulette
             currentBets.set(betTypes[i], 0);
         }
 
+        for (let i = 1; i < 37; i++){
+            if (red.includes(i)){
+                document.getElementsByClassName("bet-" + i)[0].style["background-color"] = "red";
+            }
+            else {
+                document.getElementsByClassName("bet-" + i)[0].style["background-color"] = "black";
+            }
+        }
+        document.getElementsByClassName("bet-red")[0].style["color"] = "red";
+        document.getElementsByClassName("bet-black")[0].style["color"] = "black";
+
         function addBetValue(bet) {
             currentBets.set(bet, currentBets.get(bet)+100)
+            moneyBet += 100;
         }
 
         function checkBet() {
@@ -115,18 +128,66 @@ Roulette
             for (let i = 0; i < betTypes.length; i++) {
                 currentBets.set(betTypes[i], 0)
             }
+            moneyBet = 0;
             alert('Bets Cleared');
         }
-        function stopBall(){
-            document.getElementsByClassName("ball_roulette")[0].style["animation-play-state"] = "paused";
+        function scoreBets(result) {
+            if (result != 0){
+                if (result % 3 == 0){
+                    winnings += 3 * currentBets.get("bet-row1");
+                }
+                else if ((result + 1) % 3 == 0){
+                    winnings += 3 * currentBets.get("bet-row2");
+                }
+                else if ((result + 2) % 3 == 0){
+                    winnings += 3 * currentBets.get("bet-row3");
+                }
+                if (result < 13 && result > 0) {
+                winnings += 3 * currentBets.get("bet-1st");
+                }
+                else if (result < 25 && result > 12) {
+                    winnings += 3 * currentBets.get("bet-2nd");
+                }
+                else if (result < 37 && result > 24) {
+                    winnings += 3 * currentBets.get("bet-3rd");
+                }
+                if (result % 2 == 0){
+                    winnings += 2 * currentBets.get("bet-even");
+                }
+                else {
+                    winnings += 2 * currentBets.get("bet-odd");
+                }
+                if (result > 0 && result < 19){
+                    winnings += 2 * currentBets.get("bet-low");
+                }
+                else {
+                    winnings += 2 * currentBets.get("bet-high");
+                }
+                if (red.includes(result)){
+                    winnings += 2 * currentBets.get("bet-red");
+                }
+                else {
+                    winnings += 2 * currentBets.get("bet-black");
+                }
+            }
+            winnings += 36 * currentBets.get("bet-" + result);
         }
         function startBall(){
             let generated = Math.floor(Math.random() * 37);
-            let message = "Expected result: ";
-            message = message.concat(resultMap.get(generated));
-            alert(message);
+            let message = "Your winnings: ";
+            scoreBets(resultMap.get(generated))
+            message = message.concat(winnings);
+            message = message.concat("\nYour losses: -");
+            message = message.concat(moneyBet);
+            document.getElementsByClassName("ball_roulette")[0].style["display"] = "inline";
             document.getElementsByClassName("ball_roulette")[0].style["animation-iteration-count"] = generated/37 + 3;
             document.getElementsByClassName("ball_roulette")[0].style["animation-play-state"] = "running";
+            setTimeout(function(){
+                document.getElementsByClassName("ball_roulette")[0].src = "{% static '/images/ball_roulette_alt.png' %}";
+                setTimeout(function() {
+                    alert(message);
+                }, 1000)
+            }, (generated/37 + 3) * 2000)
         }
     </script>
 {% endblock %}

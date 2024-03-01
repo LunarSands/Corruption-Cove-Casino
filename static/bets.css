@@ -1,0 +1,13 @@
+.bets {
+    float: left;
+}
+
+div.bets {
+    float: left;
+    background-color: gold;
+    padding: 10px 30px;
+    border-style: solid;
+    border-color: rgb(11, 88, 11);
+    border-width: 3px;
+    margin: 10px;
+}
