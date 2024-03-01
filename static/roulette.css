@@ -1,22 +1,20 @@
 .grid-container {
     display: grid;
-    float: right;
     grid-template-columns: auto auto auto auto auto auto auto auto auto auto auto auto auto auto;
-    background-color: rgb(0, 0, 0);
     gap: 2px;
     padding: 2px;
+    background-color: rgb(11, 88, 11);
 }
 
 .roulette_images{
   position: relative;
-  top: 0;
-  left: 0;
+  float: left;
 }
 
 .base_roulette{
   position: absolute;
   top: 0;
-  left: 30;
+  left: 0;
   width: 384px;
   height: 384px;
 }
@@ -24,7 +22,7 @@
 .wheel_roulette {
   position: absolute;
   top: 0px;
-  left: 32px;
+  left: 0px;
   width: 384px;
   height: 384px;
   animation:spin 6s linear infinite;
@@ -56,24 +54,31 @@
 }
 
 .controls {
-    float: right;
+  position: relative;
+  float: right;
+  margin: 10px;
 }
 
-.bets {
-    float: left;
+.controls > button {
+  float: right;
+  margin: 5px;
 }
 
 .grid-container > div {
-    background-color: rgb(0, 170, 0);
+    background-color: green;
+    color: white;
     text-align: center;
     vertical-align: middle;
     padding: 10px 10px;
     font-size: 30px;
     cursor: pointer;
+    user-select: none;
   }
 
   .bet-0 {
     grid-area: 1 / 1 / 4 / 2;
+    height: 10rem;
+    line-height: 10rem;
   }
   .bet-1 {
     grid-area: 3 / 2 / 4 / 3;
