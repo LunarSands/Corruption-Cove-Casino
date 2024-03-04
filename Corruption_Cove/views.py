@@ -65,25 +65,36 @@ def games(request):
 
 @login_required
 def account(request, user_slug):
+    context = {}
+
+
+    #identify who's account page is open
     try:
         user = UserProfile.objects.get(slug=user_slug)
     except UserProfile.DoesNotExist:
         user = None
     if user is None:
         return redirect('/corruption-cove-casino/')
+    context['account'] = user
     
+
+    #check if bank card has been added
     try:
         banking = Bank.objects.get(slug=user_slug)
     except Bank.DoesNotExist:
         banking = None
+    context['banking'] = banking
 
+
+    #find top and recent bets from current user
     bets = len(Bet.objects.filter(slug=user_slug))
     context = {'topbets' : 0, 'recentbets' : 0}
     if (bets > 0):
-        topbets = Bet.objects.get(username=user).order_by('-amount')[:max(3,bets)]
-        recentbets = Bet.objects.get(username=user).order_by('-date')[:max(3,bets)]
+        topbets = Bet.objects.get(slug=user_slug).order_by('-amount')[:max(3,bets)]
+        recentbets = Bet.objects.get(slug=user_slug).order_by('-date')[:max(3,bets)]
         context = {'topbets' :  topbets, 'recentbets' : recentbets}
 
+    #find friends of current user
     friendsHelper = Friendship.objects.filter(Q(sender=user) | Q(receiver=user))
     friends = []
     for friend in friendsHelper:
@@ -91,18 +102,15 @@ def account(request, user_slug):
             friends.append(UserProfile.objects.get(slug = friend.receiver))
         else:
             friends.append(UserProfile.objects.get(slug = friend.sender))
-
-    try:
-        requests = Request.objects.get(receiver=user)
-    except Request.DoesNotExist:
-        requests = None
-
-
-    context['requests'] = requests
     context['friends'] = friends
-    context['account'] = user
-    context['banking'] = banking
 
+
+    #find money requests directed at current user
+    requests = Request.objects.filter(receiver=user)
+    context['requests'] = requests
+
+
+    #handle form input
     if request.method == 'POST':
         friend_form = FriendshipForm(request.POST)
         request_form = RequestForm(request.POST)
@@ -121,6 +129,7 @@ def account(request, user_slug):
         request_form = RequestForm()
         bank_form = RequestForm(request.POST)
     
+    #pass forms to page
     context['friend_form'] = friend_form
     context['request_form'] = request_form
     context['bank_form'] = bank_form

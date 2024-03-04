@@ -8,8 +8,8 @@ class UserProfile(models.Model):
     name = models.CharField(max_length=40)
     user = models.OneToOneField(User, related_name="profile", on_delete=models.CASCADE)
     currency = models.CharField(max_length=24, choices=choices, default="GBP")
-    pfp = models.ImageField(upload_to='media/images/pfp', blank=True)
-    banner = models.ImageField(upload_to='media/images/banner', blank=True)
+    pfp = models.ImageField(upload_to='media/images/pfp', blank=True, default="media/images/pfp/default_pfp.png")
+    banner = models.ImageField(upload_to='media/images/banner', blank=True, default="media/images/banner/default_banner.png")
     slug = models.SlugField(unique=True)
 
     def save(self, *args, **kwargs):
