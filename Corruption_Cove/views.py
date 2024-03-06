@@ -75,7 +75,7 @@ def account(request, user_slug):
         user = None
     if user is None:
         return redirect('/corruption-cove-casino/')
-    context['account'] = user
+    
     
 
     #check if bank card has been added
@@ -134,6 +134,9 @@ def account(request, user_slug):
     context['request_form'] = request_form
     context['bank_form'] = bank_form
 
+    #pass user
+    context['account'] = user
+
     return render(request, 'Corruption_Cove/account.html',context)
 
 @login_required
@@ -144,4 +147,9 @@ def user_logout(request):
 #@login_required
 def roulette(request):
     context = {}
+
+    bets = len(Bet.objects.filter(game='roulette'))
+    if (bets > 0):    
+        context['bets'] = bets[:max(5,bets)]
+
     return render(request, "Corruption_Cove/roulette.html", context)

@@ -10,8 +10,8 @@ Account
 
 <img class="banner" src ="{{ account.banner.url }}" >
 <div class="profile">
+    <p class="welcome">{{ account.name }}<br>
     <img class="pfp" src="{{ account.pfp.url }}">
-    <p class="welcome">{{ account.profile.name }}<br>
     Top Bets:<br>
     {% if topbets %}
     {% for bet in topbets %}
