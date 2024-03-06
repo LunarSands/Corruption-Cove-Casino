@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.db.models import Q
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from Corruption_Cove.models import UserProfile, Bet, Friendship, Request, Bank
+from Corruption_Cove.models import UserProfile, Bet, Friendship, Request, Bank, Slots, Dealer
 from Corruption_Cove.forms import UserForm, UserProfileForm, FriendshipForm, RequestForm, BankForm
 from django.http import HttpResponse
 
@@ -144,7 +144,17 @@ def user_logout(request):
     logout(request)
     return redirect(reverse('corruption-cove-casino:index'))
 
-#@login_required
+
+
+@login_required
+def games(request):
+    context = {}
+    context['slots'] = Slots.objects.all()
+    context['dealers'] = Dealer.objects.all()
+
+    return render(request, "Corruption_Cove/games.html", context)
+
+@login_required
 def roulette(request):
     context = {}
 
@@ -153,3 +163,23 @@ def roulette(request):
         context['bets'] = bets[:max(5,bets)]
 
     return render(request, "Corruption_Cove/roulette.html", context)
+
+@login_required
+def blackjack(request,dealer):
+    context = {}
+
+    bets = len(Bet.objects.filter(game='blackjack-'+dealer))
+    if (bets > 0):    
+        context['bets'] = bets[:max(5,bets)]
+    
+    return render(request, "Corruption_Cove/blackjack.html", context)
+
+@login_required
+def slots(request,machine):
+    context = {}
+
+    bets = len(Bet.objects.filter(game='slots-'+machine))
+    if (bets > 0):    
+        context['bets'] = bets[:max(5,bets)]
+    
+    return render(request, "Corruption_Cove/slots.html", context)
