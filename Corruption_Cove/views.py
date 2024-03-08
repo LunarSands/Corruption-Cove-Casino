@@ -194,7 +194,7 @@ def slots(request,machine):
 
 @login_required
 def deposit(request, user_slug):
-    try: 
+    try:
         bank = Bank.objects.get(slug=user_slug)
     except Bank.DoesNotExist:
         bank = None

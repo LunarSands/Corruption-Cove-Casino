@@ -18,6 +18,8 @@
         </div>
         {% block body_block %}
         {% endblock %}
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
+        <script>let csrftoken = '{{ csrf_token }}'</script>
     </body>
 
 </html>
