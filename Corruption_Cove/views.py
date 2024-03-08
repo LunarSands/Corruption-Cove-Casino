@@ -226,7 +226,8 @@ class play_roulette(View):
                 winnings += 2 * int(currentBets.GET.get('bet-black', 0))
         winnings += 36 * int(currentBets.GET.get('bet-' + str(result), 0))
 
-        newBet = Bet(username=currentBets.user.profile, game='roulette', amount=winnings-bet, date=date.today())
-        newBet.save()
+        num = Bet.objects.all().count()
+        newBet = Bet(username=currentBets.user.profile, game='roulette', amount=(winnings-bet), date=date.today())
+        newBet.save(num)
 
         return HttpResponse(str(generated) + ':' +str(winnings))
