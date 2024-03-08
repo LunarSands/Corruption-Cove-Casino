@@ -83,22 +83,26 @@ def account(request, user_slug):
     
 
     #check if bank card has been added
+    banks = True
+    banking = None
     try:
         banking = Bank.objects.get(slug=user_slug)
         banks = True
     except Bank.DoesNotExist:
-        banks = False
+        banks = True
     context['banking'] = banking
     context['banks'] = banks
 
 
     #find top and recent bets from current user
     bets = len(Bet.objects.filter(slug=user_slug))
-    context = {'topbets' : 0, 'recentbets' : 0}
+    context['topbets'] = 0 
+    context['recentbets'] = 0
     if (bets > 0):
         topbets = Bet.objects.filter(slug=user_slug).order_by('-amount')[:max(3,bets)]
         recentbets = Bet.objects.filter(slug=user_slug).order_by('-date')[:max(3,bets)]
-        context = {'topbets' :  topbets, 'recentbets' : recentbets}
+        context['topbets'] =  topbets
+        context['recentbets'] = recentbets
 
     #find friends of current user
     friendsHelper = Friendship.objects.filter(Q(sender=user) | Q(receiver=user))
@@ -193,16 +197,16 @@ def slots(request,machine):
 
 class deposit(View):
     def get(self, request):
-        depositValue = float(request.GET["depostValue"])
-        userID = request.user.username
+        depositValue = float(request.GET["depositValue"])
+        userID = request.user.profile.slug
         try:
-            bank = Bank.objects.get(username=userID)
+            bank = Bank.objects.get(slug=userID)
         except Bank.DoesNotExist:
             HttpResponse("Bank account not found")
         
         bank.balance += depositValue
         bank.save()
-        return HttpResponse(bank.balance)
+        return HttpResponse(str(bank.balance))
 
 class play_roulette(View):
     def get(self, currentBets):

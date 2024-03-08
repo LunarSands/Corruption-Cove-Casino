@@ -32,25 +32,29 @@ Account
 </div>
 
 <div class="bank">
+    <h1 class="welcome">Banking:</h1>
     {% if banks %}
-        <h1 class="welcome">Current Balance:</h1><br>
-        <p id="balance" class="welcome">{{ banking.balance }}<br>
+        <h2 class="welcome">Current Balance:</h1>
+        <p id="balance" class="welcome">{{ banking.balance }}
         {% if account.banking.balance < 0 %}
+            <br>
             You are in debt, you can keep playing, but your debt will grow.
             We recommend requesting money from a friend, or depositing more.
+            <br>
         {% endif %}
-        <p class="welcome"><strong>Deposit here:</strong></p><br />
+        </p>
+        <p class="welcome"><strong>Deposit here:</strong></p>
         <input type="text" id="deposit_form" placeholder="Enter deposit value">
         <button onclick="deposit()">Deposit</button>
         <script>
             function deposit(){
-                var depositValue = $("#deposit_form").val();
-                $.get("{% url 'corruption-cove-casino:deposit' user_slug=user.profile.slug %}", {"depositValue": depositValue}, function(output) {
+                var depositValue = document.getElementById("deposit_form").value;
+                var request = {"depositValue": depositValue}
+                $.get("{% url 'corruption-cove-casino:deposit'  %}", request, function(output) {
                     $("#balance").html(output);
                 })
             }
         </script>
-    
     {% else %}
         <form id="bank_form" method="post" action="{% url 'corruption-cove-casino:account' user_slug=user.profile.slug %}"
         enctype="multipart/form-data">
@@ -61,8 +65,6 @@ Account
         <input type="submit" name="submit" value="Add Card" />
         </form>
     {% endif %}
-    
-    </p>
 </div>
 
 <div class="requests">
