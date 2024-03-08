@@ -191,9 +191,16 @@ class play_roulette(View):
     def get(self, currentBets):
         red = [1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36]
         order = [0, 26, 3, 35, 12, 28, 7, 29, 18, 22, 9, 31, 14, 20, 1, 33, 16, 24, 5, 10, 23, 8, 30, 11, 36, 13, 27, 6, 34, 17, 25, 2, 21, 4, 19, 15, 32]
+        betTypes = [
+            "bet-0", "bet-1", "bet-2", "bet-3", "bet-4", "bet-5", "bet-6", "bet-7", "bet-8", "bet-9", 
+            "bet-10", "bet-11", "bet-12", "bet-13", "bet-14", "bet-15", "bet-16", "bet-17", "bet-18", "bet-19", 
+            "bet-20", "bet-21", "bet-22", "bet-23", "bet-24", "bet-25", "bet-26", "bet-27", "bet-28", "bet-29", 
+            "bet-30", "bet-31", "bet-32", "bet-33", "bet-34", "bet-35", "bet-36", "bet-row1", "bet-row2", "bet-row3", 
+            "bet-1st", "bet-2nd", "bet-3rd", "bet-low", "bet-even", "bet-red", "bet-black", "bet-odd", "bet-high"
+        ]
         bet = 0
-        for bet_type in currentBets:
-            bet += currentBets.GET[bet_type]
+        for bet_type in betTypes:
+            bet += int(currentBets.GET.get(bet_type, 0))
 
         generated = randint(0,36)
         winnings = 0
@@ -226,8 +233,9 @@ class play_roulette(View):
                 winnings += 2 * int(currentBets.GET.get('bet-black', 0))
         winnings += 36 * int(currentBets.GET.get('bet-' + str(result), 0))
 
-        num = Bet.objects.all().count()
-        newBet = Bet(username=currentBets.user.profile, game='roulette', amount=(winnings-bet), date=date.today())
-        newBet.save(num)
+        amount = winnings-bet
+
+        newBet = Bet(username=currentBets.user.profile, game='roulette', amount=float(amount), date=date.today())
+        newBet.save()
 
         return HttpResponse(str(generated) + ':' +str(winnings))
