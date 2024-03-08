@@ -1,6 +1,8 @@
 from django.db import models
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
+from datetime import date
+from django.utils.timezone import now
 
 # Create your models here.
 class UserProfile(models.Model):
@@ -23,11 +25,11 @@ class Bet(models.Model):
     username = models.ForeignKey(UserProfile, on_delete = models.CASCADE)
     game = models.CharField(max_length=20)
     amount = models.FloatField()
-    date = models.DateField()
-    slug = models.SlugField(unique=True, default="slug")
+    date = models.DateField(default=now)
+    slug = models.SlugField(default="slug")
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.user.username)
+        self.slug = slugify(self.username.user.username)
         super(Bet, self).save(*args, **kwargs)
 
 class Request(models.Model):
