@@ -48,7 +48,7 @@ class Friendship(models.Model):
         unique_together = (('sender', 'receiver'),)
 
 class Bank(models.Model):
-    username = models.ForeignKey(UserProfile, related_name="banking", on_delete = models.CASCADE, unique = True)
+    username = models.OneToOneField(UserProfile, related_name="banking", on_delete = models.CASCADE, unique = True)
     balance = models.FloatField()
     name = models.CharField(max_length=40)
     cardNo = models.CharField(max_length=16)
@@ -79,7 +79,7 @@ class Dealer(models.Model):
         super(Dealer, self).save(*args, **kwargs)
 
 class Deposit(models.Model):
-    username = models.ForeignKey(UserProfile, related_name="deposit", on_delete = models.CASCADE, unique = True)
+    username = models.OneToOneField(UserProfile, related_name="deposit", on_delete = models.CASCADE, unique = True)
     balance = models.FloatField()
     depositAmount = models.FloatField()
 

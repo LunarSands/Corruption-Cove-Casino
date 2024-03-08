@@ -4,8 +4,8 @@ from django.urls import reverse
 from django.db.models import Q
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from Corruption_Cove.models import UserProfile, Bet, Friendship, Request, Bank, Slots, Dealer
-from Corruption_Cove.forms import DepositForm, UserForm, UserProfileForm, FriendshipForm, RequestForm, BankForm
+from Corruption_Cove.models import *
+from Corruption_Cove.forms import *
 from django.http import HttpResponse
 from random import randint
 from django.views import View
@@ -84,9 +84,11 @@ def account(request, user_slug):
     #check if bank card has been added
     try:
         banking = Bank.objects.get(slug=user_slug)
+        banks = True
     except Bank.DoesNotExist:
-        banking = None
+        banks = False
     context['banking'] = banking
+    context['banks'] = banks
 
 
     #find top and recent bets from current user
@@ -117,8 +119,7 @@ def account(request, user_slug):
     if request.method == 'POST':
         friend_form = FriendshipForm(request.POST)
         request_form = RequestForm(request.POST)
-        bank_form = RequestForm(request.POST)
-        deposit_form = DepositForm(request.POST)
+        bank_form = BankForm(request.POST)
 
         if friend_form.is_valid():
             friend_form.save(user=user, signed_in=request.user.profile)
@@ -126,21 +127,18 @@ def account(request, user_slug):
             request_form.save(user=user,signed_in=request.user.profile)
         if bank_form.is_valid():
             bank_form.save(user=user,signed_in=request.user.profile)
-        if deposit_form.is_valid():
-            deposit_form.save(signed_in=request.user.profile)
         else:
-            print(friend_form.errors, request_form.errors, deposit_form.errors, bank_form.errors)
+            print(friend_form.errors, request_form.errors)
     else:
         friend_form = FriendshipForm()
         request_form = RequestForm()
-        bank_form = RequestForm(request.POST)
-        deposit_form = DepositForm()
+        bank_form = BankForm(request.POST)
+
     
     #pass forms to page
     context['friend_form'] = friend_form
     context['request_form'] = request_form
     context['bank_form'] = bank_form
-    context['deposit_form'] = deposit_form
 
     #pass user
     context['account'] = user
@@ -192,26 +190,18 @@ def slots(request,machine):
     
     return render(request, "Corruption_Cove/slots.html", context)
 
-@login_required
-def deposit(request, user_slug):
-    try:
-        bank = Bank.objects.get(slug=user_slug)
-    except Bank.DoesNotExist:
-        bank = None
-
-    if bank is None:
-        return redirect('/corruption-cove-casino/account/'+user_slug+'/')
-    context = {}
-    if request.method == 'POST':
-        deposit_form = DepositForm(request.POST)
-        if deposit_form.is_valid():
-            deposit_form.save(user=request.user.profile)
-        else:
-            print(deposit_form.errors)
-    else:
-        deposit_form = DepositForm()
-    context['deposit_form'] = deposit_form
-    return render(request, "Corruption_Cove/deposit.html", context)
+class deposit(View):
+    def get(self, request):
+        depositValue = float(request.GET["depostValue"])
+        userID = request.user.username
+        try:
+            bank = Bank.objects.get(username=userID)
+        except Bank.DoesNotExist:
+            HttpResponse("Bank account not found")
+        
+        bank.balance += depositValue
+        bank.save()
+        return HttpResponse(bank.balance)
 
 class play_roulette(View):
     def get(self, currentBets):
