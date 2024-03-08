@@ -25,7 +25,7 @@ class Bet(models.Model):
     username = models.ForeignKey(UserProfile, on_delete = models.CASCADE)
     game = models.CharField(max_length=20)
     amount = models.FloatField()
-    date = models.DateField(default=now)
+    date = models.DateTimeField(default=now)
     slug = models.SlugField(default="slug")
 
     def save(self, *args, **kwargs):

@@ -1,4 +1,5 @@
 div.nav {
+    display: flex;
     height:75px;
     background-color:green;
     position: fixed;
@@ -10,39 +11,37 @@ div.nav {
     border-width: 3px;
   }
 
-div.pfphelper {
-    width: 98.5%;
-    height: 75px;
-    text-align: right;
-    align-items: center;
-}
+
 
 ul.nav {
+    justify-self: left;
     list-style-type: none;
     margin-left: 38px;
     padding-top: 3%;
     padding-bottom: 3%;
     overflow: hidden;
     position: fixed;
+    z-index: 1;
 }
   
 ul.account {
+    right: 0;
     list-style-type: none;
     margin-right: 38px;
     overflow: hidden;
     position: fixed;
-    width: 89%;
     text-align: right;
+    z-index: 0;
 }
     
   
 li.nav {
-    float: left;
+    justify-self: left;
+    display: inline-block;
 }
   
 li.account {
     display: block;
-    margin-left: 90%;
 }
   
 a.nav {
@@ -72,7 +71,6 @@ a.nav:hover{
 }
   
 img.logo {
-    float: left;
     height: 75px;
     display: inline;
     border-style: solid;
@@ -82,6 +80,7 @@ img.logo {
 }
   
 img.account {
+    right: 0;
     height: 75px;
     display: inline;
     border-style: solid;
