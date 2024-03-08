@@ -26,8 +26,8 @@ class Bet(models.Model):
     date = models.DateField()
     slug = models.SlugField(unique=True, default="slug")
 
-    def save(self, *args, **kwargs):
-        self.slug = slugify(self.user.username)
+    def save(self, num, *args, **kwargs):
+        self.slug = slugify(self.username.user.username + str(num))
         super(Bet, self).save(*args, **kwargs)
 
 class Request(models.Model):
@@ -55,7 +55,7 @@ class Bank(models.Model):
     slug = models.SlugField(unique=True, default="slug")
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.user.username)
+        self.slug = slugify(self.username.user.username)
         super(Bank, self).save(*args, **kwargs)
 
 class Slots(models.Model):
