@@ -11,12 +11,7 @@ div.nav {
     border-width: 3px;
   }
 
-div.pfphelper {
-    width: 98.5%;
-    height: 75px;
-    text-align: right;
-    align-items: center;
-}
+
 
 ul.nav {
     justify-self: left;
@@ -30,12 +25,11 @@ ul.nav {
 }
   
 ul.account {
-    justify-self: right;
+    right: 0;
     list-style-type: none;
     margin-right: 38px;
     overflow: hidden;
     position: fixed;
-    width: 89%;
     text-align: right;
     z-index: 0;
 }
@@ -43,11 +37,11 @@ ul.account {
   
 li.nav {
     justify-self: left;
+    display: inline-block;
 }
   
 li.account {
     display: block;
-    margin-left: 90%;
 }
   
 a.nav {
@@ -77,8 +71,6 @@ a.nav:hover{
 }
   
 img.logo {
-    justify-self: left;
-    float: left;
     height: 75px;
     display: inline;
     border-style: solid;
@@ -88,7 +80,7 @@ img.logo {
 }
   
 img.account {
-    justify-self: right;
+    right: 0;
     height: 75px;
     display: inline;
     border-style: solid;
