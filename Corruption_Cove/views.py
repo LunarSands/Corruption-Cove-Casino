@@ -7,6 +7,9 @@ from django.contrib.auth.decorators import login_required
 from Corruption_Cove.models import UserProfile, Bet, Friendship, Request, Bank, Slots, Dealer
 from Corruption_Cove.forms import UserForm, UserProfileForm, FriendshipForm, RequestForm, BankForm
 from django.http import HttpResponse
+from random import randint
+from django.views import View
+from datetime import date
 
 def index(request):
     context = {}
@@ -90,8 +93,8 @@ def account(request, user_slug):
     bets = len(Bet.objects.filter(slug=user_slug))
     context = {'topbets' : 0, 'recentbets' : 0}
     if (bets > 0):
-        topbets = Bet.objects.get(slug=user_slug).order_by('-amount')[:max(3,bets)]
-        recentbets = Bet.objects.get(slug=user_slug).order_by('-date')[:max(3,bets)]
+        topbets = Bet.objects.filter(slug=user_slug).order_by('-amount')[:max(3,bets)]
+        recentbets = Bet.objects.filter(slug=user_slug).order_by('-date')[:max(3,bets)]
         context = {'topbets' :  topbets, 'recentbets' : recentbets}
 
     #find friends of current user
@@ -158,9 +161,9 @@ def games(request):
 def roulette(request):
     context = {}
 
-    bets = len(Bet.objects.filter(game='roulette'))
-    if (bets > 0):    
-        context['bets'] = bets[:max(5,bets)]
+    # bets = len(Bet.objects.filter(game='roulette'))
+    # if (bets > 0):    
+    #     context['bets'] = bets[:max(5,bets)]
 
     return render(request, "Corruption_Cove/roulette.html", context)
 
@@ -183,3 +186,48 @@ def slots(request,machine):
         context['bets'] = bets[:max(5,bets)]
     
     return render(request, "Corruption_Cove/slots.html", context)
+
+class play_roulette(View):
+    def get(self, currentBets):
+        red = [1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36]
+        order = [0, 26, 3, 35, 12, 28, 7, 29, 18, 22, 9, 31, 14, 20, 1, 33, 16, 24, 5, 10, 23, 8, 30, 11, 36, 13, 27, 6, 34, 17, 25, 2, 21, 4, 19, 15, 32]
+        bet = 0
+        for bet_type in currentBets:
+            bet += currentBets.GET[bet_type]
+
+        generated = randint(0,36)
+        winnings = 0
+        result = order[generated]
+
+        if (result != 0):
+            if (result % 3 == 0):
+                winnings += 3 * int(currentBets.GET.get('bet-row1', 0))
+            elif ((result + 1) % 3 == 0):
+                winnings += 3 * int(currentBets.GET.get('bet-row2', 0))
+            elif ((result + 2) % 3 == 0):
+                winnings += 3 * int(currentBets.GET.get('bet-row3', 0))
+            if (result < 13 and result > 0):
+                winnings += 3 * int(currentBets.GET.get('bet-1st', 0))
+            elif (result < 25 and result > 12):
+                winnings += 3 * int(currentBets.GET.get('bet-2nd', 0))
+            elif (result < 37 and result > 24):
+                winnings += 3 * int(currentBets.GET.get('bet-3rd', 0))
+            if (result % 2 == 0):
+                winnings += 2 * int(currentBets.GET.get('bet-even', 0))
+            else:
+                winnings += 2 * int(currentBets.GET.get('bet-odd', 0))
+            if (result > 0 and result < 19):
+                winnings += 2 * int(currentBets.GET.get('bet-low', 0))
+            else:
+                winnings += 2 * int(currentBets.GET.get('bet-high', 0))
+            if (result in red):
+                winnings += 2 * int(currentBets.GET.get('bet-red', 0))
+            else:
+                winnings += 2 * int(currentBets.GET.get('bet-black', 0))
+        winnings += 36 * int(currentBets.GET.get('bet-' + str(result), 0))
+
+        num = Bet.objects.all().count()
+        newBet = Bet(username=currentBets.user.profile, game='roulette', amount=(winnings-bet), date=date.today())
+        newBet.save(num)
+
+        return HttpResponse(str(generated) + ':' +str(winnings))
