@@ -5,7 +5,7 @@ from django.db.models import Q
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from Corruption_Cove.models import UserProfile, Bet, Friendship, Request, Bank, Slots, Dealer
-from Corruption_Cove.forms import UserForm, UserProfileForm, FriendshipForm, RequestForm, BankForm
+from Corruption_Cove.forms import DepositForm, UserForm, UserProfileForm, FriendshipForm, RequestForm, BankForm
 from django.http import HttpResponse
 from random import randint
 from django.views import View
@@ -118,6 +118,7 @@ def account(request, user_slug):
         friend_form = FriendshipForm(request.POST)
         request_form = RequestForm(request.POST)
         bank_form = RequestForm(request.POST)
+        deposit_form = DepositForm(request.POST)
 
         if friend_form.is_valid():
             friend_form.save(user=user, signed_in=request.user.profile)
@@ -131,11 +132,13 @@ def account(request, user_slug):
         friend_form = FriendshipForm()
         request_form = RequestForm()
         bank_form = RequestForm(request.POST)
+        deposit_form = DepositForm()
     
     #pass forms to page
     context['friend_form'] = friend_form
     context['request_form'] = request_form
     context['bank_form'] = bank_form
+    context['deposit_form'] = deposit_form
 
     #pass user
     context['account'] = user
@@ -186,6 +189,27 @@ def slots(request,machine):
         context['bets'] = bets[:max(5,bets)]
     
     return render(request, "Corruption_Cove/slots.html", context)
+
+@login_required
+def deposit(request, user_slug):
+    try: 
+        bank = Bank.objects.get(slug=user_slug)
+    except Bank.DoesNotExist:
+        bank = None
+
+    if bank is None:
+        return redirect('/corruption-cove-casino/account/'+user_slug+'/')
+    context = {}
+    if request.method == 'POST':
+        deposit_form = DepositForm(request.POST)
+        if deposit_form.is_valid():
+            deposit_form.save(user=request.user.profile)
+        else:
+            print(deposit_form.errors)
+    else:
+        deposit_form = DepositForm()
+    context['deposit_form'] = deposit_form
+    return render(request, "Corruption_Cove/deposit.html", context)
 
 class play_roulette(View):
     def get(self, currentBets):

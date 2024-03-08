@@ -1,5 +1,5 @@
 from django.contrib import admin
-from Corruption_Cove.models import UserProfile, Friendship, Bet, Request, Bank, Slots, Dealer
+from Corruption_Cove.models import *
 
 # Register your models here.
 admin.site.register(UserProfile)
@@ -9,3 +9,4 @@ admin.site.register(Friendship)
 admin.site.register(Bank)
 admin.site.register(Slots)
 admin.site.register(Dealer)
+admin.site.register(Deposit)

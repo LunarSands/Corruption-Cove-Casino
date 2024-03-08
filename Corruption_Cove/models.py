@@ -77,3 +77,12 @@ class Dealer(models.Model):
     def save(self, *args, **kwargs):
         self.directory = '/media/images/dealers/'+self.name+'.png'
         super(Dealer, self).save(*args, **kwargs)
+
+class Deposit(models.Model):
+    username = models.ForeignKey(UserProfile, related_name="deposit", on_delete = models.CASCADE, unique = True)
+    balance = models.FloatField()
+    depositAmount = models.FloatField()
+
+    def save(self, *args, **kwargs):
+        self.balance += self.depositAmount
+        super(Deposit, self).save(*args, **kwargs)
