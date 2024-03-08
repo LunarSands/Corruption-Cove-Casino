@@ -145,3 +145,7 @@ def user_logout(request):
 def roulette(request):
     context = {}
     return render(request, "Corruption_Cove/roulette.html", context)
+
+def blackjack(request):
+    context = {'actions':['start','bet','hit','stay','double_down','split','clear']}
+    return render(request, 'Corruption_Cove/blackjack.html',context)
