@@ -126,8 +126,10 @@ def account(request, user_slug):
             request_form.save(user=user,signed_in=request.user.profile)
         if bank_form.is_valid():
             bank_form.save(user=user,signed_in=request.user.profile)
+        if deposit_form.is_valid():
+            deposit_form.save(signed_in=request.user.profile)
         else:
-            print(friend_form.errors, request_form.errors)
+            print(friend_form.errors, request_form.errors, deposit_form.errors, bank_form.errors)
     else:
         friend_form = FriendshipForm()
         request_form = RequestForm()
@@ -192,7 +194,7 @@ def slots(request,machine):
 
 @login_required
 def deposit(request, user_slug):
-    try: 
+    try:
         bank = Bank.objects.get(slug=user_slug)
     except Bank.DoesNotExist:
         bank = None
