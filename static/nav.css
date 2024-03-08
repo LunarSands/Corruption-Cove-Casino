@@ -20,8 +20,8 @@ div.pfphelper {
 ul.nav {
     list-style-type: none;
     margin-left: 38px;
-    padding-top: 33%;
-    padding-bottom: 33%;
+    padding-top: 3%;
+    padding-bottom: 3%;
     overflow: hidden;
     position: fixed;
 }
