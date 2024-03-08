@@ -56,12 +56,18 @@
 .controls {
   position: relative;
   float: right;
-  margin: 10px;
+  margin-right: 0;
+  width: 40%;
+  border-style: solid;
+  border-width: 2px;
+  border-color: green;
+  height: fit-content;
 }
 
 .controls > button {
   float: right;
   margin: 5px;
+  width: auto;
 }
 
 .grid-container > div {
@@ -70,15 +76,20 @@
     text-align: center;
     vertical-align: middle;
     padding: 10px 10px;
-    font-size: 30px;
+    font-size: auto;
     cursor: pointer;
     user-select: none;
+    height: fit-content;
+  }
+
+  .grid-container > div:hover {
+    color: gold;
   }
 
   .bet-0 {
     grid-area: 1 / 1 / 4 / 2;
-    height: 10rem;
-    line-height: 10rem;
+    height: 615%;
+    line-height: 615%;
   }
   .bet-1 {
     grid-area: 3 / 2 / 4 / 3;

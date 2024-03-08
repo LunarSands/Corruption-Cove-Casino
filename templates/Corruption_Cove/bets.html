@@ -3,4 +3,7 @@
 
 <div class="bets">
     <h5>Here top-5 last bets will be displayed:</h5>
+    {% for bet in bets %}
+    <p class="welcome">{{bets.username}}: {{bets.payout}}</p>
+    {% endfor %}
 </div>

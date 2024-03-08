@@ -57,3 +57,21 @@ class Bank(models.Model):
     def save(self, *args, **kwargs):
         self.slug = slugify(self.user.username)
         super(Bank, self).save(*args, **kwargs)
+
+class Slots(models.Model):
+    theme = models.CharField(max_length=40)
+    directory = models.CharField(max_length=128)
+
+    def save(self, *args, **kwargs):
+        self.directory = '/media/images/slots/'+self.directory
+        super(Slots, self).save(*args, **kwargs)
+
+class Dealer(models.Model):
+    name = models.CharField(max_length=20)
+    face = models.ImageField()
+    stop = models.IntegerField()
+    soft = models.BooleanField()
+
+    def save(self, *args, **kwargs):
+        self.directory = '/media/images/dealers/'+self.name+'.png'
+        super(Dealer, self).save(*args, **kwargs)

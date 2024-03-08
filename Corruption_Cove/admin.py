@@ -4,6 +4,7 @@ from django.contrib.admin import ModelAdmin
 from Corruption_Cove.models import UserProfile, Friendship, Bet, Request, Bank
 from django.contrib.sessions.models import Session
 
+from Corruption_Cove.models import UserProfile, Friendship, Bet, Request, Bank, Slots, Dealer
 
 class SessionAdmin(ModelAdmin):
     def _session_data(self, obj):
@@ -18,3 +19,5 @@ admin.site.register(Bet)
 admin.site.register(Request)
 admin.site.register(Friendship)
 admin.site.register(Bank)
+admin.site.register(Slots)
+admin.site.register(Dealer)

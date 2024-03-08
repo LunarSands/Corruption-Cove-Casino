@@ -101,14 +101,14 @@ Roulette
 
         for (let i = 1; i < 37; i++){
             if (red.includes(i)){
-                document.getElementsByClassName("bet-" + i)[0].style["background-color"] = "red";
+                document.getElementsByClassName("bet-" + i)[0].style["background-color"] = "rgb(174, 13, 13)";
             }
             else {
                 document.getElementsByClassName("bet-" + i)[0].style["background-color"] = "black";
             }
         }
-        document.getElementsByClassName("bet-red")[0].style["color"] = "red";
-        document.getElementsByClassName("bet-black")[0].style["color"] = "black";
+        document.getElementsByClassName("bet-red")[0].style["background-color"] = "rgb(174, 13, 13)";
+        document.getElementsByClassName("bet-black")[0].style["background-color"] = "black";
 
         function addBetValue(bet) {
             currentBets.set(bet, currentBets.get(bet)+100)
