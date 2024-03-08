@@ -18,4 +18,5 @@ path('games/blackjack/<slug:dealer>/',
          views.blackjack, name='blackjack'),
 path('games/slots/<slug:machine>/',
          views.slots, name='slots'),
+path('account/<slug:user_slug>/deposit/', views.deposit, name='deposit'),
 ]

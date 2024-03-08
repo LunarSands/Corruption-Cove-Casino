@@ -1,0 +1,19 @@
+{% extends 'Corruption_Cove/base.html' %}
+{% load static %}
+
+{% block title_block %}
+    Deposit Funds
+{% endblock %}
+    
+{% block body_block %}
+    <h1 class="welcome">Register Corruption Cove Account</h1>
+    <p class="welcome"><strong>Register here:</strong></p><br />
+    <form id="deposit_form" method="post" action="{% url 'corruption-cove-casino:deposit' %}"
+    enctype="multipart/form-data">
+
+        {% csrf_token %}
+        {{ deposit_form.as_p }}
+
+        <input type="submit" name="submit" value="Deposit" />
+    </form>
+{% endblock %}

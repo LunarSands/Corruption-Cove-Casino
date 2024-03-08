@@ -37,7 +37,7 @@ Account
     <p class="welcome">{{ banking.balance }}<br>
     {% if account.banking.balance < 0 %}
     You are in debt, you can keep playing, but your debt will grow.
-    We reccommend requesting money from a friend, or depositing more.
+    We recommend requesting money from a friend, or depositing more.
     {% endif %}
     {% else %}
     <form id="bank_form" method="post" action="{% url 'corruption-cove-casino:account' user_slug=user.profile.slug %}"
