@@ -2,7 +2,7 @@
 
 # To Do:
 Fix the Bank model.
-Add deposit form.
+Add deposit form. - Alasdair
 Add data cleaning to forms.
 Make games page.
 Complete front-end for slots and blackjack.

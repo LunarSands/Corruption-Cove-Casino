@@ -1,0 +1,42 @@
+{% extends 'Corruption_Cove/base.html' %}
+{% load static %}
+
+{% block title_block %}
+Account
+{% endblock %}
+
+{% block body_block %}
+
+{% for action in actions %}
+
+
+
+<button onclick="do_action('{{action}}')">{{action}}</button> <br>
+
+{% endfor %}
+<p id="display"></p>
+
+<script>
+    fetch("{% url 'corruption-cove-casino:blackjack_api' %}")
+        .then(data=>data.json())
+        .then(data=>display_state(data));
+    function display_hand(hand){
+        return hand?.map(card=> card.join("")).join(",");
+    }
+    function display_state(state){
+        console.log(state);
+        hand = state.hands?.[0];
+        dealer_hand = state.dealer_hand;
+        bet = state.bet;
+        document.getElementById('display').innerHTML = `Your hand: ${display_hand(hand)} <br> Dealer hand: ${display_hand(dealer_hand)} <br> Your bet: ${bet}`;
+    }
+    function do_action(action){
+        console.log(action);
+        fetch("{% url 'corruption-cove-casino:blackjack_api' %}",{method:'post',headers:{'X-CSRFToken':csrftoken},body:JSON.stringify(
+            {action:action,hand_no:0,bet:{amount:100}}
+        )})
+        .then(res=> res.json())
+        .then(json=>display_state(json));
+    }
+    </script>
+{% endblock %}
