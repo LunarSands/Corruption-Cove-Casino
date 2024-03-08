@@ -89,30 +89,23 @@ Account
 </div>
 
 <div class="friends">
-    {% with friend_exists=False %}
-    {% endwith %}
     <h1 class="welcome">Friends:</h1>
     {% if friends %}
-    {% for friend in friends %}
-    <a class="logout" href="{% url 'corruption-cove-casino:account' user_slug=friend.slug %}">{{ friend.name }}</a>
-    {% if friend.slug == request.user.profile.slug %}
-    {% with friend_exists=True %}
-    {% endwith %}
-    {% endif %}
-    {% endfor %}
+        {% for friend in friends %}
+        <a class="logout" href="{% url 'corruption-cove-casino:account' user_slug=friend.slug %}">{{ friend.name }}</a>
+        {% endfor %}
     {% endif %}
     
-    {{ friend_exists }}
-    {% if request.user.profile != account and friend_exists == False %}
-    <form id="friend_form" method="post" action="{% url 'corruption-cove-casino:account' user_slug=account.slug %}"
-    enctype="multipart/form-data">
+    {% if request.user.profile.slug != account.slug and not friend_exists %}
+        <form id="friend_form" method="post" action="{% url 'corruption-cove-casino:account' user_slug=account.slug %}"
+        enctype="multipart/form-data">
 
-    {% csrf_token %}
-    {{ friend_form.as_p }}
+        {% csrf_token %}
+        {{ friend_form.as_p }}
 
-    <input type="submit" name="submit" value="Add Friend" />
-    </form>
-    </p>
+        <input type="submit" name="submit" value="Add Friend" />
+        </form>
+        </p>
     {% endif %}
 </div>
 {% endblock %}

@@ -11,6 +11,11 @@ div.nav {
     border-width: 3px;
   }
 
+div.pfphelper {
+    max-height: 100%;
+    position: absolute;
+    right: 0;
+}
 
 
 ul.nav {
@@ -25,11 +30,9 @@ ul.nav {
 }
   
 ul.account {
-    right: 0;
     list-style-type: none;
-    margin-right: 38px;
     overflow: hidden;
-    position: fixed;
+    display: inline-block;
     text-align: right;
     z-index: 0;
 }
@@ -37,11 +40,11 @@ ul.account {
   
 li.nav {
     justify-self: left;
-    display: inline-block;
+    display: inline;
 }
   
 li.account {
-    display: block;
+    display:block;
 }
   
 a.nav {
@@ -80,7 +83,6 @@ img.logo {
 }
   
 img.account {
-    right: 0;
     height: 75px;
     display: inline;
     border-style: solid;

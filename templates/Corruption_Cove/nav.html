@@ -18,14 +18,14 @@
 
 {% if user.is_authenticated %}
 <div class="pfphelper">
-    <img class="account" src="{{ request.user.profile.pfp.url }}">
-</div>
 <ul class ="account">
     {% if request.user.profile.slug %}
     <li class="account"><a class="account" href="{% url 'corruption-cove-casino:account' user_slug=request.user.profile.slug %}">{{ request.user.profile.name }}</a></li>
     {% endif %}
     <li class="account"><a class="account" href="{% url 'corruption-cove-casino:logout' %}">Logout</a></li>
 </ul>
+<img class="account" src="{{ request.user.profile.pfp.url }}">
 {% endif %}
+</div>
 
 </div>

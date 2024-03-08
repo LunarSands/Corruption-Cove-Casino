@@ -108,6 +108,11 @@ def account(request, user_slug):
             friends.append(UserProfile.objects.get(slug = friend.sender))
     context['friends'] = friends
 
+    context['friend_exists'] = False
+    for friend in friends:
+        if (request.user.profile.slug == friend.slug):
+            context['friend_exists'] = True
+
 
     #find money requests directed at current user
     requests = Request.objects.filter(receiver=user)
@@ -267,5 +272,6 @@ class play_roulette(View):
         return HttpResponse(str(generated) + ':' +str(winnings))
 
 class add_friend(View):
-    def get(self):
-        friendship = Friendship
+    def get(self, request, user_slug):
+        friendship = Friendship(request.user.profile, UserProfile.objects.get(slug=user_slug))
+        friendship.save()
