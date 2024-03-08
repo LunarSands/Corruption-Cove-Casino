@@ -70,16 +70,15 @@ Roulette
             <div onclick="addBetValue('bet-odd')" class="bet-odd">Odd</div>
             <div onclick="addBetValue('bet-high')" class="bet-high">19-36</div>        
         </div>
-
         <button onclick="checkBet()">Check Bets</button>
         <button onclick="clearBet()">Clear Bets</button>
         <button onclick="startBall()">Start Ball</button>
     </div>
 
     <script>
-        let moneyBet = 0;
-        let winnings = 0;
+        var moneyBet = 0;
         const currentBets = new Map();
+        var request = {}
         const resultMap = new Map();
         const oddsBet = new Map();
         const betTypes = [
@@ -113,6 +112,7 @@ Roulette
         function addBetValue(bet) {
             currentBets.set(bet, currentBets.get(bet)+100)
             moneyBet += 100;
+            request[bet] = currentBets.get(bet);
         }
 
         function checkBet() {
@@ -131,63 +131,25 @@ Roulette
             moneyBet = 0;
             alert('Bets Cleared');
         }
-        function scoreBets(result) {
-            if (result != 0){
-                if (result % 3 == 0){
-                    winnings += 3 * currentBets.get("bet-row1");
-                }
-                else if ((result + 1) % 3 == 0){
-                    winnings += 3 * currentBets.get("bet-row2");
-                }
-                else if ((result + 2) % 3 == 0){
-                    winnings += 3 * currentBets.get("bet-row3");
-                }
-                if (result < 13 && result > 0) {
-                winnings += 3 * currentBets.get("bet-1st");
-                }
-                else if (result < 25 && result > 12) {
-                    winnings += 3 * currentBets.get("bet-2nd");
-                }
-                else if (result < 37 && result > 24) {
-                    winnings += 3 * currentBets.get("bet-3rd");
-                }
-                if (result % 2 == 0){
-                    winnings += 2 * currentBets.get("bet-even");
-                }
-                else {
-                    winnings += 2 * currentBets.get("bet-odd");
-                }
-                if (result > 0 && result < 19){
-                    winnings += 2 * currentBets.get("bet-low");
-                }
-                else {
-                    winnings += 2 * currentBets.get("bet-high");
-                }
-                if (red.includes(result)){
-                    winnings += 2 * currentBets.get("bet-red");
-                }
-                else {
-                    winnings += 2 * currentBets.get("bet-black");
-                }
-            }
-            winnings += 36 * currentBets.get("bet-" + result);
-        }
+
         function startBall(){
-            let generated = Math.floor(Math.random() * 37);
-            let message = "Your winnings: ";
-            scoreBets(resultMap.get(generated))
-            message = message.concat(winnings);
-            message = message.concat("\nYour losses: -");
-            message = message.concat(moneyBet);
-            document.getElementsByClassName("ball_roulette")[0].style["display"] = "inline";
-            document.getElementsByClassName("ball_roulette")[0].style["animation-iteration-count"] = generated/37 + 3;
-            document.getElementsByClassName("ball_roulette")[0].style["animation-play-state"] = "running";
-            setTimeout(function(){
-                document.getElementsByClassName("ball_roulette")[0].src = "{% static '/images/ball_roulette_alt.png' %}";
-                setTimeout(function() {
-                    alert(message);
-                }, 1000)
-            }, (generated/37 + 3) * 2000)
+            $.get("{% url 'corruption-cove-casino:play_roulette' %}", request, function(output) {
+                let message = "Your winnings: ";
+                let generated = output.split(":")[0];
+                let winnings = output.split(":")[1];
+                message = message.concat(winnings);
+                message = message.concat("\nYour losses: -");
+                message = message.concat(moneyBet);
+                document.getElementsByClassName("ball_roulette")[0].style["display"] = "inline";
+                document.getElementsByClassName("ball_roulette")[0].style["animation-iteration-count"] = generated/37 + 3;
+                document.getElementsByClassName("ball_roulette")[0].style["animation-play-state"] = "running";
+                setTimeout(function(){
+                    document.getElementsByClassName("ball_roulette")[0].src = "{% static '/images/ball_roulette_alt.png' %}";
+                    setTimeout(function() {
+                        alert(message);
+                    }, 1000)
+                }, (generated/37 + 3) * 2000)
+            })
         }
     </script>
 {% endblock %}

@@ -1,5 +1,5 @@
 from django import forms
-from Corruption_Cove.models import UserProfile,Request,Friendship,Bank
+from Corruption_Cove.models import *
 from django.contrib.auth.models import User
 
 class UserForm(forms.ModelForm):
@@ -55,3 +55,16 @@ class RequestForm(forms.ModelForm):
             request.receiver = user
         request.save()
         return request
+    
+class DepositForm(forms.ModelForm):
+    depositAmount = forms.IntegerField();
+    class Meta:
+        model = Deposit
+        fields = ('balance',)
+    
+    def save(self, signed_in=None):
+        deposit = super().save(commit=False)
+        if signed_in:
+            deposit.username = signed_in
+        deposit.save()
+        return deposit
