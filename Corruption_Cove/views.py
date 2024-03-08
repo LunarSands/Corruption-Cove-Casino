@@ -9,7 +9,7 @@ from Corruption_Cove.forms import DepositForm, UserForm, UserProfileForm, Friend
 from django.http import HttpResponse
 from random import randint
 from django.views import View
-from datetime import date
+from datetime import date, datetime
 from django.utils.timezone import now
 
 def index(request):
@@ -261,7 +261,7 @@ class play_roulette(View):
         winnings += 36 * int(currentBets.GET.get('bet-' + str(result), 0))
 
         num = Bet.objects.all().count()
-        newBet = Bet(username=currentBets.user.profile, game='roulette', amount=(winnings-bet), date=now)
+        newBet = Bet(username=currentBets.user.profile, game='roulette', amount=(winnings-bet), date=datetime.now())
         newBet.save()
 
         return HttpResponse(str(generated) + ':' +str(winnings))
