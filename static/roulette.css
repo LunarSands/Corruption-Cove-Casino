@@ -9,6 +9,7 @@
 .roulette_images{
   position: relative;
   float: left;
+  margin-left: 100px;
 }
 
 .base_roulette{
