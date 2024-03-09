@@ -20,6 +20,14 @@ h1.welcome {
   margin-right: 15px;
 }
 
+h2.welcome {
+  display: block;
+  color: gold;
+  font-size: 20px;
+  margin-left: 15px;
+  margin-right: 15px;
+}
+
 p.welcome {
   display: block;
   color: gold;
