@@ -167,7 +167,7 @@ def roulette(request):
 
     bets = Bet.objects.filter(game='roulette')
     if (len(bets) > 0):    
-        context['bets'] = bets.order_by('-amount')[:max(5,bets)]
+        context['bets'] = bets.order_by('-amount')[:max(5,len(bets))]
 
     return render(request, "Corruption_Cove/roulette.html", context)
 
@@ -177,7 +177,7 @@ def blackjack(request,dealer):
 
     bets = Bet.objects.filter(game='blackjack-'+dealer)
     if (len(bets) > 0):    
-        context['bets'] = bets.order_by('-amount')[:max(5,bets)]
+        context['bets'] = bets.order_by('-amount')[:max(5,len(bets))]
     
     return render(request, "Corruption_Cove/blackjack.html", context)
 
@@ -187,7 +187,7 @@ def slots(request,machine):
     
     bets = Bet.objects.filter(game='slots-'+machine)
     if (len(bets) > 0):    
-        context['bets'] = bets.order_by('-amount')[:max(5,bets)]
+        context['bets'] = bets.order_by('-amount')[:max(5,len(bets))]
     
     return render(request, "Corruption_Cove/slots.html", context)
 
