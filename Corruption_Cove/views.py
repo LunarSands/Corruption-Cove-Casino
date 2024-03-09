@@ -12,6 +12,15 @@ from django.views import View
 from datetime import date, datetime
 from django.utils.timezone import now
 
+ROULETTE_BET_TYPES = [
+    "bet-0", "bet-1", "bet-2", "bet-3", "bet-4", "bet-5", "bet-6", "bet-7", "bet-8", "bet-9",
+    "bet-10", "bet-11", "bet-12", "bet-13", "bet-14", "bet-15", "bet-16", "bet-17", "bet-18", "bet-19",
+    "bet-20", "bet-21", "bet-22", "bet-23", "bet-24", "bet-25", "bet-26", "bet-27", "bet-28", "bet-29",
+    "bet-30", "bet-31", "bet-32", "bet-33", "bet-34", "bet-35", "bet-36", "bet-row1", "bet-row2", "bet-row3",
+    "bet-1st", "bet-2nd", "bet-3rd", "bet-low", "bet-even", "bet-red", "bet-black", "bet-odd", "bet-high"
+]
+ROULETTE_BET_NAMES = [str(x) for x in range(37)]+['2:1']*3+['1st 12','2nd 12','3rd 12','1-18','Even','Red','Black','Odd','19-36']
+
 def index(request):
     context = {}
     return render(request, "Corruption_Cove/index.html", context)
@@ -35,6 +44,7 @@ def register(request):
                 profile.banner = request.FILES['banner']
             profile.save()
             registered = True
+            login(request,user)
         else:
             print(user_form.errors, profile_form.errors)
     else:
@@ -96,7 +106,7 @@ def account(request, user_slug):
 
     #find top and recent bets from current user
     bets = len(Bet.objects.filter(slug=user_slug))
-    context['topbets'] = 0 
+    context['topbets'] = 0
     context['recentbets'] = 0
     if (bets > 0):
         topbets = Bet.objects.filter(slug=user_slug).order_by('-amount')[:max(3,bets)]
@@ -170,28 +180,32 @@ def roulette(request):
     context = {}
 
     bets = Bet.objects.filter(game='roulette')
-    if (len(bets) > 0):    
+    if (len(bets) > 0):
         context['bets'] = bets.order_by('-amount')[:max(5,len(bets))]
+
+    context['bet_types'] = zip(ROULETTE_BET_TYPES,ROULETTE_BET_NAMES)
 
     return render(request, "Corruption_Cove/roulette.html", context)
 
 @login_required
 def blackjack(request,dealer):
     context = {}
-
-    bets = Bet.objects.filter(game='blackjack-'+dealer)
-    if (len(bets) > 0):    
-        context['bets'] = bets.order_by('-amount')[:max(5,len(bets))]
-    
+    add_bets_to_context(context, 'blackjack-' + dealer)
+    context['actions'] = {'all':['bet','split','start','clear'],'0':['hit','stay','double_down'],'1':['hit','stay','double_down']}
     return render(request, "Corruption_Cove/blackjack.html", context)
+
+
+def add_bets_to_context(context, game):
+    bets = Bet.objects.filter(game=game)
+    if (len(bets) > 0):
+        context['bets'] = bets.order_by('-amount')[:max(5, len(bets))]
+
 
 @login_required
 def slots(request,machine):
     context = {}
-    
-    bets = Bet.objects.filter(game='slots-'+machine)
-    if (len(bets) > 0):    
-        context['bets'] = bets.order_by('-amount')[:max(5,len(bets))]
+
+    add_bets_to_context(context,'slots-'+machine)
     
     return render(request, "Corruption_Cove/slots.html", context)
 
@@ -203,7 +217,7 @@ class deposit(View):
             bank = Bank.objects.get(slug=userID)
         except Bank.DoesNotExist:
             HttpResponse("Bank account not found")
-        
+
         bank.balance += depositValue
         bank.save()
         return HttpResponse(str(bank.balance))
@@ -212,15 +226,8 @@ class play_roulette(View):
     def get(self, currentBets):
         red = [1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36]
         order = [0, 26, 3, 35, 12, 28, 7, 29, 18, 22, 9, 31, 14, 20, 1, 33, 16, 24, 5, 10, 23, 8, 30, 11, 36, 13, 27, 6, 34, 17, 25, 2, 21, 4, 19, 15, 32]
-        betTypes = [
-            "bet-0", "bet-1", "bet-2", "bet-3", "bet-4", "bet-5", "bet-6", "bet-7", "bet-8", "bet-9", 
-            "bet-10", "bet-11", "bet-12", "bet-13", "bet-14", "bet-15", "bet-16", "bet-17", "bet-18", "bet-19", 
-            "bet-20", "bet-21", "bet-22", "bet-23", "bet-24", "bet-25", "bet-26", "bet-27", "bet-28", "bet-29", 
-            "bet-30", "bet-31", "bet-32", "bet-33", "bet-34", "bet-35", "bet-36", "bet-row1", "bet-row2", "bet-row3", 
-            "bet-1st", "bet-2nd", "bet-3rd", "bet-low", "bet-even", "bet-red", "bet-black", "bet-odd", "bet-high"
-        ]
         bet = 0
-        for bet_type in betTypes:
+        for bet_type in ROULETTE_BET_TYPES:
             bet += int(currentBets.GET.get(bet_type, 0))
 
         generated = randint(0,36)

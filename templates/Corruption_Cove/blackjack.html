@@ -7,13 +7,25 @@ Account
 
 {% block body_block %}
 
-{% for action in actions %}
+{% for action in actions.all %}
 
-
-
-<button onclick="do_action('{{action}}')">{{action}}</button> <br>
+<button onclick="do_action('{{action}}',0)">{{action}}</button> <br>
 
 {% endfor %}
+
+{% for action in actions.0 %}
+
+<button onclick="do_action('{{action}}',0)">{{action}} 0</button> <br>
+
+{% endfor %}
+
+{% for action in actions.1 %}
+
+<button onclick="do_action('{{action}}',1)">{{action}} 1</button> <br>
+
+{% endfor %}
+
+
 <p id="display"></p>
 
 <script>
@@ -25,15 +37,15 @@ Account
     }
     function display_state(state){
         console.log(state);
-        hand = state.hands?.[0];
+        hands = state.hands;
         dealer_hand = state.dealer_hand;
-        bet = state.bet;
-        document.getElementById('display').innerHTML = `Your hand: ${display_hand(hand)} <br> Dealer hand: ${display_hand(dealer_hand)} <br> Your bet: ${bet}`;
+        bet = JSON.stringify(state.bets);
+        document.getElementById('display').innerHTML = `Your hands: ${hands?.map(hand=>display_hand(hand)).join('<br>')} <br> Dealer hand: ${display_hand(dealer_hand)} <br> Your bet: ${bet}`;
     }
-    function do_action(action){
+    function do_action(action,hand_no){
         console.log(action);
         fetch("{% url 'corruption-cove-casino:blackjack_api' %}",{method:'post',headers:{'X-CSRFToken':csrftoken},body:JSON.stringify(
-            {action:action,hand_no:0,bet:{amount:100}}
+            {action:action,hand_no:hand_no,bet:{amount:100}}
         )})
         .then(res=> res.json())
         .then(json=>display_state(json));

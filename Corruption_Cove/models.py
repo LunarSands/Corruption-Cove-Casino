@@ -12,6 +12,7 @@ class UserProfile(models.Model):
     currency = models.CharField(max_length=24, choices=choices, default="GBP")
     pfp = models.ImageField(upload_to='media/images/pfp', blank=True, default="media/images/pfp/default_pfp.png")
     banner = models.ImageField(upload_to='media/images/banner', blank=True, default="media/images/banner/default_banner.png")
+    blackjack_state = models.TextField(default='{}')
     slug = models.SlugField(unique=True)
 
     def save(self, *args, **kwargs):

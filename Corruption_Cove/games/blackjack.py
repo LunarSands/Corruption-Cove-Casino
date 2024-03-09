@@ -1,9 +1,14 @@
+from json import JSONDecodeError
+
 from django.http import HttpResponse, HttpRequest, JsonResponse, HttpResponseBadRequest
 import json
 import random
 from itertools import product
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 
 from Corruption_Cove.games.game import Game
+from Corruption_Cove.models import UserProfile
 
 SUITS = ['h','s','d','c']
 VALUES = ['a','2','3','4','5','6','7','8','9','10','j','q','k']
@@ -156,9 +161,16 @@ def construct_deck():
     random.shuffle(deck)
     return deck
 
+@login_required
 def blackjack(request:HttpRequest):
     #TODO: move to the user model instead of session (as JSON field)
-    state = request.session.get('blackjack_state',{})
+    user = request.user
+    profile = UserProfile.objects.get(user=user)
+    state = profile.blackjack_state
+    try:
+        state = json.loads(state)
+    except JSONDecodeError:
+        state = {}
     print(state)
     blackjack_game = Blackjack(state)
     if request.method=='GET':
@@ -171,7 +183,8 @@ def blackjack(request:HttpRequest):
         except ValueError as e:
             print(e)
             return HttpResponseBadRequest()
-        request.session['blackjack_state'] = blackjack_game.get_state()
-        print(request.session['blackjack_state'])
+        profile.blackjack_state = json.dumps(blackjack_game.get_state())
+        print(profile.blackjack_state)
+        profile.save()
         return JsonResponse(blackjack_game.client_state())
     return HttpResponseBadRequest()

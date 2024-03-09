@@ -47,6 +47,7 @@ class Game:
         if action_type is None:
             raise ValueError('No action type')
         if action_type == 'clear':
+            #TODO: this should be admin only or removed
             self.clear()
         elif action_type == 'start':
             self.handle_start(action)

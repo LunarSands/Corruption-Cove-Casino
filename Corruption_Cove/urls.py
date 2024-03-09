@@ -1,7 +1,7 @@
 from django.urls import path
 #from django.conf.urls import url
 from Corruption_Cove import views
-
+from Corruption_Cove.games import blackjack
 
 app_name = 'corruption-cove-casino'
 
@@ -14,7 +14,7 @@ path('games/', views.games, name='games'),
 path('account/<slug:user_slug>/',
          views.account, name='account'),
 path('games/roulette/', views.roulette, name='roulette'),
-path('api/games/blackjack', views.blackjack, name='blackjack_api'),
+path('api/games/blackjack', blackjack.blackjack, name='blackjack_api'),
 path('games/blackjack/<slug:dealer>/',
          views.blackjack, name='blackjack'),
 path('games/slots/<slug:machine>/',
