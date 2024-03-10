@@ -11,6 +11,7 @@ from random import randint
 from django.views import View
 from datetime import date, datetime
 from django.utils.timezone import now
+import json
 
 ROULETTE_BET_TYPES = [
     "bet-0", "bet-1", "bet-2", "bet-3", "bet-4", "bet-5", "bet-6", "bet-7", "bet-8", "bet-9",
@@ -261,7 +262,6 @@ class play_roulette(View):
                 winnings += 2 * int(currentBets.GET.get('bet-black', 0))
         winnings += 36 * int(currentBets.GET.get('bet-' + str(result), 0))
 
-        num = Bet.objects.all().count()
         newBet = Bet(username=currentBets.user.profile, game='roulette', amount=(winnings-bet), date=datetime.now())
         newBet.save()
 
@@ -270,3 +270,16 @@ class play_roulette(View):
 class add_friend(View):
     def get(self):
         friendship = Friendship
+
+def howToPlay(request,gameType):
+    context = {}
+
+    f = open("static\\rules.json", "r")
+    rules = json.loads(f.read())
+    f.close()
+
+    context['name'] = str(gameType).capitalize()
+
+    context['text'] = rules[str(gameType)]
+    
+    return render(request, "Corruption_Cove/howToPlay.html", context)

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+{% load static %}
+<link rel="stylesheet" type="text/css" href= "{% static 'styles.css' %}">
+
+<html>
+    <head>
+        <title>
+            Corruption Cove Casino How To Play - 
+            {{name}}
+        </title>
+    </head>
+    <body>
+        <h2 class="welcome">How To Play {{name}}:</h2>
+        <hr style="height:3px;border-width:0;color:rgb(11, 88, 11);background-color:rgb(11, 88, 11)">
+        <div class="block">
+            <p class="welcome">
+                {{text}}
+            </p>
+        </div>
+        <div>
+            <button onclick=window.close()>Got it!</button>
+        </div>
+        <script>let csrftoken = '{{ csrf_token }}'</script>
+    </body>
+
+</html>

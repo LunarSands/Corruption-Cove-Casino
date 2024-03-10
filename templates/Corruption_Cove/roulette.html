@@ -27,6 +27,9 @@ Roulette
         <button onclick="checkBet()">Check Bets</button>
         <button onclick="clearBet()">Clear Bets</button>
         <button onclick="startBall()">Start Ball</button>
+        <button data-href="{% url 'corruption-cove-casino:howToPlay' gameType='roulette' %}" onclick="window.open(this.dataset.href, 'how-to-play', 'width=600,height=400,toolbar=no,scrollbars=yes,resizable=yes'); return false;">
+            How to play roulette?
+        </button>
     </div>
 
     <script>
