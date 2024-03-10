@@ -9,5 +9,5 @@ Complete front-end for blackjack
 Complete back-end for slots
 Complete back-end for blackjack - Gregor
 Add the how to play instructions to json
-Amend existing css to support resized windows. (Unsure if it was done)
+Amend existing css to support resized windows. - Danylo
 Implement the exchange rates API
