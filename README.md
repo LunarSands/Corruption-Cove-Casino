@@ -3,10 +3,11 @@
 # To Do:
 Fix the Bank model.
 Add deposit form. - Alasdair
-Add data cleaning to forms.
-Make games page.
-Complete front-end for slots and blackjack.
-Complete back-end for slots and blackjack.
-Add the how to play popups
-Amend existing css to support resized windows.
-Implement the exchange rates AP
+~~Add data cleaning to forms.~~ - Danylo
+Complete front-end for slots
+Complete front-end for blackjack
+Complete back-end for slots
+Complete back-end for blackjack - Gregor
+Add the how to play instructions to json
+Amend existing css to support resized windows. - Danylo
+Implement the exchange rates API

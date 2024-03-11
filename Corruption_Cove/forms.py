@@ -1,6 +1,8 @@
+from datetime import datetime
 from django import forms
 from Corruption_Cove.models import *
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 
 class UserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())
@@ -22,6 +24,29 @@ class BankForm(forms.ModelForm):
     class Meta:
         model = Bank
         fields = ('name', 'cardNo', 'expiry', 'cvv', 'balance')
+
+    def clean_cardNo(self):
+        cardNo = self.cleaned_data['cardNo']
+        if len(cardNo) != 16:
+            raise ValidationError("Card number must be 16 digits long")
+        return cardNo
+    
+    def clean_expiry(self):
+        expiry = self.cleaned_data['expiry']
+        try:
+            expiration_date = datetime.strptime(expiry, "%m/%y")
+            current_date = datetime.now()
+            if expiration_date <= current_date:
+                raise ValidationError("Unfortunately the card has expired")
+        except ValueError:
+            raise ValidationError("Invalid expiration date, please use MM/YY format")
+        return expiry
+    
+    def clean_cvv(self):
+        cvv = self.cleaned_data['cvv']
+        if len(cvv) != 3:
+            raise ValidationError("CVV must be 3 digits long")
+        return cvv
     
     def save(self, signed_in=None):
         bank = super().save(commit=False)
