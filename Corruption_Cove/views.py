@@ -83,13 +83,13 @@ def account(request, user_slug):
     
 
     #check if bank card has been added
-    banks = True
+    banks = False
     banking = None
     try:
         banking = Bank.objects.get(slug=user_slug)
         banks = True
     except Bank.DoesNotExist:
-        banks = True
+        banks = False
     context['banking'] = banking
     context['banks'] = banks
 
