@@ -4,10 +4,12 @@
 
 div.bets {
     float: left;
+    color: black;
     background-color: gold;
-    padding: 10px 30px;
+    padding: 5px 20px;
     border-style: solid;
     border-color: rgb(11, 88, 11);
     border-width: 3px;
     margin: 10px;
+    text-align: center;
 }

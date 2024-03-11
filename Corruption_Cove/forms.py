@@ -56,15 +56,3 @@ class RequestForm(forms.ModelForm):
         request.save()
         return request
     
-class DepositForm(forms.ModelForm):
-    depositAmount = forms.IntegerField();
-    class Meta:
-        model = Deposit
-        fields = ('balance',)
-    
-    def save(self, signed_in=None):
-        deposit = super().save(commit=False)
-        if signed_in:
-            deposit.username = signed_in
-        deposit.save()
-        return deposit

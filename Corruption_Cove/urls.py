@@ -19,7 +19,7 @@ path('games/blackjack/<slug:dealer>/',
          views.blackjack, name='blackjack'),
 path('games/slots/<slug:machine>/',
          views.slots, name='slots'),
-path('account/<slug:user_slug>/deposit/', views.deposit, name='deposit'),
+path('account/deposit/<slug:user_slug>/', views.Deposit, name='deposit'),
 path('games/roulette/play_roulette/', views.play_roulette.as_view(), name='play_roulette'),
 path('account/<slug:user_slug>/',views.add_friend.as_view(), name='add_friend'),
 ]

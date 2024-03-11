@@ -32,28 +32,31 @@ Account
 </div>
 
 <div class="bank">
-    {% if banking %}
-    <h1 class="welcome">Current Balance:</h1><br>
-    <p class="welcome">{{ banking.balance }}<br>
-    {% if account.banking.balance < 0 %}
-    You are in debt, you can keep playing, but your debt will grow.
-    We recommend requesting money from a friend, or depositing more.
-    {% endif %}
-    <p class="welcome"><strong>Deposit here:</strong></p><br />
-    <form id="deposit_form" method="post" action="{% url 'corruption-cove-casino:deposit' user_slug=user.profile.slug %}"
-    enctype="multipart/form-data">
-
-        {% csrf_token %}
-        {{ deposit_form.as_p }}
-
-        <input type="submit" name="submit" value="Deposit" />
-    </form>
+    {% if banks %}
+        <h1 class="welcome">Current Balance:</h1><br>
+        <p id="balance" class="welcome">{{ banking.balance }}<br>
+        {% if account.banking.balance < 0 %}
+            You are in debt, you can keep playing, but your debt will grow.
+            We recommend requesting money from a friend, or depositing more.
+        {% endif %}
+        <p class="welcome"><strong>Deposit here:</strong></p><br />
+        <input type="text" id="deposit_form" placeholder="Enter deposit value">
+        <button onclick="deposit()">Deposit</button>
+        <script>
+            function deposit(){
+                var depositValue = $("#deposit_form").val();
+                $.get("{% url 'corruption-cove-casino:deposit' user_slug=user.profile.slug %}", {"depositValue": depositValue}, function(output) {
+                    $("#balance").html(output);
+                })
+            }
+        </script>
+    
     {% else %}
         <form id="bank_form" method="post" action="{% url 'corruption-cove-casino:account' user_slug=user.profile.slug %}"
         enctype="multipart/form-data">
 
         {% csrf_token %}
-        {{ bank_form.as_p }}
+        {% include 'Corruption_Cove/bankForm.html' %}
         
         <input type="submit" name="submit" value="Add Card" />
         </form>
