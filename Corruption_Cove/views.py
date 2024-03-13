@@ -120,9 +120,9 @@ def account(request, user_slug):
     friends = []
     for friend in friendsHelper:
         if friend.sender.slug == user.slug:
-            friends.append(UserProfile.objects.get(slug = friend.receiver))
+            friends.append(UserProfile.objects.get(slug=friend.receiver.slug))
         else:
-            friends.append(UserProfile.objects.get(slug = friend.sender))
+            friends.append(UserProfile.objects.get(slug=friend.sender.slug))
     context['friends'] = friends
 
     context['friend_exists'] = False
