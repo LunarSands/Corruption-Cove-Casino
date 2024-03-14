@@ -20,8 +20,8 @@ Roulette
 
     <div class="controls">
         <div class="grid-container">
-            {% for bet_type,bet_name in bet_types %}
-            <div onclick="addBetValue('{{bet_type}}')" class="{{bet_type}}">{{bet_name}}</div>
+            {% for bet in bet_data %}
+            <div onclick="addBetValue('{{bet.type}}')" class="{{bet.type}}">{{bet.name}}</div>
             {% endfor %}
         </div>
         <button onclick="checkBet()">Check Bets</button>
@@ -31,22 +31,18 @@ Roulette
             How to play roulette?
         </button>
     </div>
-
+    {{bet_data | json_script:"bet-data"}}
     <script>
         var moneyBet = 0;
         const currentBets = new Map();
-        var request = {}
+        var request = {action:'start',bets:[]}
         const resultMap = new Map();
         const oddsBet = new Map();
-        const betTypes = [
-            "bet-0", "bet-1", "bet-2", "bet-3", "bet-4", "bet-5", "bet-6", "bet-7", "bet-8", "bet-9", 
-            "bet-10", "bet-11", "bet-12", "bet-13", "bet-14", "bet-15", "bet-16", "bet-17", "bet-18", "bet-19", 
-            "bet-20", "bet-21", "bet-22", "bet-23", "bet-24", "bet-25", "bet-26", "bet-27", "bet-28", "bet-29", 
-            "bet-30", "bet-31", "bet-32", "bet-33", "bet-34", "bet-35", "bet-36", "bet-row1", "bet-row2", "bet-row3", 
-            "bet-1st", "bet-2nd", "bet-3rd", "bet-low", "bet-even", "bet-red", "bet-black", "bet-odd", "bet-high"
-        ];
+        const betData = JSON.parse(document.getElementById('bet-data').textContent);
+        const betTypes = betData.map(bet_data=>bet_data.type);
+        const order = [0, 14, 31, 2, 33, 18, 27, 6, 21, 10, 19, 23, 4, 25, 12, 35, 16, 29, 8, 34, 13, 32, 9, 20, 17, 30, 1, 26, 5, 7, 22, 11, 36, 15, 28, 3, 24];
         const red = [1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36];
-        const order = [0, 26, 3, 35, 12, 28, 7, 29, 18, 22, 9, 31, 14, 20, 1, 33, 16, 24, 5, 10, 23, 8, 30, 11, 36, 13, 27, 6, 34, 17, 25, 2, 21, 4, 19, 15, 32]
+
         for (let i = 0; i < order.length; i++) {
             resultMap.set(i, order[i]);
         }
@@ -69,7 +65,6 @@ Roulette
         function addBetValue(bet) {
             currentBets.set(bet, currentBets.get(bet)+100)
             moneyBet += 100;
-            request[bet] = currentBets.get(bet);
         }
 
         function checkBet() {
@@ -91,15 +86,21 @@ Roulette
         }
 
         function startBall(){
-            $.get("{% url 'corruption-cove-casino:play_roulette' %}", request, function(output) {
+            for (const betType of currentBets.keys()) {
+                request.bets.push({'type':betType,'amount':currentBets.get(betType)})
+            }
+            $.post({url:"{% url 'corruption-cove-casino:play_roulette' %}",
+                data:JSON.stringify(request),
+                headers:{'X-CSRFToken':csrftoken},
+                success: function(output) {
                 let message = "Your winnings: ";
-                let generated = output.split(":")[0];
-                let winnings = output.split(":")[1];
+                let result = output.result
+                let winnings = output.winnings
                 message = message.concat(winnings);
                 message = message.concat("\nYour losses: -");
                 message = message.concat(moneyBet);
                 document.getElementsByClassName("ball_roulette")[0].style["display"] = "inline";
-                document.getElementsByClassName("ball_roulette")[0].style["animation-iteration-count"] = generated/37 + 3;
+                document.getElementsByClassName("ball_roulette")[0].style["animation-iteration-count"] = order[result]/37 + 3;
                 document.getElementsByClassName("ball_roulette")[0].style["animation-play-state"] = "running";
                 setTimeout(function(){
                     document.getElementsByClassName("ball_roulette")[0].src = "{% static '/images/ball_roulette_alt.png' %}";
@@ -107,8 +108,8 @@ Roulette
                         alert(message);
                         location.reload();
                     }, 1000)
-                }, (generated/37 + 3) * 2000)
-            })
+                }, (order[result]/37 + 3) * 2000)
+            }})
         }
     </script>
 {% endblock %}
