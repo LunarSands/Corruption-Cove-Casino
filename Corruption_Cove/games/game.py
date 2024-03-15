@@ -1,5 +1,6 @@
 class Game:
-    def __init__(self, state):
+    def __init__(self, state,user):
+        self.user = user
         self.set_state(state)
 
     def set_state(self, state):
@@ -25,10 +26,10 @@ class Game:
         self.set_state({})
 
     def add_bet(self, bet):
-        bet_type = bet.get('bet_type', 'default')
+        bet_type = bet.get('type', 'default')
         amount = bet.get('amount', 0)
         if self.is_valid_bet_type(bet_type):
-            if amount <= 0:
+            if amount < 0:
                 raise ValueError('Invalid bet amount')
             # TODO: verify funds and remove from account
             self.bets[bet_type] = self.bets.get(bet_type, 0) + amount
