@@ -141,11 +141,11 @@ def account(request, user_slug):
         if bank_form.is_valid():
             bank_form.save(user=user,signed_in=request.user.profile)
         else:
-            print(friend_form.errors, request_form.errors)
+            print(friend_form.errors, request_form.errors,bank_form.errors)
     else:
         friend_form = FriendshipForm()
         request_form = RequestForm()
-        bank_form = BankForm(request.POST)
+        bank_form = BankForm()
 
     
     #pass forms to page
@@ -237,3 +237,24 @@ def howToPlay(request,gameType):
     context['text'] = rules[str(gameType)]
     
     return render(request, "Corruption_Cove/howToPlay.html", context)
+
+def add_card(request, user_slug):
+    context = {}
+
+    if request.method == 'POST':
+        bank_form = BankForm(request.POST)
+
+        if bank_form.is_valid():
+            bank_form.clean_cardNo()
+            bank_form.clean_expiry()
+            bank_form.clean_cvv()
+            bank_form.save(signed_in=UserProfile.objects.get(slug=user_slug))
+            return redirect(reverse('corruption-cove-casino:account', args=(user_slug,)))
+        else:
+            print(bank_form.errors)
+    else:
+        bank_form = BankForm()
+
+    context['bank_form'] = bank_form
+
+    return render(request, "Corruption_Cove/add_card.html", context)
