@@ -27,10 +27,9 @@ ROULETTE_BET_TYPES = [x['type'] for x in ROULETTE_BETS]
 
 class Roulette(Game):
     def __init__(self,state,user):
-        super().__init__(state,user)
         self.result = None
         self.winnings = 0
-        self.name="roulette"
+        super().__init__(state,user)
 
     def handle_start(self, action):
         client_bets = action.get('bets')

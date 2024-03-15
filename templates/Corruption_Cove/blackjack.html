@@ -8,49 +8,35 @@ Blackjack + {{dealer.name}}
 {% block body_block %}
 <link rel="stylesheet" type="text/css" href= "{% static 'blackjack.css' %}">
 
-
-
-<div id="grid">
-    <div id="dealer">
-        <img id="thumbnail" src="{{ dealer.face.url }}">
-        <p class="welcome">{{dealer.name}}</p>
-    </div>
-
-<div id="dealer-hand">
-    <img class="card" src="{% static 'images/cards/back.png' %}">
+<div class="game">
+    <img class="thumbnail" src="{{ dealer.face.url }}">
+    <p class="welcome">{{dealer.name}}</p>
 </div>
 
-<div id="hand-0">
-    <img class="card" src="{% static 'images/cards/back.png' %}">
-    <img class="card" src="{% static 'images/cards/back.png' %}">
+<div class="dealer_hand">
+    {% for card in dealer_hand %}
+    <img class="card" src="{% static 'cards/{{card[0]}}{{card[1]}}.png' %}">
+    {% endfor %}
 </div>
 
-<div id="hand-1">
-
-</div>
-<div class='actions' id="actions-all">
 {% for action in actions.all %}
 
 <button onclick="do_action('{{action}}',0)">{{action}}</button> <br>
 
 {% endfor %}
-</div>
-<div class='actions' id="actions-0">
+
 {% for action in actions.0 %}
 
 <button onclick="do_action('{{action}}',0)">{{action}} 0</button> <br>
 
 {% endfor %}
-</div>
 
-<div class='actions' id="actions-1">
 {% for action in actions.1 %}
 
 <button onclick="do_action('{{action}}',1)">{{action}} 1</button> <br>
 
 {% endfor %}
-</div>
-</div>
+
 
 <p id="display"></p>
 
@@ -58,11 +44,7 @@ Blackjack + {{dealer.name}}
     fetch("{% url 'corruption-cove-casino:blackjack_api' %}")
         .then(data=>data.json())
         .then(data=>display_state(data));
-    function display_hand(hand,id){
-        document.getElementById(id).innerHTML = "";
-        for(card of hand){
-            document.getElementById(id).innerHTML += `<img class="card" src="{%static 'images/cards'%}/${card[0]+card[1]}.png"">`
-        }
+    function display_hand(hand){
         return hand?.map(card=> card.join("")).join(",");
     }
     function display_state(state){
@@ -70,12 +52,7 @@ Blackjack + {{dealer.name}}
         hands = state.hands;
         dealer_hand = state.dealer_hand;
         bet = JSON.stringify(state.bets);
-        document.getElementById('hand-0').innerHTML="";
-        document.getElementById('hand-1').innerHTML="";
-        for (let i = 0; i < hands.length; i++) {
-            display_hand(hands[i],`hand-${i}`);
-        }
-        display_hand(dealer_hand,'dealer-hand');
+        document.getElementById('display').innerHTML = `Your hands: ${hands?.map(hand=>display_hand(hand)).join('<br>')} <br> Dealer hand: ${display_hand(dealer_hand)} <br> Your bet: ${bet}`;
     }
     function do_action(action,hand_no){
         console.log(action);

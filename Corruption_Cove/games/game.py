@@ -1,8 +1,6 @@
-from Corruption_Cove.models import Bet,Bank
 class Game:
     def __init__(self, state,user):
         self.user = user
-        self.name=""
         self.set_state(state)
 
     def set_state(self, state):
@@ -34,16 +32,6 @@ class Game:
             if amount < 0:
                 raise ValueError('Invalid bet amount')
             # TODO: verify funds and remove from account
-            cards = Bank.objects.filter(username=user)
-            card = next((card for card in cards if card.balance>=amount),None)
-            if card is None:
-                pass
-                # uncomment to require funds in order to bet
-                # raise ValueError('No card exists with enough funds')
-            else:
-                card.balance -= amount
-                card.save()                
-            Bet.objects.create(username=user,game=self.name,amount=amount).save()
             self.bets[bet_type] = self.bets.get(bet_type, 0) + amount
 
     def handle_action_during(self, action_type, action):

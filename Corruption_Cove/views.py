@@ -186,14 +186,11 @@ def roulette(request):
     return render(request, "Corruption_Cove/roulette.html", context)
 
 @login_required
-def blackjack(request,dealer=""):
+def blackjack(request,dealer):
     context = {}
     add_bets_to_context(context, 'blackjack-' + dealer)
     context['actions'] = {'all':['bet','split','start','clear'],'0':['hit','stay','double_down'],'1':['hit','stay','double_down']}
-    try:
-        context['dealer'] = Dealer.objects.get(name=dealer)
-    except Dealer.DoesNotExist:
-        context['dealer'] = {}
+    context['dealer'] = Dealer.objects.get(name=dealer)
     return render(request, "Corruption_Cove/blackjack.html", context)
 
 
