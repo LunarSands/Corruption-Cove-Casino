@@ -90,10 +90,9 @@ Account
         <form id="request_form" method="post" action="{% url 'corruption-cove-casino:account' user_slug=user.profile.slug %}"
         enctype="multipart/form-data">
 
-        {% csrf_token %}
-        {{ request_form.as_p }}
+        <input type="text">
         
-        <input type="submit" name="submit" value="Send Request" />
+        <input type="button" name="submit" value="Send Request" />
         </form>
         </p>
         {% endif %}
