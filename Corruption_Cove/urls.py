@@ -22,5 +22,6 @@ path('games/slots/<slug:machine>/',
          views.slots, name='slots'),
 path('deposit/', views.deposit.as_view(), name='deposit'),
 path('games/roulette/play_roulette/',roulette.roulette , name='play_roulette'),
-path('howToPlay/<slug:gameType>/', views.howToPlay, name='howToPlay')
+path('howToPlay/<slug:gameType>/', views.howToPlay, name='howToPlay'),
+path('account/<slug:user_slug>/add_card/', views.add_card, name='add_card'),
 ]

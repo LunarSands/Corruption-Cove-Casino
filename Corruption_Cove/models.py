@@ -53,7 +53,7 @@ class Bank(models.Model):
     balance = models.FloatField()
     name = models.CharField(max_length=40)
     cardNo = models.CharField(max_length=16)
-    expiry = models.DateField()
+    expiry = models.CharField(max_length=5, help_text="MM/YY")
     cvv = models.CharField(max_length=3)
     slug = models.SlugField(unique=True, default="slug")
 
