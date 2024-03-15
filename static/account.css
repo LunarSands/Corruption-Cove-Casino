@@ -1,58 +1,62 @@
 div.profile {
     display: inline-block;
-    background-color:green;
+    background-color:#1d8fc7;
     width: 15%;
     text-align: center;
     margin-right: 10%;
     margin-top: 15px;
     margin-left: 1%;
     border-style: solid;
-    border-color: rgb(11, 88, 11);
+    border-color: #8a8a8a;
     border-width: 3px;
     vertical-align: top;
+    border-radius: 10px;
   }
 
 div.bank {
     display: inline-block;
-    background-color:green;
+    background-color:#1d8fc7;
     vertical-align: top;
     width: 20%;
     margin-top: 15px;
     margin-right: 27%;
     text-align: center;
     border-style: solid;
-    border-color: rgb(11, 88, 11);
+    border-color: #8a8a8a;
     border-width: 3px;
+    border-radius: 10px;
 }
 
 div.requests {
     display: inline-block;
-    background-color:green;
+    background-color:#1d8fc7;
     vertical-align: top;
     width: 11%;
     margin-top: 15px;
     margin-right: 1.95%;
     text-align: center;
     border-style: solid;
-    border-color: rgb(11, 88, 11);
+    border-color: #8a8a8a;
     border-width: 3px;
+    border-radius: 10px;
 }
 
 div.friends {
     display: inline-block;
-    background-color:green;
+    background-color:#1d8fc7;
     vertical-align: top;
     width: 10%;
     margin-top: 15px;
     margin-right: 1%;
     text-align: center;
     border-style: solid;
-    border-color: rgb(11, 88, 11);
+    border-color: #8a8a8a;
     border-width: 3px;
+    border-radius: 10px;
 }
 
 a.logout {
-    color: gold;
+    color: white;
     font-size: 19px;
     text-decoration: none;
     display: block;
@@ -60,7 +64,7 @@ a.logout {
 }
   
 a.logout:hover{
-    color: rgb(174, 13, 13);
+    color: #767676;
 }
 
 img.pfp {
@@ -70,7 +74,7 @@ img.pfp {
     margin: auto;
     margin-top: 15px;
     margin-bottom: 0px;
-    border-color: rgb(11, 88, 11);
+    border-color: #8a8a8a;
     border-width: 3px;
 }
 
@@ -81,18 +85,20 @@ img.banner {
     z-index: -1;
     border-style: solid;
     border-width: 3px;
-    border-color: rgb(11, 88, 11);
+    border-color: #8a8a8a;
 }
 
 form {
-    width: 10%;
+    width: 90%;
     text-align: center;
     align-content: center;
+    background-color: #8a8a8a;
+    color: white;
 }
 
 h2.welcome {
     display: block;
-    color: gold;
+    color: white;
     font-size: 20px;
     margin-left: 15px;
     margin-right: 15px;

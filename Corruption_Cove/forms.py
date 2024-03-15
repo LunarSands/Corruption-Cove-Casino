@@ -18,7 +18,7 @@ class UserProfileForm(forms.ModelForm):
 
 class BankForm(forms.ModelForm):
     cardNo = forms.CharField(widget=forms.PasswordInput())
-    expiry = forms.DateField(widget=forms.PasswordInput())
+    expiry = forms.CharField(widget=forms.PasswordInput())
     cvv = forms.CharField(widget=forms.PasswordInput())
 
     class Meta:

@@ -1,14 +1,17 @@
 div.nav {
     display: flex;
     height:75px;
-    background-color:green;
+    background-color: #1d8fc7;
     position: fixed;
-    width: 98.5%;
+    top: 0;
+    left: 0;
+    width: 100%;
     display: flex;
     align-items: center;
     border-style: solid;
-    border-color: rgb(11, 88, 11);
-    border-width: 3px;
+    border-color: #8a8a8a;
+    border-width: 0px;
+    border-bottom-width: 3px;
   }
 
 div.pfphelper {
@@ -22,8 +25,8 @@ ul.nav {
     justify-self: left;
     list-style-type: none;
     margin-left: 38px;
-    padding-top: 3%;
-    padding-bottom: 3%;
+    padding-top: 5%;
+    padding-bottom: 5%;
     overflow: hidden;
     position: fixed;
     z-index: 1;
@@ -49,7 +52,7 @@ li.account {
   
 a.nav {
     display: inline;
-    color: gold;
+    color: white;
     text-align: center;
     padding-top: 27px;
     padding-bottom: 28px;
@@ -60,24 +63,24 @@ a.nav {
 }
 
 a.account {
-  color: gold;
+  color: white;
   font-size: 19px;
   text-decoration: none;
 }
 
 a.account:hover{
-  color: rgb(174, 13, 13);
+  color: #7a7a7a;
 }
   
 a.nav:hover{
-    background-color: rgb(174, 13, 13);
+    background-color: #7a7a7a;
 }
   
 img.logo {
     height: 75px;
     display: inline;
     border-style: solid;
-    border-color: rgb(11, 88, 11);
+    border-color: #8a8a8a;
     border-right-width: 3px;
     border-left-width: 0px;
 }
@@ -86,9 +89,7 @@ img.account {
     height: 75px;
     display: inline;
     border-style: solid;
-    border-color: rgb(11, 88, 11);
-    border-right-width: 0px;
-    border-bottom-width: 0px;
-    border-top-width: 0px;
+    border-color: #8a8a8a;
+    border-width: 0px;
     border-left-width: 3px;
 }

@@ -1,0 +1,19 @@
+{% extends 'Corruption_Cove/base.html' %}
+
+{% load static %}
+
+{% block title_block %}
+Add Card
+{% endblock %}
+
+{% block body_block %}
+    <h1 class="welcome">Add a Bank Card</h1>
+    <form id="bank_form" method="post" action="{% url 'corruption-cove-casino:add_card' user_slug=request.user.profile.slug%}"
+        enctype="multipart/form-data">
+
+            {% csrf_token %}
+            {{ bank_form.as_p }}
+
+            <input type="submit" name="submit" value="Add Card" />
+    </form>
+{% endblock %}
