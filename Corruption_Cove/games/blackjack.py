@@ -122,7 +122,7 @@ class Blackjack(Game):
     def handle_start(self, action):
         super().handle_start(action)
         self.hands = [[self.deck.pop(),self.deck.pop()]]
-        self.dealer_hand = [self.deck.pop()]
+        self.dealer_hand = [self.deck.pop(),self.deck.pop()]
         self.add_bet(action['bet'])
 
     def dealer_draw(self):

@@ -198,6 +198,7 @@ def blackjack(request,dealer):
     context = {}
     add_bets_to_context(context, 'blackjack-' + dealer)
     context['actions'] = {'all':['bet','split','start','clear'],'0':['hit','stay','double_down'],'1':['hit','stay','double_down']}
+    context['dealer'] = Dealer.objects.get(name=dealer)
     return render(request, "Corruption_Cove/blackjack.html", context)
 
 
@@ -271,11 +272,6 @@ class play_roulette(View):
         newBet.save()
 
         return HttpResponse(str(generated) + ':' +str(winnings))
-
-class add_friend(View):
-    def get(self, request, user_slug):
-        friendship = Friendship(request.user.profile, UserProfile.objects.get(slug=user_slug))
-        friendship.save()
 
 def howToPlay(request,gameType):
     context = {}
