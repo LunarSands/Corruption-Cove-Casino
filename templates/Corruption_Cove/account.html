@@ -49,6 +49,10 @@ Account
         <script>
             function deposit(){
                 var depositValue = document.getElementById("deposit_form").value;
+                if(depositValue < 0){
+                    alert("You can't deposit a negative value.");
+                    return;
+                }
                 var request = {"depositValue": depositValue}
                 $.get("{% url 'corruption-cove-casino:deposit'  %}", request, function(output) {
                     $("#balance").html(output);
