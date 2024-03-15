@@ -1,20 +1,31 @@
 html {background-color:green;}
 
 div.block {
-  height:100px;
+  height:80px;
 }
 
 div.welcome {
   width: 40%;
+  background-color: #1d8fc7;
   border-style: solid;
-  border-color: rgb(11, 88, 11);
+  border-color: #8a8a8a;
   border-width: 3px;
+  border-radius: 10px;
 }
 
+div.gradient {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, #767676, #1d8fc7);
+  z-index: -1;
+}
 
 h1.welcome {
   display: block;
-  color: gold;
+  color: white;
   font-size: 25px;
   margin-left: 15px;
   margin-right: 15px;
@@ -22,7 +33,7 @@ h1.welcome {
 
 h2.welcome {
   display: block;
-  color: gold;
+  color: white;
   font-size: 20px;
   margin-left: 15px;
   margin-right: 15px;
@@ -30,7 +41,7 @@ h2.welcome {
 
 p.welcome {
   display: block;
-  color: gold;
+  color: white;
   font-size: 19px;
   margin-left: 15px;
   margin-right: 15px;
