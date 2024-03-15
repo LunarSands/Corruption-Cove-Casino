@@ -1,0 +1,53 @@
+{% extends 'Corruption_Cove/base.html' %}
+{% load static %}
+
+{% block title_block %}
+Slots
+{% endblock %}
+
+{% block body_block %}
+    <link rel="stylesheet" type="text/css" href= "{% static 'slots.css' %}">
+
+    {% include 'Corruption_Cove/bets.html' %}
+    <div class="all_wheels">
+        <img class="wheel spinning" id="w1" src="{% static '/images/spinning_slots.gif' %}">
+        <img class="wheel stopped" src="{% static '/images/holdout.png' %}">
+    </div>
+    <div class="all_wheels">
+        <img class="wheel spinning" id="w2" src="{% static '/images/spinning_slots.gif' %}">
+        <img class="wheel stopped" src="{% static '/images/holdout.png' %}">
+    </div>
+    <div class="all_wheels">
+        <img class="wheel spinning" id="w3" src="{% static '/images/spinning_slots.gif' %}">
+        <img class="wheel stopped" src="{% static '/images/holdout.png' %}">
+    </div>
+    <button onclick="startWheels()">Start Wheels</button>
+    <script>
+        // on initialize: set default images on stationay wheels
+
+        function startWheels() {
+            document.getElementById("w1").style["opacity"] = 100;
+            document.getElementById("w2").style["opacity"] = 100;
+            document.getElementById("w3").style["opacity"] = 100;
+            // send request to server, get randomly generated results of the spin, set final images to them
+            // at server level - update bets, update money account
+            setTimeout(function() {
+                        stopWheels();
+            }, 2000)
+        }
+
+        function stopWheels() {
+            setTimeout(function() {
+                document.getElementById("w1").style["opacity"] = 0;
+                setTimeout(function() {
+                    document.getElementById("w2").style["opacity"] = 0;
+                    setTimeout(function() {
+                        document.getElementById("w3").style["opacity"] = 0;
+                        // output the result of the spin
+                        // once acknowledged - reload the page
+                    }, 1500)
+                }, 1500)  
+            }, 1500)
+        }
+    </script>
+{% endblock %}
