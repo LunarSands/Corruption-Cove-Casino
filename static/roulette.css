@@ -9,7 +9,7 @@
 .roulette_images{
   position: relative;
   float: left;
-  margin-left: 100px;
+  margin-left: 2.5%;
 }
 
 .base_roulette{
@@ -59,9 +59,7 @@
   float: right;
   margin-right: 0;
   width: 40%;
-  border-style: solid;
-  border-width: 2px;
-  border-color: green;
+  
   height: fit-content;
 }
 

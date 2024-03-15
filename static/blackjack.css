@@ -1,0 +1,32 @@
+div.game {
+    position: absolute;
+    right: 45%;
+    text-align: center;
+    width: 10%;
+    border-style: solid;
+    border-color: rgb(11, 88, 11);
+    border-width: 3px;
+    margin: 3%;
+}
+
+div.dealer_hand {
+    position: absolute;
+    right: 1%;
+    text-align: center;
+    width: 30%;
+    border-style: solid;
+    border-color: rgb(11, 88, 11);
+    border-width: 3px;
+}
+
+img.thumbnail {
+    width: 100%;
+    border-style: solid;
+    border-color: rgb(11, 88, 11);
+    border-width: 0px;
+    border-bottom-width: 3px;
+}
+
+img.card {
+    width: 40%;
+}

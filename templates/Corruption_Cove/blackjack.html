@@ -2,10 +2,22 @@
 {% load static %}
 
 {% block title_block %}
-Account
+Blackjack
 {% endblock %}
 
 {% block body_block %}
+<link rel="stylesheet" type="text/css" href= "{% static 'blackjack.css' %}">
+
+<div class="game">
+    <img class="thumbnail" src="{{ dealer.face.url }}">
+    <p class="welcome">{{dealer.name}}</p>
+</div>
+
+<div class="dealer_hand">
+    {% for card in dealer_hand %}
+    <img class="card" src="{% static 'cards/{{card[0]}}{{card[1]}}.png' %}">
+    {% endfor %}
+</div>
 
 {% for action in actions.all %}
 

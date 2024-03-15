@@ -11,5 +11,6 @@ div.bets {
     border-color: rgb(11, 88, 11);
     border-width: 3px;
     margin: 10px;
+    margin-left: 0px;
     text-align: center;
 }
