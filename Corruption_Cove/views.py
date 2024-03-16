@@ -208,6 +208,15 @@ def slots(request,machine):
     context = {}
 
     add_bets_to_context(context,'slots-'+machine)
+
+    try:
+        context['machine'] = Slots.objects.get(directory=machine)
+    except Slots.DoesNotExist:
+        context['machine'] = {}
+
+    bets = Bet.objects.filter(game='slots')
+    if (len(bets) > 0):
+        context['bets'] = bets.order_by('-amount')[:max(5,len(bets))]
     
     return render(request, "Corruption_Cove/slots.html", context)
 

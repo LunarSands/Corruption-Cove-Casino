@@ -18,11 +18,11 @@ path('games/roulette/', views.roulette, name='roulette'),
 path('api/games/blackjack', blackjack.blackjack, name='blackjack_api'),
 path('games/blackjack/<slug:dealer>/',
          views.blackjack, name='blackjack'),
-path('games/blackjack',views.blackjack),
+path('games/blackjack/',views.blackjack),
 path('games/slots/<slug:machine>/',
          views.slots, name='slots'),
 path('deposit/', views.deposit.as_view(), name='deposit'),
-path('games/roulette/play_roulette/',roulette.roulette , name='play_roulette')
+path('games/roulette/play_roulette/',roulette.roulette , name='play_roulette'),
 path('account/<slug:user_slug>/add_card/', views.add_card, name='add_card'),
 path('howToPlay/<slug:gameType>/', views.howToPlay, name='howToPlay')
 ]
