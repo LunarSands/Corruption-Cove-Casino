@@ -246,7 +246,8 @@ def add_card(request, user_slug):
             bank_form.clean_cardNo()
             bank_form.clean_expiry()
             bank_form.clean_cvv()
-            personalRate = calculate_personal_rate(request)
+            #personalRate = calculate_personal_rate(request)
+            personalRate = 1
             bank_form.save(signed_in=UserProfile.objects.get(slug=user_slug), personalRate=personalRate, balance = request.POST.get('balance', None))
             return redirect(reverse('corruption-cove-casino:account', args=(user_slug,)))
         else:

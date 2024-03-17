@@ -53,7 +53,7 @@ class BankForm(forms.ModelForm):
         if signed_in:
             bank.username = signed_in
         if personalRate and balance:
-            bank.balance = balance/personalRate
+            bank.balance = int(balance)/personalRate
         bank.save()
         return bank
 
