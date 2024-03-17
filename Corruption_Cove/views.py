@@ -212,7 +212,8 @@ class deposit(View):
     def get(self, request):
         depositValue = float(request.GET["depositValue"])
         userID = request.user.profile.slug
-        personalRate = calculate_personal_rate(request)
+        #personalRate = calculate_personal_rate(request)
+        personalRate = 1
         try:
             bank = Bank.objects.get(slug=userID)
         except Bank.DoesNotExist:
