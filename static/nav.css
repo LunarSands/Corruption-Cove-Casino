@@ -60,6 +60,7 @@ a.nav {
     padding-right: 25px;
     text-decoration: none;
     font-size: 19px;
+    transition: background-color 0.5s ease-in-out;
 }
 
 a.account {

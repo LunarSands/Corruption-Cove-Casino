@@ -85,7 +85,7 @@ Account
                     accept/decline buttons. both delete request, accept transfers money.
                 {% endfor %}
             {% endif %}
-
+    </p>    
             {% else %}
                 <form id="request_form" method="post" action="{% url 'corruption-cove-casino:account' user_slug=user.profile.slug %}"
                     enctype="multipart/form-data">
@@ -98,7 +98,6 @@ Account
                     </p>
                 </form>
         {% endif %}
-    </p>
 </div>
 
 <div class="friends">
