@@ -125,28 +125,23 @@ def account(request, user_slug):
 
     #handle form input
     if request.method == 'POST':
-        friend_form = FriendshipForm(request.POST)
-        request_form = RequestForm(request.POST)
-        bank_form = BankForm(request.POST)
-
-        if friend_form.is_valid():
-            friend_form.save(user=user, signed_in=request.user.profile)
-        if request_form.is_valid():
-            request_form.save(user=user,signed_in=request.user.profile)
-        if bank_form.is_valid():
-            bank_form.save(user=user,signed_in=request.user.profile)
-        else:
-            print(friend_form.errors, request_form.errors,bank_form.errors)
+        if "submit_f" in request.POST:
+            friend_form = FriendshipForm(request.POST)
+            if friend_form.is_valid():
+                friend_form.save(user=user, signed_in=request.user.profile)
+            else:
+                print(friend_form.errors)
+            context['friend_form'] = friend_form
+        if "submit_r" in request.POST:
+            request_form = RequestForm(request.POST)
+            if request_form.is_valid():
+                request_form.save(user=user,signed_in=request.user.profile)
+            else:
+                print(request_form.errors)
+            context['request_form'] = request_form
     else:
         friend_form = FriendshipForm()
         request_form = RequestForm()
-        bank_form = BankForm()
-
-    
-    #pass forms to page
-    context['friend_form'] = friend_form
-    context['request_form'] = request_form
-    context['bank_form'] = bank_form
 
     #pass user
     context['account'] = user

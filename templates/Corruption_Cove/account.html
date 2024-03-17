@@ -89,11 +89,11 @@ Account
         {% else %}
         <form id="request_form" method="post" action="{% url 'corruption-cove-casino:account' user_slug=user.profile.slug %}"
         enctype="multipart/form-data">
+        {% csrf_token %}
         <p class="form">
-
         <label>Amount:</label>
         <input type="text">
-        <input type="button" name="submit" value="Send Request" />
+        <input type="submit" name="submit_r" value="Send Request" />
         </p>
         </form>
     </p>
@@ -115,7 +115,7 @@ Account
         {% csrf_token %}
         {{ friend_form.as_p }}
 
-        <input type="submit" name="submit" value="Add Friend" />
+        <input type="submit" name="submit_f" value="Add Friend" />
         </form>
         </p>
     {% endif %}
