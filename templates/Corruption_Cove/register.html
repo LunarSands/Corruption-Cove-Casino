@@ -6,21 +6,58 @@
 {% endblock %}
     
 {% block body_block %}
+<link rel="stylesheet" type="text/css" href= "{% static 'account.css' %}">
+
+<div class="welcome">
     <h1 class="welcome">Register Corruption Cove Account</h1>
     {% if registered %}
         <p class="welcome"><strong>Thank you for registering!</strong></p>
         <a href="{% url 'corruption-cove-casino:index' %}">Return to the homepage.</a><br />
     {% else %}
 
-        <p class="welcome"><strong>Register here:</strong></p><br />
+        <p class="welcome"><strong>Register here:</strong></p>
         <form id="user_form" method="post" action="{% url 'corruption-cove-casino:register' %}"
         enctype="multipart/form-data">
 
-            {% csrf_token %}
-            {{ user_form.as_p }}
-            {{ profile_form.as_p }}
+        {% csrf_token %}
 
-            <input type="submit" name="submit" value="Register" />
+        <p class="form">
+            <label for="id_username">Username:</label>
+            <input type="text" name="name" maxlength="40" required="" id="id_username">
+        
+            <label for="id_password">Password:</label>
+            <input type="password" name="password" required="" id="id_password">
+        </p>
+            
+        <form id="profile_form" method="post" action="{% url 'corruption-cove-casino:register' %}"
+        enctype="multipart/form-data">
+
+        {% csrf_token %}
+
+        <p class="form">
+
+            <label for="id_name">Name:</label>
+            <input type="text" name="name" required="" id="id_name">
+
+            <label for="id_pfp">Profile Picture:</label>
+            <input type="file" name="pfp" required="" id="id_pfp">
+            
+            <label for="id_banner">Banner:</label>
+            <input type="file" name="banner" required="" id="id_banner">
+            
+            <label for="id_currency">Currency:</label>
+            <select id="id_currency" name="currency">
+                <option value="GBP">Great British Pounds Sterling</option>
+                <option value="EUR">Euros</option>
+                <option value="USD">United States' Dollars</option>
+                <option value="AUD">Australian Dolars</option>
+                <option value="JPY">Japanese Yen</option>
+                <option value="MXN">Mexican Pesos</option>
+            </select>
+
+            <input type="submit" name="submit_reg" value="Register" />
+        </p>
         </form>
+</div>
     {% endif %}
 {% endblock %}

@@ -62,15 +62,8 @@ Account
         </script>
     {% else %}
         <p class="welcome">Add a Bank Card:</p>
-        <a href="{% url 'corruption-cove-casino:add_card' user_slug=request.user.profile.slug %}">Add Card</a>
-        <!-- <form id="bank_form" method="post" action="{% url 'corruption-cove-casino:account' user_slug=user.profile.slug %}"
-        enctype="multipart/form-data">
-
-        {% csrf_token %}
-        {{ bank_form.as_p }}
+        <a class="logout" href="{% url 'corruption-cove-casino:add_card' user_slug=request.user.profile.slug %}">Add Card</a>
         
-        <input type="submit" name="submit" value="Add Card" />
-        </form> -->
     {% endif %}
 </div>
 

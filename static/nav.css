@@ -5,7 +5,7 @@ div.nav {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
+    width: 100vw;
     display: flex;
     align-items: center;
     border-style: solid;
@@ -15,7 +15,7 @@ div.nav {
   }
 
 div.pfphelper {
-    max-height: 100%;
+    max-height: 100vh;
     position: absolute;
     right: 0;
 }
@@ -25,8 +25,8 @@ ul.nav {
     justify-self: left;
     list-style-type: none;
     margin-left: 38px;
-    padding-top: 5%;
-    padding-bottom: 5%;
+    padding-top: 5vh;
+    padding-bottom: 5vh;
     overflow: hidden;
     position: fixed;
     z-index: 1;

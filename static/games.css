@@ -1,12 +1,12 @@
 div.blackjack {
     display: inline-block;
     background-color:#1d8fc7;
-    width: 36.5%;
+    width: 35.8vw;
     height: 80vh;
     align-items: left;
-    margin-right: 0%;
+    margin-right: 0vw;
     margin-top: 15px;
-    margin-left: 0%;
+    margin-left: 0vw;
     border-style: solid;
     border-color: #8a8a8a;
     border-width: 3px;
@@ -18,11 +18,11 @@ div.blackjack {
 div.roulette {
     display: inline-block;
     background-color:#1d8fc7;
-    width: 25%;
-    height: 80vh;
-    margin-right: 0%;
+    width: 25vw;
+    height: 70vh;
+    margin-right: 0vw;
     margin-top: 15px;
-    margin-left: 0%;
+    margin-left: 0vw;
     border-style: solid;
     border-color: #8a8a8a;
     border-width: 3px;
@@ -36,12 +36,12 @@ div.roulette {
 div.slots {
     display: inline-block;
     background-color:#1d8fc7;
-    width: 36.5%;
+    width: 35.8vw;
     height: 80vh;
     justify-items: right;
-    margin-left: 0%;
+    margin-left: 0vw;
     margin-top: 15px;
-    margin-right: 0%;
+    margin-right: 0vw;
     border-style: solid;
     border-color: #8a8a8a;
     border-width: 3px;

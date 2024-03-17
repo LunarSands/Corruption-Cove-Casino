@@ -5,7 +5,7 @@ div.block {
 }
 
 div.welcome {
-  width: 40%;
+  width: 40vw;
   background-color: #1d8fc7;
   border-style: solid;
   border-color: #8a8a8a;
@@ -17,8 +17,8 @@ div.gradient {
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   background: linear-gradient(to top, #dadada, #86d7ff);
   z-index: -1;
 }

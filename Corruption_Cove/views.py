@@ -44,8 +44,6 @@ def register(request):
         user_form = UserForm()
         profile_form = UserProfileForm()
     context = {'user_form': user_form,'profile_form': profile_form,'registered': registered}
-    #context['personalRate'] = calculate_personal_rate(request)
-    context['personalRate'] = 1
     return render(request,'Corruption_Cove/register.html',context)
 
 def signin(request):
