@@ -15,14 +15,14 @@ Account
     Top Bets:<br>
     {% if topbets %}
     {% for bet in topbets %}
-    {{bet.game}}: {{bet.amount}}<br>
+    {{bet.game}}: {{bet.amount * personalRate}}<br>
     {% endfor %}
     {% endif %}
 
     Recent Bets:<br>
     {% if recentbets %}
     {% for bet in recentbets %}
-    {{bet.game}}: {{bet.amount}}<br>
+    {{bet.game}}: {{bet.amount * personalRate}}<br>
     {% endfor %}
     {% endif %}
     </p><br>
@@ -35,7 +35,7 @@ Account
     <h1 class="welcome">Banking:</h1>
     {% if banks %}
         <h2 class="welcome">Current Balance:</h1>
-        <p id="balance" class="welcome">{{ banking.balance }}
+        <p id="balance" class="welcome">{{ banking.balance * personalRate }}
         {% if account.banking.balance < 0 %}
             <br>
             You are in debt, you can keep playing, but your debt will grow.
@@ -80,7 +80,7 @@ Account
         {% if requests %}
         {% for x in requests %}
         {{ x.name }}:<br>
-        {{ x.amount }} {{ request.user.profile.currency }}<br>
+        {{ x.amount * personalRate}} {{ request.user.profile.currency }}<br>
         accept/decline buttons. both delete request, accept transfers money.
         {% endfor %}
         {% endif %}

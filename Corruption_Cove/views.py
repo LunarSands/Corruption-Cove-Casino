@@ -12,7 +12,7 @@ from random import randint
 from django.views import View
 from datetime import datetime
 import json
-
+import requests
 
 def index(request):
     context = {}
@@ -43,11 +43,9 @@ def register(request):
     else:
         user_form = UserForm()
         profile_form = UserProfileForm()
-    
-    return render(request,'Corruption_Cove/register.html',
-                  context = {'user_form': user_form,
-                            'profile_form': profile_form,
-                            'registered': registered})
+    context = {'user_form': user_form,'profile_form': profile_form,'registered': registered}
+    context['personalRate'] = calculate_personal_rate(request)
+    return render(request,'Corruption_Cove/register.html',context)
 
 def signin(request):
     if request.method == 'POST':
@@ -65,10 +63,6 @@ def signin(request):
             return HttpResponse("Incorrect username or password.")
     else:
         return render(request, 'Corruption_Cove/sign-in.html')
-
-@login_required
-def games(request):
-    return
 
 @login_required
 def account(request, user_slug):
@@ -155,6 +149,7 @@ def account(request, user_slug):
 
     #pass user
     context['account'] = user
+    context['personalRate'] = calculate_personal_rate(request)
 
     return render(request, 'Corruption_Cove/account.html',context)
 
@@ -182,6 +177,7 @@ def roulette(request):
         context['bets'] = bets.order_by('-amount')[:max(5,len(bets))]
 
     context['bet_data'] = [{"name":x['name'],"type":x['type']} for x in ROULETTE_BETS]
+    context['personalRate'] = calculate_personal_rate(request)
 
     return render(request, "Corruption_Cove/roulette.html", context)
 
@@ -191,6 +187,7 @@ def blackjack(request,dealer):
     add_bets_to_context(context, 'blackjack-' + dealer)
     context['actions'] = {'all':['bet','split','start','clear'],'0':['hit','stay','double_down'],'1':['hit','stay','double_down']}
     context['dealer'] = Dealer.objects.get(name=dealer)
+    context['personalRate'] = calculate_personal_rate(request)
     return render(request, "Corruption_Cove/blackjack.html", context)
 
 
@@ -205,6 +202,7 @@ def slots(request,machine):
     context = {}
 
     add_bets_to_context(context,'slots-'+machine)
+    context['personalRate'] = calculate_personal_rate(request)
     
     return render(request, "Corruption_Cove/slots.html", context)
 
@@ -212,12 +210,13 @@ class deposit(View):
     def get(self, request):
         depositValue = float(request.GET["depositValue"])
         userID = request.user.profile.slug
+        personalRate = calculate_personal_rate(request)
         try:
             bank = Bank.objects.get(slug=userID)
         except Bank.DoesNotExist:
             HttpResponse("Bank account not found")
 
-        bank.balance += depositValue
+        bank.balance += depositValue/personalRate
         bank.save()
         return HttpResponse(str(bank.balance))
 
@@ -245,7 +244,8 @@ def add_card(request, user_slug):
             bank_form.clean_cardNo()
             bank_form.clean_expiry()
             bank_form.clean_cvv()
-            bank_form.save(signed_in=UserProfile.objects.get(slug=user_slug))
+            personalRate = calculate_personal_rate(request)
+            bank_form.save(signed_in=UserProfile.objects.get(slug=user_slug), personalRate=personalRate, balance = request.POST.get('balance', None))
             return redirect(reverse('corruption-cove-casino:account', args=(user_slug,)))
         else:
             print(bank_form.errors)
@@ -255,3 +255,19 @@ def add_card(request, user_slug):
     context['bank_form'] = bank_form
 
     return render(request, "Corruption_Cove/add_card.html", context)
+
+def calculate_personal_rate(request):
+    # Call API to fetch exchange rates
+    endpoint = 'latest'
+    access_key = '687d68b03eed20002cc8e226b1756022'
+    response = requests.get(f'https://api.exchangeratesapi.io/v1/{endpoint}?access_key={access_key}&symbols=USD,AUD,EUR,JPY,MXN')
+    data = response.json()
+
+    #retrieve relevant info to convert from EUR default to user currency
+    euro_to_pounds_rate = data['rates']['GBP']
+    user_currency_rate = data['rates'][request.user.profile.currency]
+
+    # Calculate personal rate
+    personal_rate = euro_to_pounds_rate / user_currency_rate
+
+    return personal_rate
