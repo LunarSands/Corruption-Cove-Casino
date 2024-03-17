@@ -149,7 +149,8 @@ def account(request, user_slug):
 
     #pass user
     context['account'] = user
-    context['personalRate'] = calculate_personal_rate(request)
+    #context['personalRate'] = calculate_personal_rate(request)
+    context['personalRate'] = 1
 
     return render(request, 'Corruption_Cove/account.html',context)
 

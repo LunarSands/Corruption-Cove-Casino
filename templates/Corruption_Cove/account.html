@@ -1,5 +1,6 @@
 {% extends 'Corruption_Cove/base.html' %}
 {% load static %}
+{% load mathfilters %}
 
 {% block title_block %}
 Account
@@ -15,14 +16,14 @@ Account
     Top Bets:<br>
     {% if topbets %}
     {% for bet in topbets %}
-    {{bet.game}}: {{bet.amount * personalRate}}<br>
+    {{bet.game}}: {{bet.amount|mul:personalRate}}<br>
     {% endfor %}
     {% endif %}
 
     Recent Bets:<br>
     {% if recentbets %}
     {% for bet in recentbets %}
-    {{bet.game}}: {{bet.amount * personalRate}}<br>
+    {{bet.game}}: {{bet.amount|mul:personalRate}}<br>
     {% endfor %}
     {% endif %}
     </p><br>
@@ -35,7 +36,7 @@ Account
     <h1 class="welcome">Banking:</h1>
     {% if banks %}
         <h2 class="welcome">Current Balance:</h1>
-        <p id="balance" class="welcome">{{ banking.balance * personalRate }}
+        <p id="balance" class="welcome">{{ banking.balance|mul:personalRate }}
         {% if account.banking.balance < 0 %}
             <br>
             You are in debt, you can keep playing, but your debt will grow.
@@ -80,21 +81,22 @@ Account
         {% if requests %}
         {% for x in requests %}
         {{ x.name }}:<br>
-        {{ x.amount * personalRate}} {{ request.user.profile.currency }}<br>
+        {{ x.amount|mul:personalRate}} {{ request.user.profile.currency }}<br>
         accept/decline buttons. both delete request, accept transfers money.
         {% endfor %}
         {% endif %}
 
         {% else %}
-        <p class="welcome">Ask for Money:</p>
         <form id="request_form" method="post" action="{% url 'corruption-cove-casino:account' user_slug=user.profile.slug %}"
         enctype="multipart/form-data">
+        <p class="form">
 
+        <label>Amount:</label>
         <input type="text">
-        
         <input type="button" name="submit" value="Send Request" />
-        </form>
         </p>
+        </form>
+    </p>
         {% endif %}
 </div>
 
