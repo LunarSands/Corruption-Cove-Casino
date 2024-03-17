@@ -140,6 +140,7 @@ def account(request, user_slug):
             else:
                 print(request_form.errors)
             context['request_form'] = request_form
+            return redirect(reverse('corruption-cove-casino:account', args=(user_slug,)))
     else:
         friend_form = FriendshipForm()
         request_form = RequestForm()
