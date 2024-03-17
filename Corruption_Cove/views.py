@@ -132,6 +132,7 @@ def account(request, user_slug):
             else:
                 print(friend_form.errors)
             context['friend_form'] = friend_form
+            return redirect(reverse('corruption-cove-casino:account', args=(user_slug,)))
         if "submit_r" in request.POST:
             request_form = RequestForm(request.POST)
             if request_form.is_valid():
