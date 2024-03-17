@@ -44,7 +44,8 @@ def register(request):
         user_form = UserForm()
         profile_form = UserProfileForm()
     context = {'user_form': user_form,'profile_form': profile_form,'registered': registered}
-    context['personalRate'] = calculate_personal_rate(request)
+    #context['personalRate'] = calculate_personal_rate(request)
+    context['personalRate'] = 1
     return render(request,'Corruption_Cove/register.html',context)
 
 def signin(request):
@@ -178,7 +179,8 @@ def roulette(request):
         context['bets'] = bets.order_by('-amount')[:max(5,len(bets))]
 
     context['bet_data'] = [{"name":x['name'],"type":x['type']} for x in ROULETTE_BETS]
-    context['personalRate'] = calculate_personal_rate(request)
+    #context['personalRate'] = calculate_personal_rate(request)
+    context['personalRate'] = 1
 
     return render(request, "Corruption_Cove/roulette.html", context)
 
@@ -191,7 +193,8 @@ def blackjack(request,dealer=""):
         context['dealer'] = Dealer.objects.get(name=dealer)
     except Dealer.DoesNotExist:
         context['dealer'] = None
-    context['personalRate'] = calculate_personal_rate(request)
+    #context['personalRate'] = calculate_personal_rate(request)
+    context['personalRate'] = 1
 
     return render(request, "Corruption_Cove/blackjack.html", context)
 
