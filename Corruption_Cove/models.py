@@ -72,11 +72,11 @@ class Slots(models.Model):
 class Dealer(models.Model):
     name = models.CharField(max_length=20)
     face = models.ImageField()
-    stop = models.IntegerField()
-    soft = models.BooleanField()
+    stop = models.IntegerField(default=17)
+    soft = models.BooleanField(default=True)
 
     def save(self, *args, **kwargs):
-        self.directory = '/media/images/dealers/'+self.name+'.png'
+        self.face = '/media/images/dealers/'+self.name+'.png'
         super(Dealer, self).save(*args, **kwargs)
 
 class Deposit(models.Model):
