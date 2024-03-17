@@ -135,7 +135,7 @@ def account(request, user_slug):
         if bank_form.is_valid():
             bank_form.save(user=user,signed_in=request.user.profile)
         else:
-            print(friend_form.errors, request_form.errors, bank_form.errors)
+            print(friend_form.errors, request_form.errors,bank_form.errors)
     else:
         friend_form = FriendshipForm()
         request_form = RequestForm()
@@ -182,12 +182,16 @@ def roulette(request):
     return render(request, "Corruption_Cove/roulette.html", context)
 
 @login_required
-def blackjack(request,dealer):
+def blackjack(request,dealer=""):
     context = {}
     add_bets_to_context(context, 'blackjack-' + dealer)
     context['actions'] = {'all':['bet','split','start','clear'],'0':['hit','stay','double_down'],'1':['hit','stay','double_down']}
-    context['dealer'] = Dealer.objects.get(name=dealer)
+    try:
+        context['dealer'] = Dealer.objects.get(name=dealer)
+    except Dealer.DoesNotExist:
+        context['dealer'] = None
     context['personalRate'] = calculate_personal_rate(request)
+
     return render(request, "Corruption_Cove/blackjack.html", context)
 
 
@@ -202,7 +206,6 @@ def slots(request,machine):
     context = {}
 
     add_bets_to_context(context,'slots-'+machine)
-    context['personalRate'] = calculate_personal_rate(request)
     
     return render(request, "Corruption_Cove/slots.html", context)
 

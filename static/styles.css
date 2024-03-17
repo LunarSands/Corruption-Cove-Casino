@@ -19,7 +19,7 @@ div.gradient {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(to bottom, #767676, #1d8fc7);
+  background: linear-gradient(to top, #767676, #1d8fc7);
   z-index: -1;
 }
 

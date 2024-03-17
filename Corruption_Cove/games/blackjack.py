@@ -13,11 +13,12 @@ from Corruption_Cove.models import UserProfile
 SUITS = ['h', 's', 'd', 'c']
 VALUES = ['a', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'j', 'q', 'k']
 
-
+#TODO: add dealer support
 class Blackjack(Game):
-    def __init__(self, state,user):
+    def __init__(self, state, user):
         super().__init__(state,user)
         self.set_state(state)
+        self.name = 'blackjack'
 
     def set_state(self, state):
         super().set_state(state)
@@ -153,6 +154,7 @@ class Blackjack(Game):
         elif action_type == 'double_down':
             self.add_bet({'type': f'double_down_{hand_no}', 'amount': self.bets.get('default', 0)})
             self.draw_card(hand_no)
+            self.finished_hands[hand_no]=True
         elif action_type == 'split':
             temp = self.hands[0]
             self.hands = [[temp[0]], [temp[1]]]
