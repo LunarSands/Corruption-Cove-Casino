@@ -95,8 +95,8 @@ def account(request, user_slug):
     context['topbets'] = 0
     context['recentbets'] = 0
     if (bets > 0):
-        topbets = Bet.objects.filter(slug=user_slug).order_by('-amount')[:max(3,bets)]
-        recentbets = Bet.objects.filter(slug=user_slug).order_by('-date')[:max(3,bets)]
+        topbets = Bet.objects.filter(slug=user_slug).order_by('-amount')[:min(3,bets)]
+        recentbets = Bet.objects.filter(slug=user_slug).order_by('-date')[:min(3,bets)]
         context['topbets'] =  topbets
         context['recentbets'] = recentbets
 
@@ -171,7 +171,7 @@ def roulette(request):
 
     bets = Bet.objects.filter(game='roulette')
     if (len(bets) > 0):
-        context['bets'] = bets.order_by('-amount')[:max(5,len(bets))]
+        context['bets'] = bets.order_by('-amount')[:min(5,len(bets))]
 
     context['bet_data'] = [{"name":x['name'],"type":x['type']} for x in ROULETTE_BETS]
     #context['personalRate'] = calculate_personal_rate(request)
@@ -212,7 +212,8 @@ class deposit(View):
     def get(self, request):
         depositValue = float(request.GET["depositValue"])
         userID = request.user.profile.slug
-        personalRate = calculate_personal_rate(request)
+        #personalRate = calculate_personal_rate(request)
+        personalRate = 1
         try:
             bank = Bank.objects.get(slug=userID)
         except Bank.DoesNotExist:

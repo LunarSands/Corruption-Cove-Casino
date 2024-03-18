@@ -11,6 +11,7 @@ div.profile {
     border-width: 3px;
     vertical-align: top;
     border-radius: 10px;
+    text-transform: capitalize;
   }
 
 div.bank {
@@ -132,4 +133,7 @@ form {
 p.form{
     display: block;
     color: white;
+}
+
+div.bets{
 }

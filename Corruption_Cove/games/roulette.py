@@ -1,6 +1,7 @@
 import json
 import random
 from json import JSONDecodeError
+from Corruption_Cove.models import Bet,Bank,UserProfile
 
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpRequest, JsonResponse, HttpResponseBadRequest
@@ -30,15 +31,19 @@ class Roulette(Game):
         super().__init__(state,user)
         self.result = None
         self.winnings = 0
+        self.losses = 0
         self.name="roulette"
 
-    def handle_start(self, action):
+    def handle_start(self, request):
+        action = json.loads(request.body)
         client_bets = action.get('bets')
         if type(client_bets) is not list:
             raise ValueError('Invalid bets')
+        self.winnings = self.calculate_winnings(client_bets)
         for bet in client_bets:
-            self.add_bet(bet)
-        self.winnings = self.calculate_winnings()
+            self.losses += bet.get('amount')
+        bet_return = {"type":"roulette", "amount":(self.winnings - self.losses)}
+        self.add_bet(bet_return, request.user)
 
     def client_state(self):
         return {'result':self.result,'winnings':self.winnings}
@@ -46,28 +51,45 @@ class Roulette(Game):
     def is_valid_bet_type(self, bet_type):
         return bet_type in ROULETTE_BET_TYPES
 
-    def calculate_winnings(self):
+    def calculate_winnings(self, bets):
         if self.result is None:
             self.result = random.randint(0,36)
         winnings = 0
         for bet_data in ROULETTE_BETS:
             if self.result in bet_data['req']:
-                winnings += self.bets.get(bet_data['type'],0) * bet_data['return']
+                for bet in bets:
+                    if bet.get('type') == bet_data['type']:
+                        winnings += bet.get('amount',0) * bet_data['return']
         return winnings
+    
+    def add_bet(self, bet, user):
+        bet_type = bet.get('type', 'default')
+        amount = bet.get('amount', 0)
+        user_prof = UserProfile.objects.get(user=user)
+        card = Bank.objects.get(slug=user_prof.slug)
+        if card is None:
+            pass
+            # uncomment to require funds in order to bet
+            # raise ValueError('No card exists with enough funds')
+        else:
+            card.balance += amount
+            card.save()                
+        new_bet = Bet.objects.create(username=user_prof,game=self.name,amount=amount)
+        new_bet.save()
+        self.bets[bet_type] = self.bets.get(bet_type, 0) + amount
 
 
 
 
 @login_required
-def roulette(request):
+def play_roulette(request):
     if request.method == "GET":
         return HttpResponseBadRequest()
     elif request.method == "POST":
         roulette_game = Roulette({},request.user)
         try:
             print(request.body)
-            action = json.loads(request.body)
-            roulette_game.handle_action(action)
+            roulette_game.handle_action(request)
         except ValueError as e:
             print(e)
             return HttpResponseBadRequest()
