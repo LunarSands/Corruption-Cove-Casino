@@ -25,7 +25,7 @@ def index(request):
             users_format[user.username] = user.profile.slug
         except ObjectDoesNotExist:
             continue;
-    context['users'] = users_format
+    context['users'] = json.dumps(users_format)
     print(users_format)
     return render(request, "Corruption_Cove/index.html", context)
 

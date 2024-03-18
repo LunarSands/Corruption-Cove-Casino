@@ -23,7 +23,7 @@ div.roulette {
     top: 90px;
     background-color:#1d8fc7;
     width: 25vw;
-    height: 70vh;
+    height: fit-content;
     margin-top: 15px;
     border-style: solid;
     border-color: #8a8a8a;

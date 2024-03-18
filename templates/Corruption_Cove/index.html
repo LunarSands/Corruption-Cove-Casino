@@ -27,22 +27,21 @@ Homepage
             <p class="form">
             <label>Find User:</label>
             <input type="text" id="accountToFind" />
-            <input type="button", value="Search" onclick="search()"/>
+            <input type="button" value="Search" onclick="search()" />
             </p>
         </form>
     </div>
 
     <script>
         function search(){
-            console.log("working");
             var userToFind = document.getElementById('accountToFind').value;
             var url = slugify(userToFind);
-            //window.location.href = url;
+            window.location.href = url;
         }
     
         function slugify(input) {
             var slug = "";
-            var users = JSON.parse("{{users|safe}}");
+            var users = JSON.parse('{{users|safe}}');
             for (var user in users) {
                 if (input === user) {
                     slug = users[user];
