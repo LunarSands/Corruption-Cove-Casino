@@ -267,8 +267,8 @@ def calculate_personal_rate(request):
     data = response.json()
 
     #retrieve relevant info to convert from EUR default to user currency
-    euro_to_pounds_rate = data['rates']['GBP']
-    user_currency_rate = data['rates'][request.user.profile.currency]
+    euro_to_pounds_rate = float(data['rates']['GBP'])
+    user_currency_rate = float(data['rates'][request.user.profile.currency])
 
     # Calculate personal rate
     personal_rate = euro_to_pounds_rate / user_currency_rate
