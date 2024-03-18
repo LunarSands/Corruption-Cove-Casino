@@ -3,6 +3,7 @@ from django.urls import path
 from Corruption_Cove import views
 from Corruption_Cove.games import blackjack
 from Corruption_Cove.games import roulette
+from Corruption_Cove.games import slots
 
 app_name = 'corruption-cove-casino'
 
@@ -21,6 +22,7 @@ path('games/blackjack/<slug:dealer>/',
 path('games/blackjack/',views.blackjack),
 path('games/slots/<slug:machine>/',
          views.slots, name='slots'),
+path('api/games/slots/', slots.slots, name='slots_api'),
 path('deposit/', views.deposit.as_view(), name='deposit'),
 path('games/roulette/play_roulette/',roulette.play_roulette , name='play_roulette'),
 path('account/<slug:user_slug>/add_card/', views.add_card, name='add_card'),
