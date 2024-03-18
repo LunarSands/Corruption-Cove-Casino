@@ -5,12 +5,29 @@ div.block {
 }
 
 div.welcome {
+  position: absolute;
+  left: 5vw;
   width: 40vw;
   background-color: #1d8fc7;
   border-style: solid;
   border-color: #8a8a8a;
   border-width: 3px;
   border-radius: 10px;
+  display: inline;
+  vertical-align: top;
+}
+
+div.finder {
+  position: absolute;
+  right: 5vw;
+  width: 40vw;
+  background-color: #1d8fc7;
+  border-style: solid;
+  border-color: #8a8a8a;
+  border-width: 3px;
+  border-radius: 10px;
+  display: inline;
+  vertical-align: top;
 }
 
 div.gradient {

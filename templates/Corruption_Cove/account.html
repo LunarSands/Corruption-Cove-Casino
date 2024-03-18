@@ -69,13 +69,14 @@ Account
 
 <div class="requests">
     <h1 class="welcome">Requests:</h1>
-    <p class="welcome">
+    <p class="form">
         {% if request.user.profile == account %}
             {% if requests %}
                 {% for x in requests %}
-                    {{ x.name }}:<br>
+                    {{ x.sender.sender_r.name }}:
                     {{ x.amount|mul:personalRate}} {{ request.user.profile.currency }}<br>
-                    accept/decline buttons. both delete request, accept transfers money.
+                    <input type="button" value="Accept" onclick="accept('{{ x.id }}')">
+                    <input type="button" value="Decline" onclick="decline('{{ x.id }}')">
                 {% endfor %}
             {% endif %}
     </p>    
@@ -112,4 +113,9 @@ Account
         </form>
     {% endif %}
 </div>
+
+<script>
+    accept()
+    decline()
+</script>
 {% endblock %}

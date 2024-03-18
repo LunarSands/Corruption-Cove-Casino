@@ -13,9 +13,20 @@ from django.views import View
 from datetime import datetime
 import json
 import requests
+from django.core.exceptions import ObjectDoesNotExist
 
 def index(request):
     context = {}
+    users_format={}
+    users = User.objects.all()
+    for user in users:
+        try:
+            user.profile
+            users_format[user.username] = user.profile.slug
+        except ObjectDoesNotExist:
+            continue;
+    context['users'] = users_format
+    print(users_format)
     return render(request, "Corruption_Cove/index.html", context)
 
 def register(request):

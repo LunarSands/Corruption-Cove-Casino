@@ -6,6 +6,8 @@ Homepage
 {% endblock %}
     
 {% block body_block %}
+<link rel="stylesheet" type="text/css" href= "{% static 'account.css' %}">
+
     <div class="welcome">
         <h1 class="welcome">Welcome to Corruption Cove Casino</h1>
         <p class="welcome">Corruption Cove is an online casino hosting Blackjack, Slots, and Roulette.
@@ -17,4 +19,42 @@ Homepage
             - But most importantly you will be able to play in our casino.
         </p>
     </div>
+    <div class="finder">
+        <form id="friend_finder" method="post" action="{% url 'corruption-cove-casino:index' %}"
+            enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <p class="form">
+            <label>Find User:</label>
+            <input type="text" id="accountToFind" />
+            <input type="button", value="Search" onclick="search()"/>
+            </p>
+        </form>
+    </div>
+
+    <script>
+        function search(){
+            console.log("working");
+            var userToFind = document.getElementById('accountToFind').value;
+            var url = slugify(userToFind);
+            //window.location.href = url;
+        }
+    
+        function slugify(input) {
+            var slug = "";
+            var users = JSON.parse("{{users|safe}}");
+            for (var user in users) {
+                if (input === user) {
+                    slug = users[user];
+                    break;
+                }
+            }
+            if (slug){
+                return "/corruption-cove-casino/account/" + slug + "/";
+            }
+            else{
+                return "/corruption-cove-casino/";
+            }
+        }
+    </script>
 {% endblock %}
