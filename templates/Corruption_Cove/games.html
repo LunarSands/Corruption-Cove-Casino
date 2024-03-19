@@ -12,7 +12,7 @@ Games
     <h1 class="welcome">Blackjack</h1>
     {% for dealer in dealers %}
     <div class="game">
-        <img class="thumbnail" src="{{ dealer.face.url }}">
+        <img class="thumbnail" src="{{ dealer.face.url }}" onclick='redirectToPageB("{{dealer.name}}")'>
         <a class="game" href="{% url 'corruption-cove-casino:blackjack' dealer=dealer.name %}">{{dealer.name}}</a>
     </div>
     {% endfor %}
@@ -21,7 +21,7 @@ Games
 <div class="roulette">
     <h1 class="welcome">Roulette</h1>
     <div class="roulette_game">
-        <img class="thumbnail" src="{% static 'images/thumbnail_roulette.png' %}">
+        <img class="thumbnail" src="{% static 'images/thumbnail_roulette.png' %}" onclick='redirectToPageR()'>
         <a class="game" href="{% url 'corruption-cove-casino:roulette' %}">Roulette</a>
     </div>
 </div>
@@ -30,9 +30,27 @@ Games
     <h1 class="welcome">Slots</h1>
     {% for machine in slots %}
     <div class="game">
-        <img class="thumbnail" src="{{ machine.directory }}/thumbnail.png">
-        <a class="game" href="{% url 'corruption-cove-casino:slots' machine=machine.theme %}">{{dealer.name}}</a>
+        <img class="thumbnail" src="{{ machine.directory }}/thumbnail.png" onclick='redirectToPageS("{{machine.name}}")'>
+        <a class="game" href="{% url 'corruption-cove-casino:slots' machine=machine.theme %}">{{machine.name}}</a>
     </div>
     {% endfor %}
 </div>
+
+<script>
+    function redirectToPageB(dealerName) {
+        var url = '/corruption-cove-casino/games/blackjack/' + dealerName;
+        window.location.href = url;
+    }
+
+    function redirectToPageR() {
+        var url = '/corruption-cove-casino/games/roulette/';
+        window.location.href = url;
+    }
+
+    function redirectToPageS(machineName) {
+        var url = '/corruption-cove-casino/games/slots/' + machineName;
+        window.location.href = url;
+    }
+</script>
+
 {% endblock %}
