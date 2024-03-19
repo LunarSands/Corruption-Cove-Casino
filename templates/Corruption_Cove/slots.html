@@ -31,8 +31,9 @@ Slots
             document.getElementById("w3").style["opacity"] = 100;
             // send request to server, get randomly generated results of the spin, set final images to them
             // at server level - update bets, update money account
+            let request = {action:'start'}
             $.post({url:"{% url 'corruption-cove-casino:slots_api' %}",
-                data:JSON.stringify({action:'start',bets:[]}),
+                data:JSON.stringify(request),
                 headers:{'X-CSRFToken':csrftoken},
                 success: function(output) {
                     setTimeout(function() {
