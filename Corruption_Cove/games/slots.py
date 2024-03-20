@@ -1,55 +1,67 @@
-import json
 import random
-from json import JSONDecodeError
 
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpRequest, JsonResponse, HttpResponseBadRequest
 
 from Corruption_Cove.games.game import Game
+from Corruption_Cove.models import Bank, Bet, UserProfile
 
 # Every slots bet costs 100 pounds.
 SLOTS_BET = 100
 # List of all slot elements.
-SLOTS_ELEMENTS = ['Cherry', 'Apple', 'Banana', 'Orange', 'Grapes']
+SLOTS_ELEMENTS = ['cherry', 'seven', 'diamond', 'orange', 'grapes']
+# Multiplicators for different spin outcomes.
+SPIN_MULTIPLICATORS = {'jackpot': 10, 'regular': 5, 'partial': 2, 'loss': 0}
 
 class Slots(Game):
     def __init__(self, state, user):
         super().__init__(state,user)
-        self.set_state(state)
+
         self.name = 'slots'
-        self.result = None
+        self.spin_results = []
+        self.spin_amount_result = 0
 
     def handle_start(self, request):
-        print('slots in process')
+        self.spin_amount_result, self.spin_results = self.spin_slots()
 
-        request_body = json.loads(request.body)
-        action = request_body.get('action')
-
-        print(self.calculate_win_or_loss())
+        bet_outcome_amount = self.spin_amount_result - SLOTS_BET
+        # If error occurs, comment out the line below and debug the add_bet func.
+        self.add_bet(bet_outcome_amount, request.user)
 
     def client_state(self):
-        return {}
+        return {'spin_result': self.spin_results,'spin_amount': self.spin_amount_result}
+    
+    def add_bet(self, bet_outcome_amount, user):
+        try:
+            user_profile = UserProfile.objects.get(user=user)
+            card = Bank.objects.get(slug=user_profile.slug)
+        except (UserProfile.DoesNotExist, Bank.DoesNotExist):
+            raise ValueError('There has been an issue with your card...')
+        
+        card.balance += bet_outcome_amount
+        card.save()
+        Bet.objects.create(username=user_profile, game=self.name, amount=bet_outcome_amount)
 
-    def calculate_win_or_loss(self):
-        result1 = random.choice(SLOTS_ELEMENTS)
-        result2 = random.choice(SLOTS_ELEMENTS)
-        result3 = random.choice(SLOTS_ELEMENTS)
+
+    def spin_slots(self):
+        result1, result2, result3 = random.choices(SLOTS_ELEMENTS, k=3)
+        resulting_elements = [result1, result2, result3]
+
+        jackpot_element = SLOTS_ELEMENTS[0]
 
         if result1 == result2 == result3:
-            if result1 == 'Cherry':
+            if result1 == jackpot_element:
                 # Jackpot
-                return SLOTS_BET * 10
+                return (SLOTS_BET * SPIN_MULTIPLICATORS['jackpot'], resulting_elements)
             else:
                 # Regular
-                return SLOTS_BET * 5
+                return (SLOTS_BET * SPIN_MULTIPLICATORS['regular'], resulting_elements)
         elif result1 == result2 or result1 == result3 or result2 == result3:
             # Partial
-            return SLOTS_BET * 1
+            return (SLOTS_BET * SPIN_MULTIPLICATORS['partial'], resulting_elements)
         else:
             # Loss
-            return SLOTS_BET * -1
-
-
+            return (SLOTS_BET * SPIN_MULTIPLICATORS['loss'], resulting_elements)
 
 @login_required
 def slots(request):
@@ -57,14 +69,11 @@ def slots(request):
         slots_game = Slots({},request.user)
 
         try:
-            print('handling slots')
             slots_game.handle_action(request)
-            print('handled slots')
         except ValueError as error:
             print(error)
-            return HttpResponseBadRequest()
+            return JsonResponse({'error': str(error)}, status=400)
         
-        print(slots_game.client_state())
         return JsonResponse(slots_game.client_state())
     else:
         return HttpResponseBadRequest()

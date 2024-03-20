@@ -24,6 +24,8 @@ Slots
     <button onclick="startWheels()">Start Wheels</button>
     <script>
         // on initialize: set default images on stationay wheels
+        const WHEEL_OPACITY_TIME = 1500;
+        const SPIN_TIME = 2000;
 
         function startWheels() {
             document.getElementById("w1").style["opacity"] = 100;
@@ -36,9 +38,20 @@ Slots
                 data:JSON.stringify(request),
                 headers:{'X-CSRFToken':csrftoken},
                 success: function(output) {
-                    setTimeout(function() {
-                        stopWheels();
-                    }, 2000)
+                    let spinResultObjects = output.spin_result;
+                    let spinResultAmount = output.spin_amount;
+                    let slotResultImgObjects = document.getElementsByClassName('wheel stopped');
+
+                    for (let index=0; index<slotResultImgObjects.length; index++) {
+                        const imgElement = slotResultImgObjects[index];
+                        const resultElement = spinResultObjects[index];
+                        imgElement.src = "/static/images/slots/classic/" + resultElement + ".png";
+                    }
+
+                    setTimeout(stopWheels, SPIN_TIME);
+                }, error: function () {
+                    alert("An error occured...");
+                    setTimeout(stopWheels, 0);
                 }
             });
         }
@@ -52,9 +65,9 @@ Slots
                         document.getElementById("w3").style["opacity"] = 0;
                         // output the result of the spin
                         // once acknowledged - reload the page
-                    }, 1500)
-                }, 1500)  
-            }, 1500)
+                    }, WHEEL_OPACITY_TIME)
+                }, WHEEL_OPACITY_TIME)  
+            }, WHEEL_OPACITY_TIME)
         }
     </script>
 {% endblock %}
