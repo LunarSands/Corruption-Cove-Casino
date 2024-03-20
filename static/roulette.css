@@ -1,3 +1,26 @@
+div.bet-display {
+  color: white;
+  background-color: #1d8fc7;
+  padding: 5px 20px;
+  border-style: solid;
+  border-color: #8a8a8a;
+  border-width: 3px;
+  margin: 10px;
+  text-align: right;
+  float: right;
+  width: 150px;
+}
+
+.position-bets {
+  padding: 5px;
+  position: relative;
+  float: right;
+}
+
+.button-clear {
+  float: right;
+}
+
 .grid-container {
     display: grid;
     grid-template-columns: auto auto auto auto auto auto auto auto auto auto auto auto auto auto;

@@ -24,12 +24,18 @@ Roulette
             <div onclick="addBetValue('{{bet.type}}')" class="{{bet.type}}">{{bet.name}}</div>
             {% endfor %}
         </div>
-        <button onclick="checkBet()">Check Bets</button>
-        <button onclick="clearBet()">Clear Bets</button>
-        <button onclick="startBall()">Start Ball</button>
-        <button data-href="{% url 'corruption-cove-casino:howToPlay' gameType='roulette' %}" onclick="window.open(this.dataset.href, 'how-to-play', 'width=600,height=400,toolbar=no,scrollbars=yes,resizable=yes'); return false;">
-            How to play roulette?
-        </button>
+        <div class="position-bets">
+            <button onclick="validate()">Start Ball</button>
+            <button data-href="{% url 'corruption-cove-casino:howToPlay' gameType='roulette' %}" onclick="window.open(this.dataset.href, 'how-to-play', 'width=600,height=400,toolbar=no,scrollbars=yes,resizable=yes'); return false;">
+                How to play roulette?
+            </button>
+            <div>
+                <div class="bet-display" id="bet-info">
+                    
+                </div>
+            </div>
+            <button class='button-clear' onclick="clearBet()">Clear Bets</button>
+        </div>
     </div>
     {{bet_data | json_script:"bet-data"}}
     <script>
@@ -65,16 +71,31 @@ Roulette
         function addBetValue(bet) {
             currentBets.set(bet, currentBets.get(bet)+100)
             moneyBet += 100;
+            checkBet()
         }
 
         function checkBet() {
             let outputText = "";
             for (let i = 0; i < betTypes.length; i++) {
                 if (currentBets.get(betTypes[i]) != 0){
-                    outputText = outputText.concat("You bet ", currentBets.get(betTypes[i]), " on ", betTypes[i], "\n");
+                    if (betTypes[i].replace('bet-','') == '1st' || betTypes[i].replace('bet-','') == '2nd' || betTypes[i].replace('bet-','') == '3rd'){
+                        outputText = outputText.concat(currentBets.get(betTypes[i]), " on the ", betTypes[i].replace('bet-',''), " dozen<br>");
+                    }
+                    else if (betTypes[i].replace('bet-','') == 'row1'){
+                        outputText = outputText.concat(currentBets.get(betTypes[i]), " on the 1st column<br>");
+                    }
+                    else if (betTypes[i].replace('bet-','') == 'row2'){
+                        outputText = outputText.concat(currentBets.get(betTypes[i]), " on the 2nd column<br>");
+                    }
+                    else if (betTypes[i].replace('bet-','') == 'row3'){
+                        outputText = outputText.concat(currentBets.get(betTypes[i]), " on the 3rd column<br>");
+                    }
+                    else{
+                        outputText = outputText.concat(currentBets.get(betTypes[i]), " on ", betTypes[i].replace('bet-',''), "<br>");
+                    }
                 }
             }
-            alert(outputText);
+            document.getElementById("bet-info").innerHTML = outputText;
         }
         function clearBet() {
             for (let i = 0; i < betTypes.length; i++) {
@@ -82,7 +103,23 @@ Roulette
             }
             moneyBet = 0;
             request = {action:'start',bets:[]}
-            alert('Bets Cleared');
+            checkBet()
+        }
+
+        function validate(){
+            var flag = false;
+            for (let i = 0; i < betTypes.length; i++) {
+                if (currentBets.get(betTypes[i]) != 0){
+                    flag = true;
+                    break;
+                }
+            }
+            if (flag){
+                startBall();
+            }
+            else{
+                alert("Place your bets before starting the ball!")
+            }
         }
 
         function startBall(){
