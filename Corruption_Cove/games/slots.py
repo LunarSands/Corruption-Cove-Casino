@@ -21,27 +21,15 @@ class Slots(Game):
         self.spin_results = []
         self.spin_amount_result = 0
 
-    def handle_start(self, request):
+    def handle_start(self, action):
         self.spin_amount_result, self.spin_results = self.spin_slots()
 
-        bet_outcome_amount = self.spin_amount_result - SLOTS_BET
+        net_winnings= self.spin_amount_result - SLOTS_BET
         # If error occurs, comment out the line below and debug the add_bet func.
-        self.add_bet(bet_outcome_amount, request.user)
+        self.add_bet_results(net_winnings)
 
     def client_state(self):
         return {'spin_result': self.spin_results,'spin_amount': self.spin_amount_result}
-    
-    def add_bet(self, bet_outcome_amount, user):
-        try:
-            user_profile = UserProfile.objects.get(user=user)
-            card = Bank.objects.get(slug=user_profile.slug)
-        except (UserProfile.DoesNotExist, Bank.DoesNotExist):
-            raise ValueError('There has been an issue with your card...')
-        
-        card.balance += bet_outcome_amount
-        card.save()
-        Bet.objects.create(username=user_profile, game=self.name, amount=bet_outcome_amount)
-
 
     def spin_slots(self):
         result1, result2, result3 = random.choices(SLOTS_ELEMENTS, k=3)

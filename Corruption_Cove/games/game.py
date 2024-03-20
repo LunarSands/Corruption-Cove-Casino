@@ -13,7 +13,7 @@ class Game:
     def get_state(self):
         return {'started': self.started, 'bets': self.bets}
 
-    def handle_start(self, request):
+    def handle_start(self, action):
         if self.started and not self.is_finished():
             raise ValueError('Invalid action')
         self.clear()
@@ -28,35 +28,39 @@ class Game:
     def clear(self):
         self.set_state({})
 
-    def add_bet(self, bet, user):
-        print(bet)
+    def place_bet(self,bet):
         bet_type = bet.get('type', 'default')
         amount = bet.get('amount', 0)
-        #if self.is_valid_bet_type(bet_type):
-        print('adding')
-        if amount < 0:
-            raise ValueError('Invalid bet amount')
-        user_prof = UserProfile.objects.get(user=user)
-        card = Bank.objects.get(slug=user_prof.slug)
+        if not self.is_valid_bet_type(bet_type):
+            raise ValueError('Invalid bet type')
+        self.bets[bet_type] = self.bets.get(bet_type, 0) + amount
+        user_prof = UserProfile.objects.get(user=self.user)
+        card = Bank.objects.get(username=user_prof)
         if card is None:
-            pass
-            # uncomment to require funds in order to bet
-            # raise ValueError('No card exists with enough funds')
+            raise ValueError('No card exists')
         else:
             card.balance -= amount
-            card.save()                
-        new_bet = Bet.objects.create(username=user_prof,game=self.name,amount=amount)
-        new_bet.save()
-        self.bets[bet_type] = self.bets.get(bet_type, 0) + amount
+            card.save()
 
-    def handle_action_during(self, request):
-        action = json.loads(request.body)
-        action_type = action.get('action')
+
+    def add_bet_results(self, winnings):
+        user_prof = UserProfile.objects.get(user=self.user)
+        card = Bank.objects.get(username=user_prof)
+        if card is None:
+            raise ValueError('No card exists')
+        else:
+            card.balance += winnings
+            card.save()
+        losses = sum(bet for bet in self.bets.values())
+        new_bet = Bet.objects.create(username=user_prof,game=self.name,amount=winnings-losses)
+        new_bet.save()
+
+    def handle_action_during(self, action_type,action):
         if action_type == "bet":
             bet = action.get('bet')
             if bet is None:
                 raise ValueError('Invalid bet')
-            self.add_bet(bet, request.user)
+            self.place_bet(bet)
         else:
             raise ValueError('Unknown action')
 
@@ -69,8 +73,8 @@ class Game:
             #TODO: this should be admin only or removed
             self.clear()
         elif action_type == 'start':
-            self.handle_start(request)
+            self.handle_start(action)
         elif self.started:
-            self.handle_action_during(request)
+            self.handle_action_during(action_type,action)
         else:
             raise ValueError('Unknown action')

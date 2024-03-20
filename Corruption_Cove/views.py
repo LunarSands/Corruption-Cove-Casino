@@ -5,6 +5,7 @@ from django.db.models import Q
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
+from Corruption_Cove.decorators import card_required
 from Corruption_Cove.games.roulette import ROULETTE_BETS
 from Corruption_Cove.forms import *
 from django.http import HttpResponse
@@ -86,8 +87,6 @@ def account(request, user_slug):
         user = None
     if user is None:
         return redirect('/corruption-cove-casino/')
-    
-    
 
     #check if bank card has been added
     banks = False
@@ -99,7 +98,6 @@ def account(request, user_slug):
         banks = False
     context['banking'] = banking
     context['banks'] = banks
-
 
     #find top and recent bets from current user
     bets = len(Bet.objects.filter(slug=user_slug))
@@ -176,6 +174,7 @@ def games(request):
 
     return render(request, "Corruption_Cove/games.html", context)
 
+@card_required
 @login_required
 def roulette(request):
     context = {}
@@ -190,6 +189,7 @@ def roulette(request):
 
     return render(request, "Corruption_Cove/roulette.html", context)
 
+@card_required
 @login_required
 def blackjack(request,dealer=""):
     context = {}
@@ -197,7 +197,7 @@ def blackjack(request,dealer=""):
     context['actions'] = {'all':['bet','split','start','clear'],'0':['hit','stay','double_down'],'1':['hit','stay','double_down']}
     try:
         context['dealer'] = Dealer.objects.get(name=dealer)
-    except Dealer.DoesNotExist:
+    except:
         context['dealer'] = None
     #context['personalRate'] = calculate_personal_rate(request)
     context['personalRate'] = 1
@@ -210,7 +210,7 @@ def add_bets_to_context(context, game):
     if (len(bets) > 0):
         context['bets'] = bets.order_by('-amount')[:max(5, len(bets))]
 
-
+@card_required
 @login_required
 def slots(request,machine):
     context = {}

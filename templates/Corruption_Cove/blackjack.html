@@ -55,7 +55,7 @@ Blackjack
 <p id="display"></p>
 
 <script>
-    fetch("{% url 'corruption-cove-casino:blackjack_api' %}")
+    fetch("{% url 'corruption-cove-casino:blackjack_api' dealer.name  %}")
         .then(data=>data.json())
         .then(data=>display_state(data));
     function display_hand(hand,id){
@@ -79,7 +79,7 @@ Blackjack
     }
     function do_action(action,hand_no){
         console.log(action);
-        fetch("{% url 'corruption-cove-casino:blackjack_api' %}",{method:'post',headers:{'X-CSRFToken':csrftoken},body:JSON.stringify(
+        fetch("{% url 'corruption-cove-casino:blackjack_api' dealer.name %}",{method:'post',headers:{'X-CSRFToken':csrftoken},body:JSON.stringify(
             {action:action,hand_no:hand_no,bet:{amount:100}}
         )})
         .then(res=> res.json())
