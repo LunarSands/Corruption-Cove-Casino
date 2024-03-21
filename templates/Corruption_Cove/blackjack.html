@@ -15,6 +15,7 @@ Blackjack
         <img id="thumbnail" src="{{ dealer.face.url }}">
         <p class="welcome">{{dealer.name}}</p>
     </div>
+    {% include 'Corruption_Cove/bets.html' %}
 
 <div id="dealer-hand">
     <img class="card" src="{% static 'images/cards/back.png' %}">
@@ -29,26 +30,27 @@ Blackjack
 
 </div>
 <div class='actions' id="actions-all">
-{% for action in actions.all %}
+    {% for action,action_name in actions.all %}
 
-<button onclick="do_action('{{action}}',0)">{{action}}</button> <br>
+    <button id="{{action}}_all" disabled onclick="do_action('{{action}}',0)">{{action_name}}</button> <br>
 
-{% endfor %}
+    {% endfor %}
+    <la id="bet-amount-label">Bet amount: </la><input type="number" name="bet_amount" id="bet_amount" min="1" value=100 max="1000">
 </div>
 <div class='actions' id="actions-0">
-{% for action in actions.0 %}
+    {% for action,action_name in actions.0 %}
 
-<button onclick="do_action('{{action}}',0)">{{action}} 0</button> <br>
+    <button id='{{action}}_0' disabled onclick="do_action('{{action}}',0)">{{action_name}}</button> <br>
 
-{% endfor %}
+    {% endfor %}
 </div>
 
 <div class='actions' id="actions-1">
-{% for action in actions.1 %}
+    {% for action,action_name in actions.1 %}
 
-<button onclick="do_action('{{action}}',1)">{{action}} 1</button> <br>
+    <button id='{{action}}_1' disabled onclick="do_action('{{action}}',1)">{{action_name}}</button> <br>
 
-{% endfor %}
+    {% endfor %}
 </div>
 </div>
 
@@ -70,17 +72,23 @@ Blackjack
         hands = state.hands;
         dealer_hand = state.dealer_hand;
         bet = JSON.stringify(state.bets);
+        document.querySelectorAll('.actions>button').forEach(button=>button.setAttribute('disabled',true));
+        Object.entries(state.valid_actions)
+            .forEach(entry=>entry[1].forEach(action=>document.getElementById(`${action}_${entry[0]}`).removeAttribute('disabled')));
         document.getElementById('hand-0').innerHTML="";
         document.getElementById('hand-1').innerHTML="";
         for (let i = 0; i < hands.length; i++) {
             display_hand(hands[i],`hand-${i}`);
         }
         display_hand(dealer_hand,'dealer-hand');
+        if(state.finished){
+            setTimeout(()=>alert(`You won ${state.winnings}`),500);
+        }
     }
     function do_action(action,hand_no){
         console.log(action);
         fetch("{% url 'corruption-cove-casino:blackjack_api' dealer.name %}",{method:'post',headers:{'X-CSRFToken':csrftoken},body:JSON.stringify(
-            {action:action,hand_no:hand_no,bet:{amount:100}}
+            {action:action,hand_no:hand_no,bet:{amount:parseInt(document.getElementById('bet_amount').value)}}
         )})
         .then(res=> res.json())
         .then(json=>display_state(json));
