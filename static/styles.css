@@ -63,3 +63,10 @@ p.welcome {
   margin-left: 15px;
   margin-right: 15px;
 }
+
+.breakline {
+  height:3px;
+  border-width:0;
+  color:white;
+  background-color:white;
+}

@@ -11,13 +11,12 @@
     </head>
     <body>
         <h2 class="welcome">How To Play {{name}}:</h2>
-        <hr style="height:3px;border-width:0;color:white;background-color:white">
-        <div class="block">
+        <hr class="breakline">
+        <div>
             <p class="welcome">
                 {{text|safe}}
             </p>
         </div>
-        <div>
             <button onclick=window.close()>Got it!</button>
         </div>
         <script>let csrftoken = '{{ csrf_token }}'</script>

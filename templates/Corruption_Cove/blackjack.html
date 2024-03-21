@@ -49,6 +49,9 @@ Blackjack
 <button onclick="do_action('{{action}}',1)">{{action}} 1</button> <br>
 
 {% endfor %}
+<button data-href="{% url 'corruption-cove-casino:howToPlay' gameType='blackjack' %}" onclick="window.open(this.dataset.href, 'how-to-play', 'width=600,height=520,toolbar=no,scrollbars=yes,resizable=yes'); return false;">
+    How to play blackjack?
+</button>
 </div>
 </div>
 
