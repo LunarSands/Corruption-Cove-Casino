@@ -21,7 +21,7 @@ Slots - {{machine}}
         <img class="wheel spinning" id="w3" src="{% static '/images/spinning_slots.gif' %}">
         <img class="wheel stopped" id="s3" src="{% static '/images/holdout.png' %}">
     </div>
-    <button onclick="startWheels()">Start Wheels</button>
+    <button onclick="startWheels()">Spin!</button>
     <button data-href="{% url 'corruption-cove-casino:howToPlay' gameType='slots' %}" onclick="window.open(this.dataset.href, 'how-to-play', 'width=600,height=400,toolbar=no,scrollbars=yes,resizable=yes'); return false;">
         How to play slots?
     </button>
@@ -49,6 +49,10 @@ Slots - {{machine}}
                     let spinResultObjects = output.spin_result;
                     let spinResultAmount = output.spin_amount;
                     message = message.concat(spinResultAmount);
+                    if (spinResultAmount == 1000){
+                        message = message.concat(", JACKPOT!");
+                    }
+                    message = message.concat("\nYou have lost: -100");
                     let slotResultImgObjects = document.getElementsByClassName('wheel stopped');
 
                     for (let index=0; index<slotResultImgObjects.length; index++) {

@@ -34,39 +34,43 @@ Account
 
 <div class="bank">
     <h1 class="welcome">Banking:</h1>
-    {% if banks %}
-        <h2 class="welcome">Current Balance:</h1>
-        <p id="balance" class="welcome">{{ banking.balance|mul:personalRate }}
-        {% if account.banking.balance < 0 %}
+    {% if request.user.profile == account %}
+        {% if banks %}
+            <h2 class="welcome">Current Balance:</h1>
+            <p id="balance" class="welcome">{{ banking.balance|mul:personalRate }}
+            {% if account.banking.balance < 0 %}
+                <br>
+                You are in debt, you can keep playing, but your debt will grow.
+                We recommend requesting money from a friend, or depositing more.
+                <br>
+            {% endif %}
+            </p>
+            <p class="welcome"><strong>Deposit here:</strong></p>
+            <input type="text" id="deposit_form" placeholder="Enter deposit value">
+            <button onclick="deposit()">Deposit</button>
             <br>
-            You are in debt, you can keep playing, but your debt will grow.
-            We recommend requesting money from a friend, or depositing more.
-            <br>
-        {% endif %}
-        </p>
-        <p class="welcome"><strong>Deposit here:</strong></p>
-        <input type="text" id="deposit_form" placeholder="Enter deposit value">
-        <button onclick="deposit()">Deposit</button>
-        <br>
-        <p class="welcome">Change Your Bank Card:</p>
-        <a class="logout" href="{% url 'corruption-cove-casino:change_card' user_slug=request.user.profile.slug %}">Change Card</a>
-        <script>
-            function deposit(){
-                var depositValue = document.getElementById("deposit_form").value;
-                if(depositValue < 0){
-                    alert("You can't deposit a negative value.");
-                    return;
+            <p class="welcome">Change Your Bank Card:</p>
+            <a class="logout" href="{% url 'corruption-cove-casino:change_card' user_slug=request.user.profile.slug %}">Change Card</a>
+            <script>
+                function deposit(){
+                    var depositValue = document.getElementById("deposit_form").value;
+                    if(depositValue < 0){
+                        alert("You can't deposit a negative value.");
+                        return;
+                    }
+                    var request = {"depositValue": depositValue, "user_ID": "{{ account.slug }}"}
+                    $.get("{% url 'corruption-cove-casino:deposit'  %}", request, function(output) {
+                        $("#balance").html(output);
+                    })
                 }
-                var request = {"depositValue": depositValue, "user_ID": "{{ account.slug }}"}
-                $.get("{% url 'corruption-cove-casino:deposit'  %}", request, function(output) {
-                    $("#balance").html(output);
-                })
-            }
-        </script>
+            </script>
+        {% else %}
+            <p class="welcome">Add a Bank Card:</p>
+            <a class="logout" href="{% url 'corruption-cove-casino:add_card' user_slug=request.user.profile.slug %}">Add Card</a>
+            
+        {% endif %}
     {% else %}
-        <p class="welcome">Add a Bank Card:</p>
-        <a class="logout" href="{% url 'corruption-cove-casino:add_card' user_slug=request.user.profile.slug %}">Add Card</a>
-        
+    <h2 class="welcome">Banking Information hidden for security purposes.</h1>
     {% endif %}
 </div>
 
@@ -85,6 +89,9 @@ Account
                 No Requests
             {% endif %}
         {% else %}
+            {% if requests %}
+                <p class="welcome">You can only have one outgoing request to this friend.</p>
+            {% else %}
                 <form id="request_form" method="post" action="{% url 'corruption-cove-casino:account' user_slug=account.slug %}"
                     enctype="multipart/form-data">
 
@@ -95,6 +102,7 @@ Account
                         <input type="submit" name="submit_r" value="Send Request" />
                     </p>
                 </form>
+            {% endif %}
         {% endif %}
 </div>
 
