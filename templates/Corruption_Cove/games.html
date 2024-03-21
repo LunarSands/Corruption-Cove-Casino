@@ -30,8 +30,8 @@ Games
     <h1 class="welcome">Slots</h1>
     {% for machine in slots %}
     <div class="game">
-        <img class="thumbnail" src="{{ machine.directory }}/thumbnail.png" onclick='redirectToPageS("{{machine.theme}}")'>
-        <a class="game" href="{% url 'corruption-cove-casino:slots' machine=machine.theme %}">{{machine.name}}</a>
+        <img class="thumbnail" src="{{ machine.preview.url }}" onclick='redirectToPageS("{{machine.theme}}")'>
+        <a class="game" href="{% url 'corruption-cove-casino:slots' machine=machine.theme %}">{{machine.theme}}</a>
     </div>
     {% endfor %}
 </div>
