@@ -250,6 +250,29 @@ def howToPlay(request,gameType):
     
     return render(request, "Corruption_Cove/howToPlay.html", context)
 
+def change_card(request, user_slug):
+    context = {}
+
+    if request.method == 'POST':
+        bank_form = BankForm(request.POST)
+
+        if bank_form.is_valid():
+            bank_form.clean_cardNo()
+            bank_form.clean_expiry()
+            bank_form.clean_cvv()
+            #personalRate = calculate_personal_rate(request)
+            personalRate = 1
+            bank_form.save(signed_in=UserProfile.objects.get(slug=user_slug), personalRate=personalRate, balance = request.POST.get('balance', None))
+            return redirect(reverse('corruption-cove-casino:account', args=(user_slug,)))
+        else:
+            print(bank_form.errors)
+    else:
+        bank_form = BankForm()
+
+    context['bank_form'] = bank_form
+
+    return render(request, "Corruption_Cove/change_card.html", context)
+
 def add_card(request, user_slug):
     context = {}
 
@@ -352,6 +375,35 @@ class request_accept(View):
         return HttpResponse("Request accepted")
 
 class request_decline(View):
+    def get(self, request):
+        request_ID = request.GET["request_ID"]
+        Request.objects.get(id=request_ID).delete()
+        return HttpResponse("Request declined")
+
+class friend_accept(View):
+    def get(self, request):
+        request_ID = int(request.GET["request_ID"])
+        requestValue = Friendship.objects.get(id=request_ID).amount
+        sender = Friendship.objects.get(id=request_ID).sender.slug
+        receiver = Friendship.objects.get(id=request_ID).receiver.slug
+        
+        #personalRate = calculate_personal_rate(request)
+        personalRate = 1
+        try:
+            bank_sender = Bank.objects.get(slug=sender)
+            bank_receiver = Bank.objects.get(slug=receiver)
+        except Bank.DoesNotExist:
+            print("Bank account not found")
+            HttpResponse("Bank account not found")
+
+        bank_sender.balance += requestValue/personalRate
+        bank_receiver.balance -= requestValue/personalRate
+        bank_receiver.save()
+        bank_sender.save()
+        Request.objects.get(id=request_ID).delete()
+        return HttpResponse("Request accepted")
+
+class friend_decline(View):
     def get(self, request):
         request_ID = request.GET["request_ID"]
         Request.objects.get(id=request_ID).delete()

@@ -47,6 +47,9 @@ Account
         <p class="welcome"><strong>Deposit here:</strong></p>
         <input type="text" id="deposit_form" placeholder="Enter deposit value">
         <button onclick="deposit()">Deposit</button>
+        <br>
+        <p class="welcome">Change Your Bank Card:</p>
+        <a class="logout" href="{% url 'corruption-cove-casino:change_card' user_slug=request.user.profile.slug %}">Change Card</a>
         <script>
             function deposit(){
                 var depositValue = document.getElementById("deposit_form").value;

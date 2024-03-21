@@ -37,4 +37,5 @@ path('howToPlay/<slug:gameType>/', views.howToPlay, name='howToPlay'),
 path('howToPlay/<slug:gameType>/', views.howToPlay, name='howToPlay'),
 path('request_accept/', views.request_accept.as_view(), name='request_accept'),
 path('request_decline/', views.request_decline.as_view(), name='request_decline'),
+path('account/<slug:user_slug>/change_card/', views.change_card, name='change_card'),
 ]

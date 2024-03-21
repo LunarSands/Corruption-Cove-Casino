@@ -3,21 +3,21 @@
 {% load static %}
 
 {% block title_block %}
-Add Card
+Change Card
 {% endblock %}
 
 {% block body_block %}
 <link rel="stylesheet" type="text/css" href= "{% static 'account.css' %}">
 
 <div class="welcome">
-    <h1 class="welcome">Add a Bank Card</h1>
-    <form id="bank_form" method="post" action="{% url 'corruption-cove-casino:add_card' user_slug=request.user.profile.slug%}"
+    <h1 class="welcome">Change Your Bank Card</h1>
+    <form id="bank_form" method="post" action="{% url 'corruption-cove-casino:change_card' user_slug=request.user.profile.slug%}"
         enctype="multipart/form-data">
 
         {% csrf_token %}
         {{ bank_form.as_p }}
 
-        <button type="submit" class="submit">Add Card</button>
+        <button type="submit" class="submit">Change Card</button>
     </form>
 </div>
 {% endblock %}
