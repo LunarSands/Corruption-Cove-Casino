@@ -1,6 +1,7 @@
 import json
 import random
 from json import JSONDecodeError
+from Corruption_Cove.models import Bet,Bank,UserProfile
 
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpRequest, JsonResponse, HttpResponseBadRequest
@@ -27,17 +28,19 @@ ROULETTE_BET_TYPES = [x['type'] for x in ROULETTE_BETS]
 
 class Roulette(Game):
     def __init__(self,state,user):
+        super().__init__(state,user)
         self.result = None
         self.winnings = 0
-        super().__init__(state,user)
+        self.name="roulette"
 
     def handle_start(self, action):
         client_bets = action.get('bets')
         if type(client_bets) is not list:
             raise ValueError('Invalid bets')
         for bet in client_bets:
-            self.add_bet(bet)
+            self.place_bet(bet)
         self.winnings = self.calculate_winnings()
+        self.add_bet_results(self.winnings)
 
     def client_state(self):
         return {'result':self.result,'winnings':self.winnings}
@@ -54,19 +57,15 @@ class Roulette(Game):
                 winnings += self.bets.get(bet_data['type'],0) * bet_data['return']
         return winnings
 
-
-
-
 @login_required
-def roulette(request):
+def play_roulette(request):
     if request.method == "GET":
         return HttpResponseBadRequest()
     elif request.method == "POST":
         roulette_game = Roulette({},request.user)
         try:
             print(request.body)
-            action = json.loads(request.body)
-            roulette_game.handle_action(action)
+            roulette_game.handle_action(request)
         except ValueError as e:
             print(e)
             return HttpResponseBadRequest()

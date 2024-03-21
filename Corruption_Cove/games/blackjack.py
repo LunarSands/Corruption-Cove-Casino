@@ -8,16 +8,19 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
 from Corruption_Cove.games.game import Game
-from Corruption_Cove.models import UserProfile
+from Corruption_Cove.models import UserProfile, Dealer
 
 SUITS = ['h', 's', 'd', 'c']
 VALUES = ['a', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'j', 'q', 'k']
+BLACKJACK_BET_TYPES = ['double_down_0','double_down_1']
 
-
+#TODO: add dealer support
 class Blackjack(Game):
-    def __init__(self, state,user):
+    def __init__(self, state, user,dealer):
         super().__init__(state,user)
         self.set_state(state)
+        self.name = 'blackjack'
+        self.dealer = dealer
 
     def set_state(self, state):
         super().set_state(state)
@@ -78,7 +81,7 @@ class Blackjack(Game):
         return score
 
     def is_valid_bet_type(self, bet_type):
-        return super().is_valid_bet_type(bet_type)
+        return super().is_valid_bet_type(bet_type) or bet_type in BLACKJACK_BET_TYPES
 
     def card_value(self, card):
         face = card[1]
@@ -125,12 +128,13 @@ class Blackjack(Game):
         super().handle_start(action)
         self.hands = [[self.deck.pop(), self.deck.pop()]]
         self.dealer_hand = [self.deck.pop()]
-        self.add_bet(action['bet'])
+        self.place_bet(action['bet'])
 
     def dealer_draw(self):
         while self.score_hand(self.dealer_hand) < 17:
             self.dealer_hand.append(self.deck.pop())
         self.winnings = self.calculate_winnings()
+        self.add_bet_results(self.winnings)
 
 
     def draw_card(self, hand_no):
@@ -148,17 +152,18 @@ class Blackjack(Game):
                 self.finished_hands[hand_no] = True
         elif action_type == 'stay':
             self.finished_hands[hand_no] = True
-            if self.is_finished():
-                self.dealer_draw()
         elif action_type == 'double_down':
-            self.add_bet({'type': f'double_down_{hand_no}', 'amount': self.bets.get('default', 0)})
+            self.place_bet({'type': f'double_down_{hand_no}', 'amount': self.bets.get('default', 0)})
             self.draw_card(hand_no)
+            self.finished_hands[hand_no]=True
         elif action_type == 'split':
             temp = self.hands[0]
             self.hands = [[temp[0]], [temp[1]]]
             self.finished_hands[1] = False
         else:
             super().handle_action_during(action_type, action)
+        if self.is_finished():
+            self.dealer_draw()
 
 
 def construct_deck():
@@ -168,23 +173,25 @@ def construct_deck():
 
 
 @login_required
-def blackjack(request: HttpRequest):
+def blackjack(request: HttpRequest, dealer=""):
     user = request.user
     profile = UserProfile.objects.get(user=user)
     state = profile.blackjack_state
+    try:
+        dealer_model = Dealer.objects.get(name=dealer)
+    except:
+        return HttpResponseBadRequest()
     try:
         state = json.loads(state)
     except JSONDecodeError:
         state = {}
     print(state)
-    blackjack_game = Blackjack(state,user)
+    blackjack_game = Blackjack(state, user, dealer_model)
     if request.method == 'GET':
         return JsonResponse(blackjack_game.client_state())
     elif request.method == 'POST':
         try:
-            action = json.loads(request.body)
-            print(action)
-            blackjack_game.handle_action(action)
+            blackjack_game.handle_action(request)
         except ValueError as e:
             print(e)
             return HttpResponseBadRequest()

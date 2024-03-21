@@ -48,10 +48,12 @@ class BankForm(forms.ModelForm):
             raise ValidationError("CVV must be 3 digits long")
         return cvv
     
-    def save(self, signed_in=None):
+    def save(self, signed_in=None, personalRate =None, balance=None):
         bank = super().save(commit=False)
         if signed_in:
             bank.username = signed_in
+        if personalRate and balance:
+            bank.balance = int(balance)/personalRate
         bank.save()
         return bank
 

@@ -1,6 +1,9 @@
+import json
+from Corruption_Cove.models import Bet,Bank,UserProfile
 class Game:
     def __init__(self, state,user):
         self.user = user
+        self.name=""
         self.set_state(state)
 
     def set_state(self, state):
@@ -25,25 +28,44 @@ class Game:
     def clear(self):
         self.set_state({})
 
-    def add_bet(self, bet):
+    def place_bet(self,bet):
         bet_type = bet.get('type', 'default')
         amount = bet.get('amount', 0)
-        if self.is_valid_bet_type(bet_type):
-            if amount < 0:
-                raise ValueError('Invalid bet amount')
-            # TODO: verify funds and remove from account
-            self.bets[bet_type] = self.bets.get(bet_type, 0) + amount
+        if not self.is_valid_bet_type(bet_type):
+            raise ValueError('Invalid bet type')
+        self.bets[bet_type] = self.bets.get(bet_type, 0) + amount
+        user_prof = UserProfile.objects.get(user=self.user)
+        card = Bank.objects.get(username=user_prof)
+        if card is None:
+            raise ValueError('No card exists')
+        else:
+            card.balance -= amount
+            card.save()
 
-    def handle_action_during(self, action_type, action):
+
+    def add_bet_results(self, winnings):
+        user_prof = UserProfile.objects.get(user=self.user)
+        card = Bank.objects.get(username=user_prof)
+        if card is None:
+            raise ValueError('No card exists')
+        else:
+            card.balance += winnings
+            card.save()
+        losses = sum(bet for bet in self.bets.values())
+        new_bet = Bet.objects.create(username=user_prof,game=self.name,amount=winnings-losses)
+        new_bet.save()
+
+    def handle_action_during(self, action_type,action):
         if action_type == "bet":
             bet = action.get('bet')
             if bet is None:
                 raise ValueError('Invalid bet')
-            self.add_bet(bet)
+            self.place_bet(bet)
         else:
             raise ValueError('Unknown action')
 
-    def handle_action(self, action):
+    def handle_action(self, request):
+        action = json.loads(request.body)
         action_type = action.get('action')
         if action_type is None:
             raise ValueError('No action type')
@@ -53,6 +75,6 @@ class Game:
         elif action_type == 'start':
             self.handle_start(action)
         elif self.started:
-            self.handle_action_during(action_type, action)
+            self.handle_action_during(action_type,action)
         else:
             raise ValueError('Unknown action')
