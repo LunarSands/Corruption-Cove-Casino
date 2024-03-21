@@ -9,7 +9,7 @@ from Corruption_Cove.models import Bank, Bet, UserProfile
 # Every slots bet costs 100 pounds.
 SLOTS_BET = 100
 # List of all slot elements.
-SLOTS_ELEMENTS = ['cherry', 'seven', 'diamond', 'orange', 'grapes']
+SLOTS_ELEMENTS = ['1', '2', '3', '4', '5']
 # Multiplicators for different spin outcomes.
 SPIN_MULTIPLICATORS = {'jackpot': 10, 'regular': 5, 'partial': 2, 'loss': 0}
 

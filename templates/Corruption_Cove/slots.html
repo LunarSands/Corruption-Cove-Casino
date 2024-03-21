@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title_block %}
-Slots
+Slots - {{machine}}
 {% endblock %}
 
 {% block body_block %}
@@ -11,21 +11,25 @@ Slots
     {% include 'Corruption_Cove/bets.html' %}
     <div class="all_wheels">
         <img class="wheel spinning" id="w1" src="{% static '/images/spinning_slots.gif' %}">
-        <img class="wheel stopped" src="{% static '/images/holdout.png' %}">
+        <img class="wheel stopped" id="s1" src="{% static '/images/holdout.png' %}">
     </div>
     <div class="all_wheels">
         <img class="wheel spinning" id="w2" src="{% static '/images/spinning_slots.gif' %}">
-        <img class="wheel stopped" src="{% static '/images/holdout.png' %}">
+        <img class="wheel stopped" id="s2" src="{% static '/images/holdout.png' %}">
     </div>
     <div class="all_wheels">
         <img class="wheel spinning" id="w3" src="{% static '/images/spinning_slots.gif' %}">
-        <img class="wheel stopped" src="{% static '/images/holdout.png' %}">
+        <img class="wheel stopped" id="s3" src="{% static '/images/holdout.png' %}">
     </div>
     <button onclick="startWheels()">Start Wheels</button>
     <script>
         // on initialize: set default images on stationay wheels
         const WHEEL_OPACITY_TIME = 1500;
         const SPIN_TIME = 2000;
+        const machine = "{{ machine|escapejs }}"
+        for (let i = 1; i<=3; i++){
+            document.getElementById("s" + i).src = "/static/images/slots/" + machine + "/1.png";
+        }
 
         function startWheels() {
             document.getElementById("w1").style["opacity"] = 100;
@@ -45,7 +49,7 @@ Slots
                     for (let index=0; index<slotResultImgObjects.length; index++) {
                         const imgElement = slotResultImgObjects[index];
                         const resultElement = spinResultObjects[index];
-                        imgElement.src = "/static/images/slots/classic/" + resultElement + ".png";
+                        imgElement.src = "/static/images/slots/" + machine + "/" + resultElement + ".png";
                     }
 
                     setTimeout(stopWheels, SPIN_TIME);

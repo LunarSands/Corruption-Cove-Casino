@@ -31,7 +31,8 @@ Roulette
             </button>
             <div>
                 <div class="bet-display" id="bet-info">
-                    
+                    You have placed:<br>
+                    No bets so far!
                 </div>
             </div>
             <button class='button-clear' onclick="clearBet()">Clear Bets</button>
@@ -75,7 +76,7 @@ Roulette
         }
 
         function checkBet() {
-            let outputText = "";
+            let outputText = "You have placed:<br>";
             for (let i = 0; i < betTypes.length; i++) {
                 if (currentBets.get(betTypes[i]) != 0){
                     if (betTypes[i].replace('bet-','') == '1st' || betTypes[i].replace('bet-','') == '2nd' || betTypes[i].replace('bet-','') == '3rd'){
@@ -94,6 +95,9 @@ Roulette
                         outputText = outputText.concat(currentBets.get(betTypes[i]), " on ", betTypes[i].replace('bet-',''), "<br>");
                     }
                 }
+            }
+            if (outputText == "You have placed:<br>"){
+                outputText = outputText.concat("No bets so far!");
             }
             document.getElementById("bet-info").innerHTML = outputText;
         }

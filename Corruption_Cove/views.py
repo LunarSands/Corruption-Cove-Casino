@@ -25,7 +25,7 @@ def index(request):
             user.profile
             users_format[user.username] = user.profile.slug
         except ObjectDoesNotExist:
-            continue;
+            continue
     context['users'] = json.dumps(users_format)
     print(users_format)
     return render(request, "Corruption_Cove/index.html", context)
@@ -216,6 +216,8 @@ def slots(request,machine):
     context = {}
 
     add_bets_to_context(context,'slots-'+machine)
+
+    context['machine'] = machine
     
     return render(request, "Corruption_Cove/slots.html", context)
 
