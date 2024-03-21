@@ -214,7 +214,7 @@ def blackjack(request, dealer=""):
 def add_bets_to_context(context, game):
     bets = Bet.objects.filter(game=game)
     if len(bets) > 0:
-        context['bets'] = bets.order_by('-amount')[:max(5, len(bets))]
+        context['bets'] = bets.order_by('-amount')[:5]
 
 
 @card_required

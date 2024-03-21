@@ -35,6 +35,9 @@ Blackjack
     <button id="{{action}}_all" disabled onclick="do_action('{{action}}',0)">{{action_name}}</button> <br>
 
     {% endfor %}
+    <button id="how-to" data-href="{% url 'corruption-cove-casino:howToPlay' gameType='blackjack' %}" onclick="window.open(this.dataset.href, 'how-to-play', 'width=600,height=520,toolbar=no,scrollbars=yes,resizable=yes'); return false;">
+    How to play blackjack?
+    </button>
     <la id="bet-amount-label">Bet amount: </la><input type="number" name="bet_amount" id="bet_amount" min="1" value=100 max="1000">
 </div>
 <div class='actions' id="actions-0">
@@ -51,9 +54,6 @@ Blackjack
     <button id='{{action}}_1' disabled onclick="do_action('{{action}}',1)">{{action_name}}</button> <br>
 
 {% endfor %}
-<button data-href="{% url 'corruption-cove-casino:howToPlay' gameType='blackjack' %}" onclick="window.open(this.dataset.href, 'how-to-play', 'width=600,height=520,toolbar=no,scrollbars=yes,resizable=yes'); return false;">
-    How to play blackjack?
-</button>
 </div>
 </div>
 
@@ -76,6 +76,7 @@ Blackjack
         dealer_hand = state.dealer_hand;
         bet = JSON.stringify(state.bets);
         document.querySelectorAll('.actions>button').forEach(button=>button.setAttribute('disabled',true));
+        document.getElementById('how-to').removeAttribute('disabled');
         Object.entries(state.valid_actions)
             .forEach(entry=>entry[1].forEach(action=>document.getElementById(`${action}_${entry[0]}`).removeAttribute('disabled')));
         document.getElementById('hand-0').innerHTML="";
