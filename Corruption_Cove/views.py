@@ -278,12 +278,9 @@ class money_request(View):
         receiver = UserProfile.objects.get(slug=request.GET["receiver"])
         amount = float(request.GET["amount"])
 
-        try:
-            request = Request.objects.get(sender=sender,receiver=receiver)
-            request.amount += amount
-            request.save()
-        except Request.DoesNotExist:
-            Request.objects.create(sender=sender,receiver=receiver,amount=amount)
+        request = Request.objects.get_or_create(sender=sender,receiver=receiver)
+        request.amount += amount
+        request.save()
 
         return HttpResponse("Request sent")
 
@@ -330,3 +327,32 @@ def calculate_personal_rate(request):
     personal_rate = euro_to_pounds_rate / user_currency_rate
 
     return personal_rate
+
+class request_accept(View):
+    def get(self, request):
+        request_ID = int(request.GET["request_ID"])
+        requestValue = Request.objects.get(id=request_ID).amount
+        sender = Request.objects.get(id=request_ID).sender.slug
+        receiver = Request.objects.get(id=request_ID).receiver.slug
+        
+        #personalRate = calculate_personal_rate(request)
+        personalRate = 1
+        try:
+            bank_sender = Bank.objects.get(slug=sender)
+            bank_receiver = Bank.objects.get(slug=receiver)
+        except Bank.DoesNotExist:
+            print("Bank account not found")
+            HttpResponse("Bank account not found")
+
+        bank_sender.balance += requestValue/personalRate
+        bank_receiver.balance -= requestValue/personalRate
+        bank_receiver.save()
+        bank_sender.save()
+        Request.objects.get(id=request_ID).delete()
+        return HttpResponse("Request accepted")
+
+class request_decline(View):
+    def get(self, request):
+        request_ID = request.GET["request_ID"]
+        Request.objects.get(id=request_ID).delete()
+        return HttpResponse("Request declined")

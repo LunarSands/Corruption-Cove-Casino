@@ -35,4 +35,6 @@ path('request_money/', views.money_request.as_view(), name='request_money'),
 path('friend_request/', views.friend_request.as_view(), name='friend_request'),
 path('howToPlay/<slug:gameType>/', views.howToPlay, name='howToPlay'),
 path('howToPlay/<slug:gameType>/', views.howToPlay, name='howToPlay'),
+path('request_accept/', views.request_accept.as_view(), name='request_accept'),
+path('request_decline/', views.request_decline.as_view(), name='request_decline'),
 ]

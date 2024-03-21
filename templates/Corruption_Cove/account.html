@@ -54,7 +54,7 @@ Account
                     alert("You can't deposit a negative value.");
                     return;
                 }
-                var request = {"depositValue": depositValue}
+                var request = {"depositValue": depositValue, "user_ID": "{{ account.slug }}"}
                 $.get("{% url 'corruption-cove-casino:deposit'  %}", request, function(output) {
                     $("#balance").html(output);
                 })
@@ -71,37 +71,11 @@ Account
     <h1 class="welcome">Requests:</h1>
     <p class="form">
         {% if request.user.profile == account %}
-        {% if requests %}
-        {% for x in requests %}
-        {{ x.name }}:<br>
-        {{ x.amount }} {{ request.user.profile.currency }}<br>
-        accept/decline buttons. both delete request, accept transfers money.
-        {% endfor %}
-        {% endif %}
-
-        {% else %}
-        <p id="requested" class="welcome" >Ask for Money:</p>
-            <input type="text" id="request_amount" placeholder="Enter request amount">
-            <button onclick="request_money()">Send</button>
-            <script>
-                function request_money(){
-                    var request_amount = document.getElementById("request_amount").value;
-                    if(request_amount < 0){
-                        alert("You can't request a negative value.");
-                        return;
-                    }
-                    var request = {"requestValue": requestValue,  "receiver": "{{ account.slug }}", "sender": "{{ request.user.profile.slug }}"}
-                    $.get("{% url 'corruption-cove-casino:request_money'  %}", request, function(output) {
-                        $("#requested").html(output);
-                    })
-                }
-            </script>
-        </p>
             {% if requests %}
                 {% for x in requests %}
-                    {{ x.sender.sender_r.name }}:
+                    {{ x.sender.name }}:
                     {{ x.amount|mul:personalRate}} {{ request.user.profile.currency }}<br>
-                    <input type="button" value="Accept" onclick="accept('{{ x.id }}')">
+                    <button onclick="accept('{{ x.id }}')">Accept</button>
                     <input type="button" value="Decline" onclick="decline('{{ x.id }}')">
                 {% endfor %}
             {% endif %}
@@ -141,7 +115,17 @@ Account
 </div>
 
 <script>
-    accept()
-    decline()
+    function accept(id) {
+        request = {"request_ID": id}
+        $.get("{% url 'corruption-cove-casino:request_accept'  %}", request, function(output) {
+                    location.reload();
+                })
+    }
+    function decline(id) {
+        request = {"request_ID": id}
+        $.get("{% url 'corruption-cove-casino:request_decline'  %}", request, function(output) {
+                    location.reload();
+                })
+    }
 </script>
 {% endblock %}
