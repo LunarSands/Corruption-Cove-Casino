@@ -1,0 +1,14 @@
+.wheel {
+  width: 170px;
+  height: 480px;
+}
+
+.all_wheels {
+    float: left;
+}
+
+.spinning {
+    position:absolute;
+    background: white;
+    opacity: 0;
+  }

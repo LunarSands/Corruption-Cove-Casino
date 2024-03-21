@@ -16,10 +16,34 @@
         {% include 'Corruption_Cove/nav.html' %}
         <div class="block">
         </div>
+        <div class="gradient">
+        </div>
         {% block body_block %}
         {% endblock %}
         <script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
         <script>let csrftoken = '{{ csrf_token }}'</script>
     </body>
+
+    <script>
+        var personalRate;
+        var endpoint = 'latest';
+        var access_key = '687d68b03eed20002cc8e226b1756022';
+        var currency = currencies['{{request.user.profile.currency}}'];
+
+
+        $.ajax({
+            url: 'http://api.exchangeratesapi.io/v1/' + endpoint + '?access_key=' + access_key + '&symbols= & symbols = USD,AUD,EUR,JPY,MXN',
+            dataType: 'jsonp',
+            success: function(json) {
+
+                //euros to pounds
+                defualtConvert = json.rates.GBP
+
+                //pounds to currency
+                personalRate = defaultConvert/json.rates[currency]
+
+            }
+        });
+    </script>
 
 </html>

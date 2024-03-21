@@ -272,8 +272,6 @@ def add_card(request, user_slug):
     context['bank_form'] = bank_form
 
     return render(request, "Corruption_Cove/add_card.html", context)
-
-<<<<<<< HEAD
 class money_request(View):
     def get(self, request):
         sender = UserProfile.objects.get(slug=request.GET["sender"])
@@ -300,7 +298,7 @@ class friend_request(View):
             Friendship.objects.create(sender=sender,receiver=receiver)
 
         return HttpResponse("Request sent")
-=======
+
 def calculate_personal_rate(request):
     # Call API to fetch exchange rates
     endpoint = 'latest'
@@ -316,4 +314,19 @@ def calculate_personal_rate(request):
     personal_rate = euro_to_pounds_rate / user_currency_rate
 
     return personal_rate
->>>>>>> db74800ddf8807652db479da562c6c087b424bbc
+
+def calculate_personal_rate(request):
+    # Call API to fetch exchange rates
+    endpoint = 'latest'
+    access_key = '687d68b03eed20002cc8e226b1756022'
+    response = requests.get(f'https://api.exchangeratesapi.io/v1/{endpoint}?access_key={access_key}&symbols=USD,AUD,EUR,JPY,MXN')
+    data = response.json()
+
+    #retrieve relevant info to convert from EUR default to user currency
+    euro_to_pounds_rate = float(data['rates']['GBP'])
+    user_currency_rate = float(data['rates'][request.user.profile.currency])
+
+    # Calculate personal rate
+    personal_rate = euro_to_pounds_rate / user_currency_rate
+
+    return personal_rate

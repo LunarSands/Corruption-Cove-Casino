@@ -6,13 +6,19 @@ Sign-In
 {% endblock %}
     
 {% block body_block %}
+<link rel="stylesheet" type="text/css" href= "{% static 'account.css' %}">
+
+<div class ="welcome">
 <h1 class="welcome">Login to Corruption Cove</h1>
 <form id="login_form" method="post" action="{% url 'corruption-cove-casino:sign-in' %}">
     {% csrf_token %}
-    Username: <input type="text" name="username" value="" size="50" />
-    <br />
-    Password: <input type="password" name="password" value="" size="50" />
-    <br />
+    <p class="form">
+    <label>Username:</label>
+    <input type="text" name="username" value="" size="50" />
+    <label>Password:</label>
+    <input type="password" name="password" value="" size="50" />
     <input type="submit" value="Submit" />
+    </p>
 </form>
+</div>
 {% endblock %}

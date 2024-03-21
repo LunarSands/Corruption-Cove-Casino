@@ -1,54 +1,73 @@
 div.blackjack {
     display: inline-block;
-    background-color:green;
-    width: 39%;
+    position: absolute;
+    left: 0.5vw;
+    top: 90px;
+    background-color:#1d8fc7;
+    width: 35.8vw;
+    height: 80vh;
     align-items: left;
-    margin-right: 0%;
     margin-top: 15px;
-    margin-left: 0%;
     border-style: solid;
-    border-color: rgb(11, 88, 11);
+    border-color: #8a8a8a;
     border-width: 3px;
-    vertical-align: top;
+    border-radius: 10px;
     text-align: center;
+    transition: box-shadow 0.5s ease-in-out;
 }
 
 div.roulette {
     display: inline-block;
-    background-color:green;
-    width: 20%;
-    margin-right: 0%;
+    position: absolute;
+    left: 37.3vw;
+    top: 90px;
+    background-color:#1d8fc7;
+    width: 25vw;
+    height: fit-content;
     margin-top: 15px;
-    margin-left: 0%;
     border-style: solid;
-    border-color: rgb(11, 88, 11);
+    border-color: #8a8a8a;
     border-width: 3px;
-    vertical-align: top;
+    border-radius: 10px;
     text-align: center;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0);
+    transition: box-shadow 0.5s ease-in-out;
 }
 
 div.slots {
     display: inline-block;
-    background-color:green;
-    width: 39%;
+    position: absolute;
+    right: 0.5vw;
+    top: 90px;
+    background-color:#1d8fc7;
+    width: 35.8vw;
+    height: 80vh;
     justify-items: right;
-    margin-left: 0%;
     margin-top: 15px;
-    margin-right: 0%;
     border-style: solid;
-    border-color: rgb(11, 88, 11);
+    border-color: #8a8a8a;
     border-width: 3px;
-    vertical-align: top;
+    border-radius: 10px;
     text-align: center;
+    transition: box-shadow 0.5s ease-in-out;
 }
 
 div.game {
+    display: inline-block;
     text-align: center;
-    width: 30%;
+    width: 28.5%;
     border-style: solid;
-    border-color: rgb(11, 88, 11);
+    border-color: #8a8a8a;
     border-width: 3px;
-    margin: 3%;
+    border-radius: 10px;
+    margin: 0.5%;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0);
+    transition: width 0.5s ease-in-out, box-shadow 0.5s ease-in-out;
+}
+
+div.game:hover{
+    width: 32%;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.6);
 }
 
 div.roulette_game {
@@ -56,22 +75,38 @@ div.roulette_game {
     width: 100%;
 }
 
+div.roulette:hover {
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.6);
+}
+
+div.slots:hover {
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.6);
+}
+
+div.blackjack:hover {
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.6);
+}
+
 
 a.game {
-    color: gold;
+    color: white;
     font-size: 19px;
     text-decoration: none;
     display: block;
 }
 
 a.game:hover{
-    color: rgb(174, 13, 13);
+    color: #767676;
   }
 
 img.thumbnail {
     width: 100%;
     border-style: solid;
-    border-color: rgb(11, 88, 11);
+    border-color: #1d8fc7;
     border-width: 0px;
+    border-radius: 7px;
+    border-bottom-color: #8a8a8a;
     border-bottom-width: 3px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
 }

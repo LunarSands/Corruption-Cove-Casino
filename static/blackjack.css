@@ -1,8 +1,8 @@
 div.game {
     position: absolute;
-    right: 45%;
+    right: 45vw;
     text-align: center;
-    width: 10%;
+    width: 10vw;
     border-style: solid;
     border-color: rgb(11, 88, 11);
     border-width: 3px;
@@ -28,5 +28,49 @@ img.thumbnail {
 }
 
 img.card {
-    width: 40%;
+    height:100px;
+}
+
+div{
+    justify-self: center;
+}
+
+div#grid{
+    display:grid;
+    grid-template-areas: 
+        "dealer dealer dealer"
+        "dealer-hand dealer-hand dealer-hand"
+        "hand-0 none hand-1"
+        "actions-0 actions-all actions-1";
+}
+img#thumbnail{
+    height:50px;
+    al
+}
+p.welcome{
+    text-align: center;
+}
+div#dealer-hand{
+    grid-area:dealer-hand;
+}
+div#hand-0{
+    grid-area:hand-0;
+}
+div#hand-1{
+    grid-area:hand-1;
+}
+.actions>button{
+    width: 100%;
+}
+div#actions-0{
+    grid-area:actions-0;
+}
+div#actions-1{
+    grid-area:actions-1;
+}
+div#actions-all{
+    grid-area: actions-all;
+}
+div#dealer{
+    grid-area: dealer;
 }
