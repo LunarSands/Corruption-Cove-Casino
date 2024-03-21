@@ -1,4 +1,5 @@
 import random
+import json
 
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpRequest, JsonResponse, HttpResponseBadRequest
@@ -14,10 +15,10 @@ SLOTS_ELEMENTS = ['1', '2', '3', '4', '5']
 SPIN_MULTIPLICATORS = {'jackpot': 10, 'regular': 5, 'partial': 2, 'loss': 0}
 
 class Slots(Game):
-    def __init__(self, state, user):
+    def __init__(self, state, user, machine):
         super().__init__(state,user)
 
-        self.name = 'slots'
+        self.name = 'slots-'+machine
         self.spin_results = []
         self.spin_amount_result = 0
 
@@ -54,7 +55,9 @@ class Slots(Game):
 @login_required
 def slots(request):
     if request.method == 'POST':
-        slots_game = Slots({},request.user)
+        machine = json.loads(request.body)
+        machine_type = machine.get('machine')
+        slots_game = Slots({},request.user, machine_type)
 
         try:
             slots_game.handle_action(request)

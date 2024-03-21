@@ -104,8 +104,7 @@ Account
                     <input type="button" value="Accept" onclick="accept('{{ x.id }}')">
                     <input type="button" value="Decline" onclick="decline('{{ x.id }}')">
                 {% endfor %}
-            {% endif %}
-    </p>    
+        </p>    
             {% else %}
                 <form id="request_form" method="post" action="{% url 'corruption-cove-casino:account' user_slug=account.slug %}"
                     enctype="multipart/form-data">
@@ -117,6 +116,7 @@ Account
                         <input type="submit" name="submit_r" value="Send Request" />
                     </p>
                 </form>
+            {% endif %}
         {% endif %}
 </div>
 
