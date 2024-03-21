@@ -255,3 +255,30 @@ def add_card(request, user_slug):
     context['bank_form'] = bank_form
 
     return render(request, "Corruption_Cove/add_card.html", context)
+
+class money_request(View):
+    def get(self, request):
+        sender = UserProfile.objects.get(slug=request.GET["sender"])
+        receiver = UserProfile.objects.get(slug=request.GET["receiver"])
+        amount = float(request.GET["amount"])
+
+        try:
+            request = Request.objects.get(sender=sender,receiver=receiver)
+            request.amount += amount
+            request.save()
+        except Request.DoesNotExist:
+            Request.objects.create(sender=sender,receiver=receiver,amount=amount)
+
+        return HttpResponse("Request sent")
+
+class friend_request(View):
+    def get(self, request):
+        sender = request.user.profile
+        receiver = UserProfile.objects.get(slug=request.GET["receiver"])
+
+        try:
+            friendship = Friendship.objects.get(sender=sender,receiver=receiver)
+        except Friendship.DoesNotExist:
+            Friendship.objects.create(sender=sender,receiver=receiver)
+
+        return HttpResponse("Request sent")

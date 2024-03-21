@@ -86,15 +86,22 @@ Account
         {% endif %}
 
         {% else %}
-        <p class="welcome">Ask for Money:</p>
-        <form id="request_form" method="post" action="{% url 'corruption-cove-casino:account' user_slug=user.profile.slug %}"
-        enctype="multipart/form-data">
-
-        {% csrf_token %}
-        {{ request_form.as_p }}
-        
-        <input type="submit" name="submit" value="Send Request" />
-        </form>
+        <p id="requested" class="welcome" >Ask for Money:</p>
+            <input type="text" id="request_amount" placeholder="Enter request amount">
+            <button onclick="request_money()">Send</button>
+            <script>
+                function request_money(){
+                    var request_amount = document.getElementById("request_amount").value;
+                    if(request_amount < 0){
+                        alert("You can't request a negative value.");
+                        return;
+                    }
+                    var request = {"requestValue": requestValue,  "receiver": "{{ account.slug }}", "sender": "{{ request.user.profile.slug }}"}
+                    $.get("{% url 'corruption-cove-casino:request_money'  %}", request, function(output) {
+                        $("#requested").html(output);
+                    })
+                }
+            </script>
         </p>
         {% endif %}
 </div>

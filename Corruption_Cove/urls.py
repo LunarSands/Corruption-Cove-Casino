@@ -24,4 +24,6 @@ path('deposit/', views.deposit.as_view(), name='deposit'),
 path('games/roulette/play_roulette/',roulette.roulette , name='play_roulette'),
 path('howToPlay/<slug:gameType>/', views.howToPlay, name='howToPlay'),
 path('account/<slug:user_slug>/add_card/', views.add_card, name='add_card'),
+path('request_money/', views.money_request.as_view(), name='request_money'),
+path('friend_request/', views.friend_request.as_view(), name='friend_request'),
 ]
