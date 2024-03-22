@@ -4,6 +4,6 @@
 <div class="bets">
     <h4>Here top-5 last bets will be displayed:</h4>
     {% for bet in bets %}
-    <p><b>{{bet.username}}</b>: <em>{{bet.amount}}</em></p>
+    <p><b>{{bet.username}}</b>: <em>{{bet.amount|mul:personalRate|floatformat:2}}</em></p>
     {% endfor %}
 </div>

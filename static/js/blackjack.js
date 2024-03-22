@@ -28,9 +28,10 @@ fetch(api_url)
         }
     }
     function do_action(action,hand_no, rate){
+        let rate = parseFloat(rate);
         console.log(action);
         fetch(api_url,{method:'post',headers:{'X-CSRFToken':csrftoken},body:JSON.stringify(
-            {action:action,hand_no:hand_no,bet:{amount:parseInt(document.getElementById('bet_amount').value)/personalRate}}
+            {action:action,hand_no:hand_no,bet:{amount:parseInt(document.getElementById('bet_amount').value)/rate}}
         )})
         .then(res=> res.json())
         .then(json=>display_state(json));

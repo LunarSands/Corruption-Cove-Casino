@@ -28,6 +28,7 @@ document.getElementsByClassName("bet-red")[0].style["background-color"] = "rgb(1
 document.getElementsByClassName("bet-black")[0].style["background-color"] = "black";
 
 function addBetValue(bet, amount) {
+    let amount = parseFloat(amount);
     currentBets.set(bet, currentBets.get(bet)+amount)
     moneyBet += amount;
     checkBet()

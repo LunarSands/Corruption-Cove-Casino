@@ -13,6 +13,7 @@ function startWheels(rate) {
     // send request to server, get randomly generated results of the spin, set final images to them
     // at server level - update bets, update money account
     let request = {action:'start', machine:machine}
+    let rate = parseFloat(rate);
     $.post({url:slots_api,
         data:JSON.stringify(request),
         headers:{'X-CSRFToken':csrftoken},
@@ -23,7 +24,8 @@ function startWheels(rate) {
             if (spinResultAmount == 1000){
                 message = message.concat(", JACKPOT!");
             }
-            message = message.concat("\nYou have lost: -"+Math.round(10000*rate)/100);
+            message = message.concat("\nYou have lost: -");
+            message = message.concat(Math.round(10000*rate)/100);
             let slotResultImgObjects = document.getElementsByClassName('wheel stopped');
 
             for (let index=0; index<slotResultImgObjects.length; index++) {
