@@ -80,6 +80,8 @@ class Blackjack(Game):
         return score
 
     def is_valid_bet_type(self, bet_type):
+        if len(self.bets)==0:
+            return bet_type=='default'
         return super().is_valid_bet_type(bet_type) or bet_type in BLACKJACK_BET_TYPES
 
     def card_value(self, card):

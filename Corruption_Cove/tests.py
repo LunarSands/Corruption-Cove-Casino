@@ -1,4 +1,6 @@
 from django.test import TestCase
+
+from Corruption_Cove.games.blackjack import Blackjack
 from Corruption_Cove.models import *
 from django.urls import reverse
 
@@ -67,4 +69,35 @@ class FriendshipTests(TestCase):
         friendship.save()
         self.assertEqual(friendship.sender, user_profile)
         self.assertEqual(friendship.receiver, user_profile)
+
+class BlackjackTests(TestCase):
+    def test_split(self):
+        user = User.objects.create_user(username='testuser', password='12345')
+        user.save()
+        user_profile = UserProfile.objects.create(user=user, name='testuser')
+        user_profile.save()
+        dealer = Dealer.objects.create(name='Dick')
+        blackjack_state = {'started':True,'hands':[[('s','k'),('d','j')]],'dealer_hand':[('h','6')]}
+        blackjack = Blackjack(blackjack_state,user,dealer)
+        self.assertEqual(blackjack.get_valid_actions(),{'all':['split'],'0':['hit','double_down','stay'],'1':[]})
+        blackjack.handle_action_during('split',{'action':'split'})
+        self.assertEqual(blackjack.hands,[[('s','k')],[('d','j')]])
+        self.assertEqual(blackjack.get_valid_actions(),{'all':[],'0':['hit','double_down','stay'],'1':['hit','double_down','stay']})
+
+    def test_score_hand(self):
+        user = User.objects.create_user(username='testuser', password='12345')
+        user.save()
+        user_profile = UserProfile.objects.create(user=user, name='testuser')
+        user_profile.save()
+        dealer = Dealer.objects.create(name='Dick')
+        blackjack = Blackjack({}, user, dealer)
+        self.assertEqual(blackjack.score_hand([('s','k'),('s','7')]),17)
+        self.assertEqual(blackjack.score_hand([('s','k'),('s','j')]),20)
+        self.assertEqual(blackjack.score_hand([('s','k'),('s','q')]),20)
+        self.assertEqual(blackjack.score_hand([('s','k'),('d','k')]),20)
+        self.assertEqual(blackjack.score_hand([('s','k'),('s','a')]),21)
+        self.assertEqual(blackjack.score_hand([('s','k'),('s','a')]),21)
+        self.assertEqual(blackjack.score_hand([('s','k'),('s','a'),('s','6')]),17)
+        self.assertEqual(blackjack.score_hand([('s','k'),('s','j'),('s','6')]),26)
+
 
