@@ -153,3 +153,55 @@ p.form{
 
 div.bets{
 }
+
+input[type="text"]::placeholder{
+    color: white;
+}
+
+input[type="text"]{
+    width: 80%;
+    margin-top: 5px;
+    background-color: #8a8a8a;
+    color: white;
+    border-style: solid;
+    border-width: 2px;
+    border-color: white;
+    border-radius: 5px;
+}
+
+input[type="button"]{
+    background-color: #8a8a8a;
+    color: white;
+    border-style: solid;
+    border-width: 2px;
+    border-color: white;
+    border-radius: 5px;
+    width: 40%;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0);
+    cursor: pointer;
+    transition: box-shadow, width 0.5s ease-in-out;
+}
+
+input[type="button"]:hover{
+    width: 45%;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.6);
+}
+
+button{
+    background-color: #8a8a8a;
+    color: white;
+    border-style: solid;
+    border-width: 2px;
+    border-color: white;
+    border-radius: 5px;
+    width: 40%;
+    margin-top: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0);
+    cursor: pointer;
+    transition: box-shadow, width 0.5s ease-in-out;
+}
+
+button:hover{
+    width: 45%;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.6);
+}

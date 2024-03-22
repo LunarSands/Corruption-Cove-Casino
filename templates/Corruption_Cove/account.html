@@ -11,7 +11,7 @@ Account
 
 <img class="banner" src ="{{ account.banner.url }}" >
 <div class="profile">
-    <p class="welcome">{{ account.name }}<br>
+    <p class="welcome">{{ account.user.username }}<br>
     <img class="pfp" src="{{ account.pfp.url }}">
     Top Bets:<br>
     {% if topbets %}
