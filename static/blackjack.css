@@ -34,14 +34,25 @@ img.card {
 div{
     justify-self: center;
 }
-
 div#grid{
     display:grid;
-    grid-template-areas: 
+    grid-template-areas:
         "bets dealer ."
         ". dealer-hand ."
         "hand-0 none hand-1"
         "actions-0 actions-all actions-1";
+}
+
+@media screen and (max-width: 900px ) {
+    div#grid{
+        grid-template-areas:
+            "bets dealer"
+            ". dealer-hand"
+            "hand-0 ."
+            "actions-0 actions-all"
+            "hand-1 ."
+            "actions-1 .";
+    }
 }
 .bets{
     grid-area: bets;
