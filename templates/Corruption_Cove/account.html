@@ -21,14 +21,14 @@ Account
     Top Bets:<br>
     {% if topbets %}
     {% for bet in topbets %}
-    {{bet.game}}: {{bet.amount|mul:personalRate}}<br>
+    {{bet.game}}: {{bet.amount|mul:personalRate|floatformat:2}}<br>
     {% endfor %}
     {% endif %}
 
     Recent Bets:<br>
     {% if recentbets %}
     {% for bet in recentbets %}
-    {{bet.game}}: {{bet.amount|mul:personalRate}}<br>
+    {{bet.game}}: {{bet.amount|mul:personalRate|floatformat:2}}<br>
     {% endfor %}
     {% endif %}
     </p><br>
@@ -42,7 +42,7 @@ Account
     {% if request.user.profile == account %}
         {% if banks %}
             <h2 class="welcome">Current Balance:</h1>
-            <p id="balance" class="welcome">{{ banking.balance|mul:personalRate }}
+            <p id="balance" class="welcome">{{ banking.balance|mul:personalRate|floatformat:2 }}
             {% if account.banking.balance < 0 %}
                 <br>
                 You are in debt, you can keep playing, but your debt will grow.
@@ -86,7 +86,7 @@ Account
             {% if requests %}
                 {% for x in requests %}
                     {{ x.sender.name }}:
-                    {{ x.amount|mul:personalRate}} {{ request.user.profile.currency }}<br>
+                    {{ x.amount|mul:personalRate|floatformat:2}} {{ request.user.profile.currency }}<br>
                     <button onclick="accept('{{ x.id }}')">Accept</button>
                     <input type="button" value="Decline" onclick="decline('{{ x.id }}')">
                 {% endfor %}

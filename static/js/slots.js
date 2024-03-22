@@ -6,7 +6,7 @@ for (let i = 1; i<=3; i++){
     document.getElementById("s" + i).src = "/static/images/slots/" + machine.toLowerCase() + "/1.png";
 }
 
-function startWheels() {
+function startWheels(rate) {
     document.getElementById("w1").style["opacity"] = 100;
     document.getElementById("w2").style["opacity"] = 100;
     document.getElementById("w3").style["opacity"] = 100;
@@ -18,12 +18,12 @@ function startWheels() {
         headers:{'X-CSRFToken':csrftoken},
         success: function(output) {
             let spinResultObjects = output.spin_result;
-            let spinResultAmount = output.spin_amount;
+            let spinResultAmount = Math.round(output.spin_amount*rate*100)/100;
             message = message.concat(spinResultAmount);
             if (spinResultAmount == 1000){
                 message = message.concat(", JACKPOT!");
             }
-            message = message.concat("\nYou have lost: -100");
+            message = message.concat("\nYou have lost: -"+Math.round(10000*rate)/100);
             let slotResultImgObjects = document.getElementsByClassName('wheel stopped');
 
             for (let index=0; index<slotResultImgObjects.length; index++) {

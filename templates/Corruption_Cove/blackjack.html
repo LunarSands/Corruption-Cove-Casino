@@ -47,7 +47,7 @@ let cards_url = "{%static 'images/cards'%}";
 <div class='actions' id="actions-0">
     {% for action,action_name in actions.0 %}
 
-    <button id='{{action}}_0' disabled onclick="do_action('{{action}}',0)">{{action_name}}</button> <br>
+    <button id='{{action}}_0' disabled onclick="do_action('{{action}}',0,'{{personalRate}}')">{{action_name}}</button> <br>
 
     {% endfor %}
 </div>
@@ -55,7 +55,7 @@ let cards_url = "{%static 'images/cards'%}";
 <div class='actions' id="actions-1">
     {% for action,action_name in actions.1 %}
 
-    <button id='{{action}}_1' disabled onclick="do_action('{{action}}',1)">{{action_name}}</button> <br>
+    <button id='{{action}}_1' disabled onclick="do_action('{{action}}',1, '{{personalRate}}')">{{action_name}}</button> <br>
 
 {% endfor %}
 </div>
