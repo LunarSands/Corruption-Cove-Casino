@@ -156,7 +156,6 @@ def account(request, user_slug):
     # pass user
     context['account'] = user
     context['personalRate'] = calculate_personal_rate(request)
-    context['personalRate'] = 1
 
     return render(request, 'Corruption_Cove/account.html', context)
 
@@ -187,7 +186,6 @@ def roulette(request):
 
     context['bet_data'] = [{"name": x['name'], "type": x['type']} for x in ROULETTE_BETS]
     context['personalRate'] = calculate_personal_rate(request)
-    context['personalRate'] = 1
 
     return render(request, "Corruption_Cove/roulette.html", context)
 
@@ -206,7 +204,6 @@ def blackjack(request, dealer=""):
     except:
         context['dealer'] = None
     context['personalRate'] = calculate_personal_rate(request)
-    context['personalRate'] = 1
 
     return render(request, "Corruption_Cove/blackjack.html", context)
 
