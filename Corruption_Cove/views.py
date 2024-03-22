@@ -245,7 +245,7 @@ class deposit(View):
 def howToPlay(request, gameType):
     context = {}
 
-    f = open("static\\rules.json", "r")
+    f = open("static/rules.json", "r")
     rules = json.loads(f.read())
     f.close()
 
