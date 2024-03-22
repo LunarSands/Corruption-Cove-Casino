@@ -8,10 +8,15 @@ Account
 
 {% block body_block %}
 <link rel="stylesheet" type="text/css" href= "{% static 'account.css' %}">
+<script>
+    let request_accept_url = "{% url 'corruption-cove-casino:request_accept'  %}";
+    let request_decline_url = "{% url 'corruption-cove-casino:request_decline'  %}";
+</script>
+<script src="{% static 'js/account.js' %}"></script>
 
 <img class="banner" src ="{{ account.banner.url }}" >
 <div class="profile">
-    <p class="welcome">{{ account.name }}<br>
+    <p class="welcome">{{ account.user.username }}<br>
     <img class="pfp" src="{{ account.pfp.url }}">
     Top Bets:<br>
     {% if topbets %}
@@ -121,19 +126,4 @@ Account
         </form>
     {% endif %}
 </div>
-
-<script>
-    function accept(id) {
-        request = {"request_ID": id}
-        $.get("{% url 'corruption-cove-casino:request_accept'  %}", request, function(output) {
-                    location.reload();
-                })
-    }
-    function decline(id) {
-        request = {"request_ID": id}
-        $.get("{% url 'corruption-cove-casino:request_decline'  %}", request, function(output) {
-                    location.reload();
-                })
-    }
-</script>
 {% endblock %}
