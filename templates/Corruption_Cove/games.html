@@ -7,7 +7,7 @@ Games
     
 {% block body_block %}
 <link rel="stylesheet" type="text/css" href= "{% static 'games.css' %}">
-
+<script src="{% static 'js/games.js' %}"></script>
 <div class="blackjack">
     <h1 class="welcome">Blackjack</h1>
     {% for dealer in dealers %}
@@ -35,22 +35,5 @@ Games
     </div>
     {% endfor %}
 </div>
-
-<script>
-    function redirectToPageB(dealerName) {
-        var url = '/corruption-cove-casino/games/blackjack/' + dealerName;
-        window.location.href = url;
-    }
-
-    function redirectToPageR() {
-        var url = '/corruption-cove-casino/games/roulette/';
-        window.location.href = url;
-    }
-
-    function redirectToPageS(machineName) {
-        var url = '/corruption-cove-casino/games/slots/' + machineName;
-        window.location.href = url;
-    }
-</script>
 
 {% endblock %}
