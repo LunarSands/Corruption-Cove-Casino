@@ -6,11 +6,6 @@ Slots - {{machine}}
 {% endblock %}
 
 {% block body_block %}
-    <script>
-    const machine = "{{ machine|escapejs }}"
-    </script>
-    <script>let slots_api = "{% url 'corruption-cove-casino:slots_api' %}";</script>
-    <script src="{% static 'js/slots.js' %}"></script>
     <link rel="stylesheet" type="text/css" href= "{% static 'slots.css' %}">
 
     {% include 'Corruption_Cove/bets.html' %}
@@ -31,6 +26,8 @@ Slots - {{machine}}
         How to play slots?
     </button>
     <script>
-        
+        const machine = "{{ machine|escapejs }}"
     </script>
+    <script>let slots_api = "{% url 'corruption-cove-casino:slots_api' %}"</script>
+    <script src="{% static 'js/slots.js' %}"></script>
 {% endblock %}
