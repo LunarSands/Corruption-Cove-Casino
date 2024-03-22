@@ -3,7 +3,7 @@ const WHEEL_OPACITY_TIME = 1500;
 const SPIN_TIME = 2000;
 var message = "You have won: "
 for (let i = 1; i<=3; i++){
-    document.getElementById("s" + i).src = "/static/images/slots/" + machine + "/1.png";
+    document.getElementById("s" + i).src = "/static/images/slots/" + machine.toLowerCase() + "/1.png";
 }
 
 function startWheels() {
