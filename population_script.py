@@ -14,9 +14,9 @@ def populate():
                'Dick': {'face':'/media/images/dealers/Dick.png', 'stop':17, 'soft':False},
                'Jason':{'face':'/media/images/dealers/Jason.png', 'stop':19, 'soft':True},
             }
-    slots = {'Egypt': {'preview':'/media/images/slots/egypt.png'}, 
-             'Classic': {'preview':'/media/images/slots/classic.png'},
-             'Fruit':{'preview':'/media/images/slots/fruit.png'},
+    slots = {'Egypt': {'preview':'/media/images/slots/Egypt.png'}, 
+             'Classic': {'preview':'/media/images/slots/Classic.png'},
+             'Fruit':{'preview':'/media/images/slots/Fruit.png'},
             }
     users = [{'name':f'user{x}','pass':f'pass{x}'} for x in range(10)]
     cards = [{'name':f'name{x}','no':random.choices('0123456789',k=16),'expiry':'10/26','cvv':random.choices('0123456789',k=3)} for x in range(10)]
