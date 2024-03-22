@@ -337,7 +337,7 @@ def calculate_personal_rate(request):
     endpoint = 'latest'
     access_key = '687d68b03eed20002cc8e226b1756022'
     response = requests.get(
-        f'https://api.exchangeratesapi.io/v1/{endpoint}?access_key={access_key}&symbols=USD,AUD,EUR,JPY,MXN')
+        f'http://api.exchangeratesapi.io/v1/{endpoint}?access_key={access_key}&symbols=USD,AUD,EUR,JPY,MXN')
     data = response.json()
 
     # retrieve relevant info to convert from EUR default to user currency
