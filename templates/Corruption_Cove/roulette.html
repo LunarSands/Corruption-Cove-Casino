@@ -6,12 +6,7 @@ Roulette
 {% endblock %}
     
 {% block body_block %}
-<script>
-let play_roulette_url = "{% url 'corruption-cove-casino:play_roulette' %}";
-let roulette_ball_url = "{% static '/images/ball_roulette_alt.png' %}";
-</script>
 {{bet_data | json_script:"bet-data"}}
-<script src="{% static 'js/roulette.js' %}"></script>
 <link rel="stylesheet" type="text/css" href= "{% static 'roulette.css' %}">
 
     {% include 'Corruption_Cove/bets.html' %}
@@ -45,4 +40,9 @@ let roulette_ball_url = "{% static '/images/ball_roulette_alt.png' %}";
         </div>
     </div>
 
+    <script>
+        let play_roulette_url = "{% url 'corruption-cove-casino:play_roulette' %}";
+        let roulette_ball_url = "{% static '/images/ball_roulette_alt.png' %}";
+    </script>
+    <script src="{% static 'js/roulette.js' %}"></script>
 {% endblock %}
