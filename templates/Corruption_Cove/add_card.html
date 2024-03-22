@@ -13,9 +13,10 @@ Add Card
     <h1 class="welcome">Add a Bank Card</h1>
     <form id="bank_form" method="post" action="{% url 'corruption-cove-casino:add_card' user_slug=request.user.profile.slug%}"
         enctype="multipart/form-data">
-
+        <p class="form">
         {% csrf_token %}
         {{ bank_form.as_p }}
+        </p>
 
         <button type="submit" class="submit">Add Card</button>
     </form>
