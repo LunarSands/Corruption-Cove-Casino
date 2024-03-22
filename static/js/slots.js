@@ -29,7 +29,7 @@ function startWheels() {
             for (let index=0; index<slotResultImgObjects.length; index++) {
                 const imgElement = slotResultImgObjects[index];
                 const resultElement = spinResultObjects[index];
-                imgElement.src = "/static/images/slots/" + machine + "/" + resultElement + ".png";
+                imgElement.src = "/static/images/slots/" + machine.toLowerCase() + "/" + resultElement + ".png";
             }
 
             setTimeout(stopWheels, SPIN_TIME);
