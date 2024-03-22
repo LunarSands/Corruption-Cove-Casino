@@ -66,7 +66,7 @@ class Slots(models.Model):
     preview = models.ImageField()
 
     def save(self, *args, **kwargs):
-        self.preview = '/media/images/slots/'+self.theme+'.png'
+        self.preview = '/media/images/slots/'+self.theme.lower()+'.png'
         super(Slots, self).save(*args, **kwargs)
 
 class Dealer(models.Model):
