@@ -22,7 +22,7 @@ Roulette
     <div class="controls">
         <div class="grid-container">
             {% for bet in bet_data %}
-            <div onclick="addBetValue('{{bet.type}}', '{{100|mul:personalRate|floatformat:2}}')" class="{{bet.type}}">{{bet.name}}</div>
+            <div onclick="addBetValue('{{bet.type}}')" class="{{bet.type}}">{{bet.name}}</div>
             {% endfor %}
         </div>
         <div class="position-bets">

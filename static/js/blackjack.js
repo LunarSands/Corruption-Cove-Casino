@@ -27,11 +27,10 @@ fetch(api_url)
             setTimeout(()=>alert(`You won ${state.winnings}`),500);
         }
     }
-    function do_action(action,hand_no, rate){
-        let rate = parseFloat(rate);
+    function do_action(action,hand_no){
         console.log(action);
         fetch(api_url,{method:'post',headers:{'X-CSRFToken':csrftoken},body:JSON.stringify(
-            {action:action,hand_no:hand_no,bet:{amount:parseInt(document.getElementById('bet_amount').value)/rate}}
+            {action:action,hand_no:hand_no,bet:{amount:parseInt(document.getElementById('bet_amount').value)}}
         )})
         .then(res=> res.json())
         .then(json=>display_state(json));

@@ -27,9 +27,8 @@ for (let i = 1; i < 37; i++){
 document.getElementsByClassName("bet-red")[0].style["background-color"] = "rgb(174, 13, 13)";
 document.getElementsByClassName("bet-black")[0].style["background-color"] = "black";
 
-function addBetValue(bet, amount) {
-    let amount = parseFloat(amount);
-    currentBets.set(bet, currentBets.get(bet)+amount)
+function addBetValue(bet) {
+    currentBets.set(bet, currentBets.get(bet)+100)
     moneyBet += amount;
     checkBet()
 }
