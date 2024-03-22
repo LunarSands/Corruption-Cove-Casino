@@ -63,10 +63,10 @@ class Bank(models.Model):
 
 class Slots(models.Model):
     theme = models.CharField(max_length=40)
-    directory = models.CharField(max_length=128)
+    preview = models.ImageField()
 
     def save(self, *args, **kwargs):
-        self.directory = '/media/images/slots/'+self.directory
+        self.preview = '/media/images/slots/'+self.theme+'.png'
         super(Slots, self).save(*args, **kwargs)
 
 class Dealer(models.Model):

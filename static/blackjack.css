@@ -19,8 +19,8 @@ div.dealer_hand {
     border-width: 3px;
 }
 
-img.thumbnail {
-    width: 100%;
+img#thumbnail {
+    width: 100px;
     border-style: solid;
     border-color: rgb(11, 88, 11);
     border-width: 0px;
@@ -34,18 +34,28 @@ img.card {
 div{
     justify-self: center;
 }
-
 div#grid{
     display:grid;
-    grid-template-areas: 
-        "dealer dealer dealer"
-        "dealer-hand dealer-hand dealer-hand"
+    grid-template-areas:
+        "bets dealer ."
+        ". dealer-hand ."
         "hand-0 none hand-1"
         "actions-0 actions-all actions-1";
 }
-img#thumbnail{
-    height:50px;
-    al
+
+@media screen and (max-width: 900px ) {
+    div#grid{
+        grid-template-areas:
+            "bets dealer"
+            ". dealer-hand"
+            "hand-0 ."
+            "actions-0 actions-all"
+            "hand-1 ."
+            "actions-1 .";
+    }
+}
+.bets{
+    grid-area: bets;
 }
 p.welcome{
     text-align: center;

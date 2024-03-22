@@ -7,7 +7,11 @@ Blackjack
 
 {% block body_block %}
 <link rel="stylesheet" type="text/css" href= "{% static 'blackjack.css' %}">
-
+<script>
+let api_url = "{% url 'corruption-cove-casino:blackjack_api' dealer.name  %}";
+let cards_url = "{%static 'images/cards'%}";
+</script>
+<script src="{% static 'js/blackjack.js'%}"></script>
 
 
 <div id="grid">
@@ -15,6 +19,7 @@ Blackjack
         <img id="thumbnail" src="{{ dealer.face.url }}">
         <p class="welcome">{{dealer.name}}</p>
     </div>
+    {% include 'Corruption_Cove/bets.html' %}
 
 <div id="dealer-hand">
     <img class="card" src="{% static 'images/cards/back.png' %}">
@@ -29,61 +34,32 @@ Blackjack
 
 </div>
 <div class='actions' id="actions-all">
-{% for action in actions.all %}
+    {% for action,action_name in actions.all %}
 
-<button onclick="do_action('{{action}}',0)">{{action}}</button> <br>
+    <button id="{{action}}_all" disabled onclick="do_action('{{action}}',0)">{{action_name}}</button> <br>
 
-{% endfor %}
+    {% endfor %}
+    <button id="how-to" data-href="{% url 'corruption-cove-casino:howToPlay' gameType='blackjack' %}" onclick="window.open(this.dataset.href, 'how-to-play', 'width=600,height=520,toolbar=no,scrollbars=yes,resizable=yes'); return false;">
+    How to play blackjack?
+    </button>
+    <la id="bet-amount-label">Bet amount: </la><input type="number" name="bet_amount" id="bet_amount" min="1" value=100 max="1000">
 </div>
 <div class='actions' id="actions-0">
-{% for action in actions.0 %}
+    {% for action,action_name in actions.0 %}
 
-<button onclick="do_action('{{action}}',0)">{{action}} 0</button> <br>
+    <button id='{{action}}_0' disabled onclick="do_action('{{action}}',0)">{{action_name}}</button> <br>
 
-{% endfor %}
+    {% endfor %}
 </div>
 
 <div class='actions' id="actions-1">
-{% for action in actions.1 %}
+    {% for action,action_name in actions.1 %}
 
-<button onclick="do_action('{{action}}',1)">{{action}} 1</button> <br>
+    <button id='{{action}}_1' disabled onclick="do_action('{{action}}',1)">{{action_name}}</button> <br>
 
 {% endfor %}
 </div>
 </div>
 
 <p id="display"></p>
-
-<script>
-    fetch("{% url 'corruption-cove-casino:blackjack_api' dealer.name  %}")
-        .then(data=>data.json())
-        .then(data=>display_state(data));
-    function display_hand(hand,id){
-        document.getElementById(id).innerHTML = "";
-        for(card of hand){
-            document.getElementById(id).innerHTML += `<img class="card" src="{%static 'images/cards'%}/${card[0]+card[1]}.png"">`
-        }
-        return hand?.map(card=> card.join("")).join(",");
-    }
-    function display_state(state){
-        console.log(state);
-        hands = state.hands;
-        dealer_hand = state.dealer_hand;
-        bet = JSON.stringify(state.bets);
-        document.getElementById('hand-0').innerHTML="";
-        document.getElementById('hand-1').innerHTML="";
-        for (let i = 0; i < hands.length; i++) {
-            display_hand(hands[i],`hand-${i}`);
-        }
-        display_hand(dealer_hand,'dealer-hand');
-    }
-    function do_action(action,hand_no){
-        console.log(action);
-        fetch("{% url 'corruption-cove-casino:blackjack_api' dealer.name %}",{method:'post',headers:{'X-CSRFToken':csrftoken},body:JSON.stringify(
-            {action:action,hand_no:hand_no,bet:{amount:100}}
-        )})
-        .then(res=> res.json())
-        .then(json=>display_state(json));
-    }
-    </script>
 {% endblock %}

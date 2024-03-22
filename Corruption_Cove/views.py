@@ -16,9 +16,10 @@ import json
 import requests
 from django.core.exceptions import ObjectDoesNotExist
 
+
 def index(request):
     context = {}
-    users_format={}
+    users_format = {}
     users = User.objects.all()
     for user in users:
         try:
@@ -29,6 +30,7 @@ def index(request):
     context['users'] = json.dumps(users_format)
     print(users_format)
     return render(request, "Corruption_Cove/index.html", context)
+
 
 def register(request):
     registered = False
@@ -49,14 +51,15 @@ def register(request):
                 profile.banner = request.FILES['banner']
             profile.save()
             registered = True
-            login(request,user)
+            login(request, user)
         else:
             print(user_form.errors, profile_form.errors)
     else:
         user_form = UserForm()
         profile_form = UserProfileForm()
-    context = {'user_form': user_form,'profile_form': profile_form,'registered': registered}
-    return render(request,'Corruption_Cove/register.html',context)
+    context = {'user_form': user_form, 'profile_form': profile_form, 'registered': registered}
+    return render(request, 'Corruption_Cove/register.html', context)
+
 
 def signin(request):
     if request.method == 'POST':
@@ -75,12 +78,12 @@ def signin(request):
     else:
         return render(request, 'Corruption_Cove/sign-in.html')
 
+
 @login_required
 def account(request, user_slug):
     context = {}
 
-
-    #identify who's account page is open
+    # identify who's account page is open
     try:
         user = UserProfile.objects.get(slug=user_slug)
     except UserProfile.DoesNotExist:
@@ -88,7 +91,7 @@ def account(request, user_slug):
     if user is None:
         return redirect('/corruption-cove-casino/')
 
-    #check if bank card has been added
+    # check if bank card has been added
     banks = False
     banking = None
     try:
@@ -99,17 +102,17 @@ def account(request, user_slug):
     context['banking'] = banking
     context['banks'] = banks
 
-    #find top and recent bets from current user
+    # find top and recent bets from current user
     bets = len(Bet.objects.filter(slug=user_slug))
     context['topbets'] = 0
     context['recentbets'] = 0
     if (bets > 0):
-        topbets = Bet.objects.filter(slug=user_slug).order_by('-amount')[:min(3,bets)]
-        recentbets = Bet.objects.filter(slug=user_slug).order_by('-date')[:min(3,bets)]
-        context['topbets'] =  topbets
+        topbets = Bet.objects.filter(slug=user_slug).order_by('-amount')[:min(3, bets)]
+        recentbets = Bet.objects.filter(slug=user_slug).order_by('-date')[:min(3, bets)]
+        context['topbets'] = topbets
         context['recentbets'] = recentbets
 
-    #find friends of current user
+    # find friends of current user
     friendsHelper = Friendship.objects.filter(Q(sender=user) | Q(receiver=user))
     friends = []
     for friend in friendsHelper:
@@ -124,13 +127,11 @@ def account(request, user_slug):
         if (request.user.profile.slug == friend.slug):
             context['friend_exists'] = True
 
-
-    #find money requests directed at current user
+    # find money requests directed at current user
     requests = Request.objects.filter(receiver=user)
     context['requests'] = requests
 
-
-    #handle form input
+    # handle form input
     if request.method == 'POST':
         if "submit_f" in request.POST:
             friend_form = FriendshipForm(request.POST)
@@ -143,7 +144,7 @@ def account(request, user_slug):
         if "submit_r" in request.POST:
             request_form = RequestForm(request.POST)
             if request_form.is_valid():
-                request_form.save(user=user,signed_in=request.user.profile)
+                request_form.save(user=user, signed_in=request.user.profile)
             else:
                 print(request_form.errors)
             context['request_form'] = request_form
@@ -152,18 +153,18 @@ def account(request, user_slug):
         friend_form = FriendshipForm()
         request_form = RequestForm()
 
-    #pass user
+    # pass user
     context['account'] = user
-    #context['personalRate'] = calculate_personal_rate(request)
+    # context['personalRate'] = calculate_personal_rate(request)
     context['personalRate'] = 1
 
-    return render(request, 'Corruption_Cove/account.html',context)
+    return render(request, 'Corruption_Cove/account.html', context)
+
 
 @login_required
 def user_logout(request):
     logout(request)
     return redirect(reverse('corruption-cove-casino:index'))
-
 
 
 @login_required
@@ -174,32 +175,37 @@ def games(request):
 
     return render(request, "Corruption_Cove/games.html", context)
 
+
 @card_required
 @login_required
 def roulette(request):
     context = {}
 
     bets = Bet.objects.filter(game='roulette')
-    if (len(bets) > 0):
-        context['bets'] = bets.order_by('-amount')[:min(5,len(bets))]
+    if len(bets) > 0:
+        context['bets'] = bets.order_by('-amount')[:min(5, len(bets))]
 
-    context['bet_data'] = [{"name":x['name'],"type":x['type']} for x in ROULETTE_BETS]
-    #context['personalRate'] = calculate_personal_rate(request)
+    context['bet_data'] = [{"name": x['name'], "type": x['type']} for x in ROULETTE_BETS]
+    # context['personalRate'] = calculate_personal_rate(request)
     context['personalRate'] = 1
 
     return render(request, "Corruption_Cove/roulette.html", context)
 
+
 @card_required
 @login_required
-def blackjack(request,dealer=""):
+def blackjack(request, dealer=""):
     context = {}
     add_bets_to_context(context, 'blackjack-' + dealer)
-    context['actions'] = {'all':['bet','split','start','clear'],'0':['hit','stay','double_down'],'1':['hit','stay','double_down']}
+    actions = {'all': ['split', 'start'], '0': ['hit', 'stay', 'double_down'],
+                          '1': ['hit', 'stay', 'double_down']}
+    action_names={'bet':'Bet','split':'Split','start':'Start','hit':'Hit','double_down':'Double Down','stay':'Stay'}
+    context['actions'] = {key:[(action,action_names[action]) for action in value] for key,value in actions.items()}
     try:
         context['dealer'] = Dealer.objects.get(name=dealer)
     except:
         context['dealer'] = None
-    #context['personalRate'] = calculate_personal_rate(request)
+    # context['personalRate'] = calculate_personal_rate(request)
     context['personalRate'] = 1
 
     return render(request, "Corruption_Cove/blackjack.html", context)
@@ -207,37 +213,39 @@ def blackjack(request,dealer=""):
 
 def add_bets_to_context(context, game):
     bets = Bet.objects.filter(game=game)
-    if (len(bets) > 0):
-        context['bets'] = bets.order_by('-amount')[:max(5, len(bets))]
+    if len(bets) > 0:
+        context['bets'] = bets.order_by('-amount')[:5]
+
 
 @card_required
 @login_required
-def slots(request,machine):
+def slots(request, machine):
     context = {}
 
-    add_bets_to_context(context,'slots-'+machine)
+    add_bets_to_context(context, 'slots-' + machine)
 
     context['machine'] = machine
-    
+
     return render(request, "Corruption_Cove/slots.html", context)
+
 
 class deposit(View):
     def get(self, request):
         depositValue = float(request.GET["depositValue"])
         userID = request.user.profile.slug
-        #personalRate = calculate_personal_rate(request)
+        # personalRate = calculate_personal_rate(request)
         personalRate = 1
         try:
             bank = Bank.objects.get(slug=userID)
         except Bank.DoesNotExist:
             HttpResponse("Bank account not found")
 
-        bank.balance += depositValue/personalRate
+        bank.balance += depositValue / personalRate
         bank.save()
         return HttpResponse(str(bank.balance))
 
 
-def howToPlay(request,gameType):
+def howToPlay(request, gameType):
     context = {}
 
     f = open("static\\rules.json", "r")
@@ -247,8 +255,9 @@ def howToPlay(request,gameType):
     context['name'] = str(gameType).capitalize()
 
     context['text'] = rules[str(gameType)]
-    
+
     return render(request, "Corruption_Cove/howToPlay.html", context)
+
 
 def change_card(request, user_slug):
     context = {}
@@ -260,9 +269,10 @@ def change_card(request, user_slug):
             bank_form.clean_cardNo()
             bank_form.clean_expiry()
             bank_form.clean_cvv()
-            #personalRate = calculate_personal_rate(request)
+            # personalRate = calculate_personal_rate(request)
             personalRate = 1
-            bank_form.save(signed_in=UserProfile.objects.get(slug=user_slug), personalRate=personalRate, balance = request.POST.get('balance', None))
+            bank_form.save(signed_in=UserProfile.objects.get(slug=user_slug), personalRate=personalRate,
+                           balance=request.POST.get('balance', None))
             return redirect(reverse('corruption-cove-casino:account', args=(user_slug,)))
         else:
             print(bank_form.errors)
@@ -272,6 +282,7 @@ def change_card(request, user_slug):
     context['bank_form'] = bank_form
 
     return render(request, "Corruption_Cove/change_card.html", context)
+
 
 def add_card(request, user_slug):
     context = {}
@@ -283,9 +294,10 @@ def add_card(request, user_slug):
             bank_form.clean_cardNo()
             bank_form.clean_expiry()
             bank_form.clean_cvv()
-            #personalRate = calculate_personal_rate(request)
+            # personalRate = calculate_personal_rate(request)
             personalRate = 1
-            bank_form.save(signed_in=UserProfile.objects.get(slug=user_slug), personalRate=personalRate, balance = request.POST.get('balance', None))
+            bank_form.save(signed_in=UserProfile.objects.get(slug=user_slug), personalRate=personalRate,
+                           balance=request.POST.get('balance', None))
             return redirect(reverse('corruption-cove-casino:account', args=(user_slug,)))
         else:
             print(bank_form.errors)
@@ -295,17 +307,20 @@ def add_card(request, user_slug):
     context['bank_form'] = bank_form
 
     return render(request, "Corruption_Cove/add_card.html", context)
+
+
 class money_request(View):
     def get(self, request):
         sender = UserProfile.objects.get(slug=request.GET["sender"])
         receiver = UserProfile.objects.get(slug=request.GET["receiver"])
         amount = float(request.GET["amount"])
 
-        request = Request.objects.get_or_create(sender=sender,receiver=receiver)
+        request = Request.objects.get_or_create(sender=sender, receiver=receiver)
         request.amount += amount
         request.save()
 
         return HttpResponse("Request sent")
+
 
 class friend_request(View):
     def get(self, request):
@@ -313,20 +328,22 @@ class friend_request(View):
         receiver = UserProfile.objects.get(slug=request.GET["receiver"])
 
         try:
-            friendship = Friendship.objects.get(sender=sender,receiver=receiver)
+            friendship = Friendship.objects.get(sender=sender, receiver=receiver)
         except Friendship.DoesNotExist:
-            Friendship.objects.create(sender=sender,receiver=receiver)
+            Friendship.objects.create(sender=sender, receiver=receiver)
 
         return HttpResponse("Request sent")
 
+
 def calculate_personal_rate(request):
     # Call API to fetch exchange rates
     endpoint = 'latest'
     access_key = '687d68b03eed20002cc8e226b1756022'
-    response = requests.get(f'https://api.exchangeratesapi.io/v1/{endpoint}?access_key={access_key}&symbols=USD,AUD,EUR,JPY,MXN')
+    response = requests.get(
+        f'https://api.exchangeratesapi.io/v1/{endpoint}?access_key={access_key}&symbols=USD,AUD,EUR,JPY,MXN')
     data = response.json()
 
-    #retrieve relevant info to convert from EUR default to user currency
+    # retrieve relevant info to convert from EUR default to user currency
     euro_to_pounds_rate = float(data['rates']['GBP'])
     user_currency_rate = float(data['rates'][request.user.profile.currency])
 
@@ -335,14 +352,16 @@ def calculate_personal_rate(request):
 
     return personal_rate
 
+
 def calculate_personal_rate(request):
     # Call API to fetch exchange rates
     endpoint = 'latest'
     access_key = '687d68b03eed20002cc8e226b1756022'
-    response = requests.get(f'https://api.exchangeratesapi.io/v1/{endpoint}?access_key={access_key}&symbols=USD,AUD,EUR,JPY,MXN')
+    response = requests.get(
+        f'https://api.exchangeratesapi.io/v1/{endpoint}?access_key={access_key}&symbols=USD,AUD,EUR,JPY,MXN')
     data = response.json()
 
-    #retrieve relevant info to convert from EUR default to user currency
+    # retrieve relevant info to convert from EUR default to user currency
     euro_to_pounds_rate = float(data['rates']['GBP'])
     user_currency_rate = float(data['rates'][request.user.profile.currency])
 
@@ -350,6 +369,7 @@ def calculate_personal_rate(request):
     personal_rate = euro_to_pounds_rate / user_currency_rate
 
     return personal_rate
+
 
 class request_accept(View):
     def get(self, request):
@@ -357,8 +377,8 @@ class request_accept(View):
         requestValue = Request.objects.get(id=request_ID).amount
         sender = Request.objects.get(id=request_ID).sender.slug
         receiver = Request.objects.get(id=request_ID).receiver.slug
-        
-        #personalRate = calculate_personal_rate(request)
+
+        # personalRate = calculate_personal_rate(request)
         personalRate = 1
         try:
             bank_sender = Bank.objects.get(slug=sender)
@@ -367,12 +387,13 @@ class request_accept(View):
             print("Bank account not found")
             HttpResponse("Bank account not found")
 
-        bank_sender.balance += requestValue/personalRate
-        bank_receiver.balance -= requestValue/personalRate
+        bank_sender.balance += requestValue / personalRate
+        bank_receiver.balance -= requestValue / personalRate
         bank_receiver.save()
         bank_sender.save()
         Request.objects.get(id=request_ID).delete()
         return HttpResponse("Request accepted")
+
 
 class request_decline(View):
     def get(self, request):
@@ -380,14 +401,15 @@ class request_decline(View):
         Request.objects.get(id=request_ID).delete()
         return HttpResponse("Request declined")
 
+
 class friend_accept(View):
     def get(self, request):
         request_ID = int(request.GET["request_ID"])
         requestValue = Friendship.objects.get(id=request_ID).amount
         sender = Friendship.objects.get(id=request_ID).sender.slug
         receiver = Friendship.objects.get(id=request_ID).receiver.slug
-        
-        #personalRate = calculate_personal_rate(request)
+
+        # personalRate = calculate_personal_rate(request)
         personalRate = 1
         try:
             bank_sender = Bank.objects.get(slug=sender)
@@ -396,12 +418,13 @@ class friend_accept(View):
             print("Bank account not found")
             HttpResponse("Bank account not found")
 
-        bank_sender.balance += requestValue/personalRate
-        bank_receiver.balance -= requestValue/personalRate
+        bank_sender.balance += requestValue / personalRate
+        bank_receiver.balance -= requestValue / personalRate
         bank_receiver.save()
         bank_sender.save()
         Request.objects.get(id=request_ID).delete()
         return HttpResponse("Request accepted")
+
 
 class friend_decline(View):
     def get(self, request):

@@ -14,12 +14,11 @@ SUITS = ['h', 's', 'd', 'c']
 VALUES = ['a', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'j', 'q', 'k']
 BLACKJACK_BET_TYPES = ['double_down_0','double_down_1']
 
-#TODO: add dealer support
 class Blackjack(Game):
     def __init__(self, state, user,dealer):
         super().__init__(state,user)
         self.set_state(state)
-        self.name = 'blackjack'
+        self.name = 'blackjack-'+dealer.name
         self.dealer = dealer
 
     def set_state(self, state):
@@ -81,6 +80,8 @@ class Blackjack(Game):
         return score
 
     def is_valid_bet_type(self, bet_type):
+        if len(self.bets)==0:
+            return bet_type=='default'
         return super().is_valid_bet_type(bet_type) or bet_type in BLACKJACK_BET_TYPES
 
     def card_value(self, card):
@@ -128,10 +129,10 @@ class Blackjack(Game):
         super().handle_start(action)
         self.hands = [[self.deck.pop(), self.deck.pop()]]
         self.dealer_hand = [self.deck.pop()]
-        self.place_bet(action['bet'])
+        self.place_bet(action.get('bet'))
 
     def dealer_draw(self):
-        while self.score_hand(self.dealer_hand) < 17:
+        while self.score_hand(self.dealer_hand) < self.dealer.stop:
             self.dealer_hand.append(self.deck.pop())
         self.winnings = self.calculate_winnings()
         self.add_bet_results(self.winnings)

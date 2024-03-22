@@ -7,7 +7,7 @@ Games
     
 {% block body_block %}
 <link rel="stylesheet" type="text/css" href= "{% static 'games.css' %}">
-
+<script src="{% static 'js/games.js' %}"></script>
 <div class="blackjack">
     <h1 class="welcome">Blackjack</h1>
     {% for dealer in dealers %}
@@ -30,27 +30,10 @@ Games
     <h1 class="welcome">Slots</h1>
     {% for machine in slots %}
     <div class="game">
-        <img class="thumbnail" src="{{ machine.directory }}/thumbnail.png" onclick='redirectToPageS("{{machine.theme}}")'>
-        <a class="game" href="{% url 'corruption-cove-casino:slots' machine=machine.theme %}">{{machine.name}}</a>
+        <img class="thumbnail" src="{{ machine.preview.url }}" onclick='redirectToPageS("{{machine.theme}}")'>
+        <a class="game" href="{% url 'corruption-cove-casino:slots' machine=machine.theme %}">{{machine.theme}}</a>
     </div>
     {% endfor %}
 </div>
-
-<script>
-    function redirectToPageB(dealerName) {
-        var url = '/corruption-cove-casino/games/blackjack/' + dealerName;
-        window.location.href = url;
-    }
-
-    function redirectToPageR() {
-        var url = '/corruption-cove-casino/games/roulette/';
-        window.location.href = url;
-    }
-
-    function redirectToPageS(machineName) {
-        var url = '/corruption-cove-casino/games/slots/' + machineName;
-        window.location.href = url;
-    }
-</script>
 
 {% endblock %}
