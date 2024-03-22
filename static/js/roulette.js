@@ -29,7 +29,7 @@ document.getElementsByClassName("bet-black")[0].style["background-color"] = "bla
 
 function addBetValue(bet) {
     currentBets.set(bet, currentBets.get(bet)+100)
-    moneyBet += amount;
+    moneyBet += 100;
     checkBet()
 }
 
