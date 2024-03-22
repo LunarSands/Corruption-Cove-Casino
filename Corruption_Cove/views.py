@@ -155,7 +155,7 @@ def account(request, user_slug):
 
     # pass user
     context['account'] = user
-    # context['personalRate'] = calculate_personal_rate(request)
+    context['personalRate'] = calculate_personal_rate(request)
     context['personalRate'] = 1
 
     return render(request, 'Corruption_Cove/account.html', context)
@@ -186,7 +186,7 @@ def roulette(request):
         context['bets'] = bets.order_by('-amount')[:min(5, len(bets))]
 
     context['bet_data'] = [{"name": x['name'], "type": x['type']} for x in ROULETTE_BETS]
-    # context['personalRate'] = calculate_personal_rate(request)
+    context['personalRate'] = calculate_personal_rate(request)
     context['personalRate'] = 1
 
     return render(request, "Corruption_Cove/roulette.html", context)
@@ -205,7 +205,7 @@ def blackjack(request, dealer=""):
         context['dealer'] = Dealer.objects.get(name=dealer)
     except:
         context['dealer'] = None
-    # context['personalRate'] = calculate_personal_rate(request)
+    context['personalRate'] = calculate_personal_rate(request)
     context['personalRate'] = 1
 
     return render(request, "Corruption_Cove/blackjack.html", context)
@@ -233,7 +233,7 @@ class deposit(View):
     def get(self, request):
         depositValue = float(request.GET["depositValue"])
         userID = request.user.profile.slug
-        # personalRate = calculate_personal_rate(request)
+        personalRate = calculate_personal_rate(request)
         personalRate = 1
         try:
             bank = Bank.objects.get(slug=userID)
@@ -269,7 +269,7 @@ def change_card(request, user_slug):
             bank_form.clean_cardNo()
             bank_form.clean_expiry()
             bank_form.clean_cvv()
-            # personalRate = calculate_personal_rate(request)
+            personalRate = calculate_personal_rate(request)
             personalRate = 1
             bank_form.save(signed_in=UserProfile.objects.get(slug=user_slug), personalRate=personalRate,
                            balance=request.POST.get('balance', None))
@@ -294,7 +294,7 @@ def add_card(request, user_slug):
             bank_form.clean_cardNo()
             bank_form.clean_expiry()
             bank_form.clean_cvv()
-            # personalRate = calculate_personal_rate(request)
+            personalRate = calculate_personal_rate(request)
             personalRate = 1
             bank_form.save(signed_in=UserProfile.objects.get(slug=user_slug), personalRate=personalRate,
                            balance=request.POST.get('balance', None))
@@ -353,24 +353,6 @@ def calculate_personal_rate(request):
     return personal_rate
 
 
-def calculate_personal_rate(request):
-    # Call API to fetch exchange rates
-    endpoint = 'latest'
-    access_key = '687d68b03eed20002cc8e226b1756022'
-    response = requests.get(
-        f'https://api.exchangeratesapi.io/v1/{endpoint}?access_key={access_key}&symbols=USD,AUD,EUR,JPY,MXN')
-    data = response.json()
-
-    # retrieve relevant info to convert from EUR default to user currency
-    euro_to_pounds_rate = float(data['rates']['GBP'])
-    user_currency_rate = float(data['rates'][request.user.profile.currency])
-
-    # Calculate personal rate
-    personal_rate = euro_to_pounds_rate / user_currency_rate
-
-    return personal_rate
-
-
 class request_accept(View):
     def get(self, request):
         request_ID = int(request.GET["request_ID"])
@@ -378,7 +360,7 @@ class request_accept(View):
         sender = Request.objects.get(id=request_ID).sender.slug
         receiver = Request.objects.get(id=request_ID).receiver.slug
 
-        # personalRate = calculate_personal_rate(request)
+        personalRate = calculate_personal_rate(request)
         personalRate = 1
         try:
             bank_sender = Bank.objects.get(slug=sender)
@@ -409,7 +391,7 @@ class friend_accept(View):
         sender = Friendship.objects.get(id=request_ID).sender.slug
         receiver = Friendship.objects.get(id=request_ID).receiver.slug
 
-        # personalRate = calculate_personal_rate(request)
+        personalRate = calculate_personal_rate(request)
         personalRate = 1
         try:
             bank_sender = Bank.objects.get(slug=sender)
